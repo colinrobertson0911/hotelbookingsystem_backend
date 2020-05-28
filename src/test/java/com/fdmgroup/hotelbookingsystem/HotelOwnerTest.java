@@ -28,7 +28,7 @@ class HotelOwnerTest {
 	MockHttpSession session;
 	
 	final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/admin";
-	final static String PUBLISHER_ONE_JSON = "{\"hotelOwnerId\":1,\"username\":\"user1\",\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
+//	final static String PUBLISHER_ONE_JSON = "{\"hotelOwnerId\":1,\"username\":\"user1\",\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
 	
 	@BeforeEach
 	public void setUp() {
@@ -37,14 +37,33 @@ class HotelOwnerTest {
 				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
 				.build();
 	}
+	
+	@Test
+	public void getAllHotelOwners() throws Exception {
+		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/AllOwners"))
+		.andExpect(status().isOk());
+	}
 
 	@Test
 	public void singleHotelOwnerOneExists() throws Exception {
-		ResultActions mvcResult = this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/1").session(session))
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/SeeHotelOwner/1")
+				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelOwnerId\":1,\"username\":\"user1\",\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
-		Assertions.assertEquals(expectedResult, mvcResult.andReturn().getResponse().getContentAsString());
+		String expectedResult = "{\"hotelOwnerId\":1,\"username\":\"user1\","
+				+ "\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString());
 		
+	}
+	
+	
+	@Test
+	public void getListOfHotels() throws Exception {
+		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/AllHotels"))
+		.andExpect(status().isOk());
+		
+				
+				
 	}
 
 }

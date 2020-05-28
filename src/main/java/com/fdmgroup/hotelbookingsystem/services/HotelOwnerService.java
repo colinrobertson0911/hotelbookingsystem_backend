@@ -39,5 +39,7 @@ public class HotelOwnerService {
 	public Optional<HotelOwner> findByUsername(String username) {
 		return hotelOwnerDao.findByUsername(username);
 	}
+	
+	
 
 }
