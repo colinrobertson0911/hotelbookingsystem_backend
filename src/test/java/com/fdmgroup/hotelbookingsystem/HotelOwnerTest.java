@@ -46,11 +46,11 @@ class HotelOwnerTest {
 
 	@Test
 	public void singleHotelOwnerOneExists() throws Exception {
-		ResultActions mvcResult = this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/SeeHotelOwner/1")
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/SeeHotelOwner/3")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelOwnerId\":1,\"username\":\"user1\","
-				+ "\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
+		String expectedResult = "{\"hotelOwnerId\":3,\"username\":\"user3\","
+				+ "\"password\":\"password\",\"email\":\"user3@email.com\",\"name\":\"Wee Dan\",\"hotel\":[]}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 		
@@ -61,9 +61,18 @@ class HotelOwnerTest {
 	public void getListOfHotels() throws Exception {
 		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/AllHotels"))
 		.andExpect(status().isOk());
-		
-				
 				
 	}
-
+	
+	@Test
+	public void singleHotelOneExists() throws Exception {
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/VerifyHotel/1")
+				.session(session))
+				.andExpect(status().isOk());
+		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\","
+				+ "\"numOfRooms\":5,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString());
+		
+	}
 }

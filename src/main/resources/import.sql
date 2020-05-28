@@ -12,7 +12,6 @@ insert into hotel(hotelId, hotelName, numOfRooms, address, postcode, city, ammen
 insert into hotel(hotelId, hotelName, numOfRooms, address, postcode, city, ammenities, starRating, airportTransfers, transferprice, verified) values (HOTEL_SEQ.nextval, 'Radisson Red', 43,'456 argyle street','G3 6RP', 'Glasgow','Conference Rooms, Bars, Near Central Station', 4, false, 20, false);
 
 
-insert into hotelOwner_hotel(hotelOwner_hotelOwnerId, hotel_hotelId) values (1,1);
 insert into hotelOwner_hotel(hotelOwner_hotelOwnerId, hotel_hotelId) values (1,2);
 insert into hotelOwner_hotel(hotelOwner_hotelOwnerId, hotel_hotelId) values (2,3);
 
@@ -21,8 +20,7 @@ insert into room(roomId, roomType, price) values (ROOM_SEQ.nextval, 'LUXURY', '8
 insert into room(roomId, roomType, price) values (ROOM_SEQ.nextval, 'DELUXE', '100.00');
 insert into room(roomId, roomType, price) values (ROOM_SEQ.nextval, 'SUITE', '120.00');
 
-insert into hotel_room(hotel_hotelId, room_roomId) values (1,1);
-insert into hotel_room(hotel_hotelId, room_roomId) values (1,4);
+
 insert into hotel_room(hotel_hotelId, room_roomId) values (2,2);
 insert into hotel_room(hotel_hotelId, room_roomId) values (2,3);
 insert into hotel_room(hotel_hotelId, room_roomId) values (3,1);
@@ -34,7 +32,6 @@ insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hot
 insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/04/20', 'yyyy/mm/dd'), TO_DATE('2020/04/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
 
 
-insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (1, 1);
 insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (3, 3);
 insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (3, 4);
 
