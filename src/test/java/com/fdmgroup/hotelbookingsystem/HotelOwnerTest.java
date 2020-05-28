@@ -28,6 +28,7 @@ class HotelOwnerTest {
 	MockHttpSession session;
 	
 	final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/admin";
+	final static String PUBLISHER_ONE_JSON = "{\"hotelOwnerId\":1,\"username\":\"user1\",\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
 	
 	@BeforeEach
 	public void setUp() {
