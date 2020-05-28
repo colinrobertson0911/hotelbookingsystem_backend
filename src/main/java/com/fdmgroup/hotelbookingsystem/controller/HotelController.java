@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,21 +44,13 @@ public class HotelController {
 	BookingService bookingService;
 
 	@GetMapping("")
-	public ModelAndView home() {
-		ModelAndView modelAndView = new ModelAndView("mainScreen.jsp");
-		modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-		modelAndView.addObject("visabilityMessage", "All Hotels");
-		modelAndView.addObject("allRooms", roomService.findAll());
-		return modelAndView;
+	public ResponseEntity home() {
+		return "landingPage.jsp";
 	}
 
 	@GetMapping("/Home")
-	public ModelAndView homeScreen() {
-		ModelAndView modelAndView = new ModelAndView("mainScreen.jsp");
-		modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-		modelAndView.addObject("visabilityMessage", "All Hotels");
-		modelAndView.addObject("allRooms", roomService.findAll());
-		return modelAndView;
+	public String homeScreen() {
+		return "home";
 	}
 
 	@GetMapping("LoginAsOwner")
