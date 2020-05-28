@@ -8,7 +8,7 @@ import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 
 public interface HotelOwnerDao extends JpaRepository<HotelOwner, Long> {
 
-	HotelOwner findByHotelOwnerId(Long hotelOwnerId);
+	Optional<HotelOwner> findByHotelOwnerId(Long hotelOwnerId);
 
 	HotelOwner findByEmail(String email);
 

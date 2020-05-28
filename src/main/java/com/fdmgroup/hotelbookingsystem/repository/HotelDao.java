@@ -10,7 +10,7 @@ import com.fdmgroup.hotelbookingsystem.model.Hotel;
 
 public interface HotelDao extends JpaRepository<Hotel, Long> {
 
-	Hotel findByHotelId(long hotelId);
+	Optional<Hotel> findByHotelId(long hotelId);
 
 	List<Hotel> findByCity(String city);
 

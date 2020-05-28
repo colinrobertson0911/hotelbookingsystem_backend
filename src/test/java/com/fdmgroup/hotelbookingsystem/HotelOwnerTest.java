@@ -1,77 +1,49 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-import java.util.Optional;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
-import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
-import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
-import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureMockMvc
 class HotelOwnerTest {
 
 	@Autowired
-	HotelOwnerService hotelOwnerService;
+	WebApplicationContext webApplicationContext;
+	
+	MockMvc mockMvc;
 
-	@Autowired
-	HotelService hotelService;
-
-	@Test
-	void test_ThatANewOwnerCanBeAdded() {
-		List<Hotel> hotels = hotelService.findAll();
-		HotelOwner hotelOwner = new HotelOwner();
-		hotelOwner.setUsername("user4");
-		hotelOwner.setEmail("Use21@email.com");
-		hotelOwner.setName("user two");
-		hotelOwner.setPassword("password");
-		hotelOwner.setHotel(hotels);
-		int numberBeforeAdding = hotelOwnerService.findAll().size();
-		hotelOwnerService.save(hotelOwner);
-		int numberAfterAdding = hotelOwnerService.findAll().size();
-		assertNotEquals(numberBeforeAdding, numberAfterAdding);
+	MockHttpSession session;
+	
+	final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/admin";
+	
+	@BeforeEach
+	public void setUp() {
+		this.session = new MockHttpSession();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
+				.build();
 	}
 
 	@Test
-	void test_RetrieveAListOfOwners() {
-		List<HotelOwner> hotelOwners = hotelOwnerService.findAll();
-		int numOfOwners = hotelOwners.size();
-		assert (numOfOwners > 0);
-	}
-
-	@Test
-	void test_RetrieveAnOwnerById() {
-		HotelOwner hotelOwner = hotelOwnerService.retrieveOne(1L);
-		long hotelOwnerId = hotelOwner.getHotelOwnerId();
-		HotelOwner hotelOwnerFromDB = hotelOwnerService.retrieveOne(hotelOwnerId);
-		assertEquals(hotelOwnerFromDB.getEmail(), hotelOwner.getEmail());
-	}
-
-	@Test
-	void test_RetreieveByUserEmail() {
-		HotelOwner hotelOwner = hotelOwnerService.findByEmail("user1@email.com");
-		assertEquals("user1@email.com", hotelOwner.getEmail());
-	}
-
-	@Test
-	void test_RetrieveByUsernameAndPassword() {
-		Optional<HotelOwner> hotelOwner = hotelOwnerService.findByUsernameAndPassword("user1", "password");
-		assertEquals("user one", hotelOwner.get().getName());
-	}
-
-	@Test
-	void test_ThatHotelOwnerCanBeRetreivedByUsername() {
-		Optional<HotelOwner> hotelOwner = hotelOwnerService.findByUsername("user1");
-		assertEquals("user1", hotelOwner.get().getUsername());
+	public void singleHotelOwnerOneExists() throws Exception {
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/1").session(session))
+				.andExpect(status().isOk());
+		String expectedResult = "{\"hotelOwnerId\":1,\"username\":\"user1\",\"password\":\"password\",\"email\":\"user1@email.com\",\"name\":\"user one\"}";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn().getResponse().getContentAsString());
+		
 	}
 
 }

@@ -30,7 +30,7 @@ public class HotelService {
 		return hotelDao.save(hotel);
 	}
 
-	public Hotel retrieveOne(long hotelId) {
+	public Optional<Hotel> retrieveOne(long hotelId) {
 		return hotelDao.findByHotelId(hotelId);
 
 	}

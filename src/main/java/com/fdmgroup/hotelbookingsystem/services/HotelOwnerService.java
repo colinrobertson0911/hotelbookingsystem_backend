@@ -24,7 +24,7 @@ public class HotelOwnerService {
 
 	}
 
-	public HotelOwner retrieveOne(Long hotelOwnerId) {
+	public Optional<HotelOwner> retrieveOne(Long hotelOwnerId) {
 		return hotelOwnerDao.findByHotelOwnerId(hotelOwnerId);
 	}
 
