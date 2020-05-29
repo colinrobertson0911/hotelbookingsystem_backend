@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,43 +54,32 @@ public class HotelController {
 		return ResponseEntity.ok(hotelService.findByCity(city));
 	}
 
-	@GetMapping("SeeHotel")
-	public ModelAndView seeHotel(@RequestParam("hotelId") Long hotelId) {
-		return new ModelAndView("WEB-INF/seeHotel.jsp", "hotel", hotelService.retrieveOne(hotelId));
+	@GetMapping("/SeeHotel/{hotelId}")
+	public ResponseEntity<Optional<Hotel>> seeHotel(@PathVariable("hotelId") Long hotelId) {
+		return ResponseEntity.ok(hotelService.retrieveOne(hotelId));
 	}
 
-	@GetMapping("bookingPage")
-	public ModelAndView bookingPage(ModelMap model, @RequestParam("hotelId") long hotelId,
-			@RequestParam("roomId") long roomId) {
-		ModelAndView modelAndView = new ModelAndView();
-		Hotel hotel = hotelService.retrieveOne(hotelId).get();
-		Room room = roomService.retrieveOne(roomId);
-		modelAndView.setViewName("WEB-INF/bookingPage.jsp");
-		modelAndView.addObject("hotel", hotel);
-		modelAndView.addObject("room", room);
-		modelAndView.addObject("bookings", new Bookings());
-		if (hotel.isAirportTransfers() == true) {
-			modelAndView.addObject("Extras", EnumSet.allOf(Extras.class));
-		} else {
-			modelAndView.addObject("Extras", EnumSet.of(Extras.NO_EXTRAS));
-		}
-		return modelAndView;
-	}
+//	@GetMapping("bookingPage")
+//	public ModelAndView bookingPage(ModelMap model, @RequestParam("hotelId") long hotelId,
+//			@RequestParam("roomId") long roomId) {
+//		ModelAndView modelAndView = new ModelAndView();
+//		Hotel hotel = hotelService.retrieveOne(hotelId).get();
+//		Room room = roomService.retrieveOne(roomId);
+//		modelAndView.setViewName("WEB-INF/bookingPage.jsp");
+//		modelAndView.addObject("hotel", hotel);
+//		modelAndView.addObject("room", room);
+//		modelAndView.addObject("bookings", new Bookings());
+//		if (hotel.isAirportTransfers() == true) {
+//			modelAndView.addObject("Extras", EnumSet.allOf(Extras.class));
+//		} else {
+//			modelAndView.addObject("Extras", EnumSet.of(Extras.NO_EXTRAS));
+//		}
+//		return modelAndView;
+//	}
 
-	@PostMapping("BookingSubmit")
-	public ModelAndView bookingSubmit(@ModelAttribute("bookings") Bookings bookings, ModelMap model,
-			HttpSession session) {
-		ModelAndView modelAndView = new ModelAndView();
-		BigDecimal extraCosts = bookings.getExtras().getPrice();
-		bookings.setExtrasPrice(extraCosts);
-		BigDecimal finaltotal = bookingService.calculateTotalPrice(bookings);
-		bookings.setTotalPrice(finaltotal);
-		bookingService.save(bookings);
-		Long bookingId1 = bookingService.retrieveOne(bookings.getBookingId()).getBookingId();
-		session.setAttribute(SESSION_ATTRIBUTE_BOOKINGID, bookingId1);
-		modelAndView.addObject("bookings", bookings);
-		modelAndView.setViewName("WEB-INF/bookingConfirmation.jsp");
-		return modelAndView;
+	@PostMapping("/BookingSubmit")
+	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings bookings) {
+		return ResponseEntity.ok(bookingService.save(bookings));
 	}
 
 	@PostMapping("BookingConfirmationSubmit")

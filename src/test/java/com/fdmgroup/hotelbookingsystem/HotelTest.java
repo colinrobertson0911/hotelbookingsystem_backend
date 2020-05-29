@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +28,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fdmgroup.hotelbookingsystem.model.Bookings;
+import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
+import com.fdmgroup.hotelbookingsystem.services.BookingService;
 import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 import com.fdmgroup.hotelbookingsystem.services.HotelService;
 
@@ -40,7 +45,13 @@ class HotelTest {
 	WebApplicationContext webApplicationContext;
 	
 	@Autowired
+	ObjectMapper objectMapper;
+	
+	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	BookingService bookingService;
 
 	MockMvc mockMvc;
 	
@@ -64,6 +75,27 @@ class HotelTest {
 		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":50,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void seeAHotelThatExists() throws Exception {
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotel/2")
+				.session(session))
+				.andExpect(status().isOk());
+		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":50,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void addABooking() throws Exception {
+		Bookings booking = new Bookings("STANDARD", "Travelodge Glasgow", LocalDate.of(2020, 04, 20), LocalDate.of(2020, 04, 27), new BigDecimal("60.00"), new BigDecimal("0.00"), new BigDecimal("420.00"), Extras.NO_EXTRAS);
+		this.mockMvc.perform(post(HOTEL_ROOT_URI + "/BookingSubmit")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(booking)))
+				.andExpect(status().isOk());
+		
 	}
 	
 }
