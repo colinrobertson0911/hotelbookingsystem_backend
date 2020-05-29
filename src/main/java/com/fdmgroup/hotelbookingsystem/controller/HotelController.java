@@ -15,7 +15,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +31,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 
 @RestController
+@RequestMapping("/hotelbookingsystem/hotel")
 @CrossOrigin(origins = "http://localhost:4200")
 public class HotelController {
 
@@ -43,38 +46,10 @@ public class HotelController {
 	@Autowired
 	BookingService bookingService;
 
-	@GetMapping("")
-	public ResponseEntity home() {
-		return "landingPage.jsp";
-	}
 
-	@GetMapping("/Home")
-	public String homeScreen() {
-		return "home";
-	}
-
-	@GetMapping("LoginAsOwner")
-	public String login() {
-		return "loginOwner.jsp";
-	}
-
-	@PostMapping("SearchByCity")
-	public ModelAndView searchByCity(@ModelAttribute("hotel") Hotel hotel, ModelMap model) {
-		List<Hotel> hotelList = hotelService.findByCityAndVerifiedIsTrue(hotel.getCity());
-		ModelAndView modelAndView = new ModelAndView();
-		if (hotelList.isEmpty()) {
-			modelAndView.setViewName("mainScreen.jsp");
-			modelAndView.addObject("errorMessage", "No Hotels in that city");
-			modelAndView.addObject("visabilityMessage", "All Hotels");
-			modelAndView.addObject("allRooms", roomService.findAll());
-			modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-			return modelAndView;
-		}
-		modelAndView.setViewName("mainScreen.jsp");
-		modelAndView.addObject("visabilityMessage", "Hotels in " + hotel.getCity());
-		modelAndView.addObject("hotel", hotelList);
-		modelAndView.addObject("allRooms", roomService.findAll());
-		return modelAndView;
+	@GetMapping("/SearchByCity/{city}")
+	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
+		return ResponseEntity.ok(hotelService.findByCity(city));
 	}
 
 	@GetMapping("SeeHotel")
@@ -86,7 +61,7 @@ public class HotelController {
 	public ModelAndView bookingPage(ModelMap model, @RequestParam("hotelId") long hotelId,
 			@RequestParam("roomId") long roomId) {
 		ModelAndView modelAndView = new ModelAndView();
-		Hotel hotel = hotelService.retrieveOne(hotelId);
+		Hotel hotel = hotelService.retrieveOne(hotelId).get();
 		Room room = roomService.retrieveOne(roomId);
 		modelAndView.setViewName("WEB-INF/bookingPage.jsp");
 		modelAndView.addObject("hotel", hotel);
