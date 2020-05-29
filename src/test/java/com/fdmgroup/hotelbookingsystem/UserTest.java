@@ -1,62 +1,53 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.fdmgroup.hotelbookingsystem.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureMockMvc
 public class UserTest {
 
 	@Autowired
+	WebApplicationContext webApplicationContext;
+	
+	@Autowired
 	UserService userService;
 
-	@Test
-	public void whenKnownUserFindByUsernameAndPasswordThenUserExists() {
-		User user = userService.findByUsernameAndPassword("admin1", "password");
-		assertEquals(userService.findByUsernameAndPassword("admin1", "password").getUserId(), user.getUserId());
+	@Autowired
+	ObjectMapper objectMapper;
+	
+	MockMvc mockMvc;
+	
+	MockHttpSession session;
+	
+	final static String LOGIN_ROOT_URI = "/hotelbookingsystem/login";
+	
+	@BeforeEach
+	public void setUp() {
+		this.session = new MockHttpSession();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
+				.build();
 	}
-
+	
 	@Test
-	public void whenKnownUserFindByUsernameThenUserExists() {
-		User user = userService.findByUsername("admin1");
-		assertEquals(userService.findByUsername("admin1").getUserId(), user.getUserId());
-	}
-
-	@Test
-	void testThatRetrieveAllRetrievesListOfUsers() {
-		List<User> users = userService.findAll();
-		assertFalse(users.isEmpty());
-	}
-
-	@Test
-	void testThatRetrieveByIdWorksReturnsTheCorrectUser() {
-		User user = userService.retrieveOne(1).get();
-		long userId = user.getUserId();
-		User user2 = userService.retrieveOne(userId).get();
-		assertEquals(user, user2);
-	}
-
-	@Test
-	public void testThatNewUserCanBeCreated() {
-		int numUsersBefore = userService.findAll().size();
-		User user1 = new User();
-		user1.setUsername("Pete");
-		user1.setPassword("Pass");
-		user1.setEmail("fjfjg@hgjh");
-		userService.save(user1);
-		int numUsersAfter = userService.findAll().size();
-		assertNotEquals(numUsersBefore, numUsersAfter);
+	public void userLoginExists() throws Exception {
+		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/1"))
+				.andExpect(status().isOk());
 	}
 
 }
