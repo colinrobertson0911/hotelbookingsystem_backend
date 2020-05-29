@@ -1,5 +1,6 @@
 package com.fdmgroup.hotelbookingsystem;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,6 +81,14 @@ class HotelOwnerTest {
 	
 	
 	@Test
+	public void deleteAnExisitingHotelOwner() throws Exception {
+		mockMvc.perform(delete(HOTELOWNER_ROOT_URI + "/delete/3")
+				.session(session)
+				.contentType("appliction/json"))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
 	public void getListOfHotels() throws Exception {
 		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/AllHotels"))
 		.andExpect(status().isOk());
@@ -97,4 +106,15 @@ class HotelOwnerTest {
 				.getResponse().getContentAsString());
 		
 	}
+	
+	@Test
+	public void addHotelWhenHotelIsValid() throws Exception {
+		Hotel hotel = new Hotel();
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/VerifyHotelSubmit")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(hotel)))
+				.andExpect(status().isOk());
+	}
+	
 }

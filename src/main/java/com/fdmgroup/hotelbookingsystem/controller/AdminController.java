@@ -39,6 +39,13 @@ public class AdminController {
 	public ResponseEntity <HotelOwner> add(@RequestBody HotelOwner hotelOwner) {
 		return ResponseEntity.ok(hotelOwnerService.save(hotelOwner));
 	}
+	
+
+	
+//	@PostMapping("/addHotel")
+//	public ResponseEntity <Hotel> add(@RequestBody Hotel hotel) {
+//		return ResponseEntity.ok(hotelService.save(hotel));
+//	}
 
 	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")
 	public ResponseEntity <HotelOwner> getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
@@ -64,8 +71,8 @@ public class AdminController {
 	}
 
 	@PostMapping("/VerifyHotelSubmit")
-	public Hotel newHotel(@RequestBody Hotel hotel) {
-		return hotelService.save(hotel);
+	public ResponseEntity <Hotel> addHotel(@RequestBody Hotel hotel) {
+		return ResponseEntity.ok(hotelService.save(hotel));
 		
 	}
 	
