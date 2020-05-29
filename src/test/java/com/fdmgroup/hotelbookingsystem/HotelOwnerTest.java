@@ -3,6 +3,7 @@ package com.fdmgroup.hotelbookingsystem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
+import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,6 +37,9 @@ class HotelOwnerTest {
 	
 	@Autowired
 	ObjectMapper objectMapper;
+	
+	@Autowired
+	HotelOwnerService hotelOwnerServce;
 	
 	MockMvc mockMvc;
 
@@ -79,14 +84,23 @@ class HotelOwnerTest {
 				.andExpect(status().isOk());
 	}
 	
-	
 	@Test
-	public void deleteAnExisitingHotelOwner() throws Exception {
-		mockMvc.perform(delete(HOTELOWNER_ROOT_URI + "/delete/3")
+	public void editHotelOwner() throws Exception {
+		HotelOwner hotelOwner = hotelOwnerServce.retrieveOne(3L).get();
+		hotelOwner.setUsername("user99");
+		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelOwnerSubmit")
 				.session(session)
-				.contentType("appliction/json"))
-		.andExpect(status().isOk());
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(hotelOwner)))
+				.andExpect(status().isOk());
+		String expectedResult = "{\"hotelOwnerId\":3,\"username\":\"user99\","
+				+ "\"password\":\"password\",\"email\":\"user3@email.com\",\"name\":\"Wee Dan\",\"hotel\":[]}";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString()); 
+		
 	}
+	
+
 	
 	@Test
 	public void getListOfHotels() throws Exception {
