@@ -33,7 +33,11 @@ public class AdminController {
 	@GetMapping("/AllOwners")
 	public ResponseEntity<List<HotelOwner>> hotelOwners() {
 		return ResponseEntity.ok(hotelOwnerService.findAll());
-
+	}
+	
+	@PostMapping("/addHotelOwner")
+	public ResponseEntity <HotelOwner> add(@RequestBody HotelOwner hotelOwner) {
+		return ResponseEntity.ok(hotelOwnerService.save(hotelOwner));
 	}
 
 	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")

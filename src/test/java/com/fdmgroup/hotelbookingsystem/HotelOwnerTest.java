@@ -1,7 +1,11 @@
 package com.fdmgroup.hotelbookingsystem;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +20,20 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
 import org.springframework.web.context.WebApplicationContext;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class HotelOwnerTest {
 
 	@Autowired
 	WebApplicationContext webApplicationContext;
+	
+	@Autowired
+	ObjectMapper objectMapper;
 	
 	MockMvc mockMvc;
 
@@ -54,6 +66,16 @@ class HotelOwnerTest {
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 		
+	}
+	
+	@Test
+	public void addHotelOwnerWhenOwnerIsValid() throws Exception {
+		HotelOwner hotelOwner = new HotelOwner("user5", "password", "user5@email.com", "Big Dan", new ArrayList<Hotel>());
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/addHotelOwner")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(hotelOwner)))
+				.andExpect(status().isOk());
 	}
 	
 	
