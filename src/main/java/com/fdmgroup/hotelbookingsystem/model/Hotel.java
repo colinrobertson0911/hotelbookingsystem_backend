@@ -22,16 +22,16 @@ public class Hotel {
 	@SequenceGenerator(name = "hotel_gen", sequenceName = "HOTEL_SEQ", allocationSize = 1)
 	private long hotelId;
 
-	@Column
+	@Column(nullable = false)
 	private String hotelName;
 
 	@Column
 	private int numOfRooms;
 
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String address;
 
-	@Column
+	@Column(nullable = false)
 	private String postcode;
 
 	@Column

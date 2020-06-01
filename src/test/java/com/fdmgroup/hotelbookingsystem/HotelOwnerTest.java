@@ -128,13 +128,32 @@ class HotelOwnerTest {
 	}
 	
 	@Test
+	public void singleHotelDoesNotExists() throws Exception {
+		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/VerifyHotel/99999")
+				.session(session)
+				.contentType("application/json"))
+				.andExpect(status().isNotFound());
+	}
+	
+	@Test
 	public void addHotelWhenHotelIsValid() throws Exception {
-		Hotel hotel = new Hotel();
+		Hotel hotel = new Hotel("Glasgow Hotel", 100, "Center of Glasgow", "G something", "Glasgow", "TV and bed", null, 4, null, false, 0, false);
 		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/VerifyHotelSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isOk());
 	}
+	
+	@Test
+	public void addHotelWhenHotelIsNotValid() throws Exception {
+		Hotel hotel = new Hotel();
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/VerifyHotelSubmit")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(hotel)))
+				.andExpect(status().isConflict());
+	}
+	
 	
 }

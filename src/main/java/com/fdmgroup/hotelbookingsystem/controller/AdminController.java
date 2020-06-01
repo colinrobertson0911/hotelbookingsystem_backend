@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fdmgroup.hotelbookingsystem.exceptions.HotelNotFoundException;
 import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
@@ -74,15 +75,20 @@ public class AdminController {
 	}
 
 	@GetMapping("/VerifyHotel/{hotelId}")
-	public ResponseEntity <Hotel> verifyHotel(@PathVariable("hotelId") long hotelId) {
-		Optional<Hotel> hotel = hotelService.retrieveOne(hotelId);
-		return ResponseEntity.ok(hotel.get());
+	public Hotel verifyHotel(@PathVariable("hotelId") long hotelId) {
+		return ((Optional<Hotel>) hotelService.retrieveOne(hotelId)).orElseThrow(()
+				-> new HotelNotFoundException(hotelId));
 	}
 
+	
 	@PostMapping("/VerifyHotelSubmit")
-	public ResponseEntity <Hotel> addHotel(@RequestBody Hotel hotel) {
-		return ResponseEntity.ok(hotelService.save(hotel));
-		
+	public ResponseEntity <HttpStatus> addHotel(@RequestBody Hotel hotel) {
+		try {
+			hotelService.save(hotel);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+		}
+		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 	
 
