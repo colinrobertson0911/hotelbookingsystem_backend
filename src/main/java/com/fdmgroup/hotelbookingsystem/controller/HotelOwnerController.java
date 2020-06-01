@@ -92,14 +92,6 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@GetMapping("Refresh")
-	public ModelAndView refreshHotelList(HttpSession session) {
-		Object idFromSession = session.getAttribute("HOTELOWNERID");
-		String hotelOwnerIdString = idFromSession.toString();
-		Long hotelOwnerId = Long.parseLong(hotelOwnerIdString);
-		ModelAndView modelAndView = new ModelAndView("WEB-INF/ownerHotels.jsp");
-		modelAndView.addObject("hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
-		return modelAndView;
-	}
+	
 
 }
