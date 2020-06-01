@@ -76,31 +76,20 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(bookingService.findAll());
 	}
 
-	@GetMapping("NewRoomType")
-	public ModelAndView newRoomType() {
-		ModelAndView modelAndView = new ModelAndView("WEB-INF/newRoomType.jsp");
-		modelAndView.addObject("room", new Room());
-		return modelAndView;
-	}
+	
 
-	@PostMapping("AddNewRoomTypeSubmit")
-	public ModelAndView newRoomTypeSubmit(@ModelAttribute("room") Room room, ModelMap model, HttpSession session) {
-		Object idFromSession = session.getAttribute("HOTELOWNERID");
-		String hotelOwnerIdString = idFromSession.toString();
-		Long hotelOwnerId = Long.parseLong(hotelOwnerIdString);
-		ModelAndView modelAndView = new ModelAndView();
+	@PostMapping("/AddNewRoomTypeSubmit/{hotelOwnerId}")
+	public ResponseEntity<HttpStatus> newRoomTypeSubmit(@PathVariable("hotelOwnerId")long hotelOwnerId, @RequestBody Room room) {
 		Optional<Room> roomFromDB = roomService.findByRoomTypeAndPrice(room.getRoomType(), room.getPrice());
 		if (roomFromDB.isPresent()) {
-			modelAndView.setViewName("WEB-INF/newRoomType.jsp");
-			modelAndView.addObject("errorMessage", "Room type and Price already exist");
-			modelAndView.addObject("room", new Room());
-			return modelAndView;
+			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
 		}
-		roomService.save(room);
-		modelAndView.setViewName("WEB-INF/ownerHotels.jsp");
-		modelAndView.addObject("hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
-		modelAndView.addObject("successMessage", "Room type successfully created");
-		return modelAndView;
+		try {
+			roomService.save(room);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+		}
+		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
 	@GetMapping("Refresh")

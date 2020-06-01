@@ -1,10 +1,12 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
-import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,9 +22,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.Room;
 import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
-
-import java.util.Optional;
+import com.fdmgroup.hotelbookingsystem.services.HotelService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -108,5 +110,33 @@ final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/hotelOwner";
 
 	}
 
-
+	@Test
+	public void addNewRoomType() throws Exception {
+		Room room = new Room("HONEYMOON", new BigDecimal("150.00"));
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit/1")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(room)))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void addNewRoomThatIsInDatabase() throws Exception {
+		Room room = new Room("STANDARD", new BigDecimal("60.00"));
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit/1")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(room)))
+				.andExpect(status().isImUsed());
+	}
+	
+	@Test
+	public void addRoomThatIsNotValid() throws Exception {
+		Hotel hotel = new Hotel();
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit/1")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(hotel)))
+				.andExpect(status().isConflict());
+	}
 }

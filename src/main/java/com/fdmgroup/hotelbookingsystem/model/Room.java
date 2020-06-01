@@ -17,10 +17,10 @@ public class Room {
 	@SequenceGenerator(name = "room_gen", sequenceName = "ROOM_SEQ", allocationSize = 1)
 	private long roomId;
 
-	@Column
+	@Column(nullable = false)
 	private String roomType;
 
-	@Column
+	@Column(nullable = false)
 	private BigDecimal price;
 
 	public Room() {
