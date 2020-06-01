@@ -21,7 +21,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookingTest {
-
+/*
 	@Autowired
 	HotelService hotelService;
 
@@ -110,5 +110,5 @@ class BookingTest {
 		int listSizeAfter = listAfterDelete.size();
 		assert (listSizeBefore > listSizeAfter);
 	}
-
+*/
 }

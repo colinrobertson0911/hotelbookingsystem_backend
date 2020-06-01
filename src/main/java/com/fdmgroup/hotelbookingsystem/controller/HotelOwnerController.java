@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,22 +64,9 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@GetMapping("EditHotel")
-	public ModelAndView editHotel(@RequestParam("hotelId") long hotelId) {
-		ModelAndView modelAndView = new ModelAndView("WEB-INF/editHotel.jsp");
-		modelAndView.addObject("allRooms", roomService.findAll());
-		modelAndView.addObject("hotel", hotelService.retrieveOne(hotelId));
-		return modelAndView;
-	}
-
-	@PostMapping("EditHotelSubmit")
-	public ModelAndView editHotelSubmit(@ModelAttribute("hotel") Hotel hotel, HttpSession session) {
-		hotelService.save(hotel);
-		Object idFromSession = session.getAttribute("HOTELOWNERID");
-		String hotelOwnerIdString = idFromSession.toString();
-		Long hotelOwnerId = Long.parseLong(hotelOwnerIdString);
-
-		return new ModelAndView("WEB-INF/ownerHotels.jsp", "hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
+	@PutMapping("/EditHotelSubmit/{hotelOwnerId}\"")
+	public ResponseEntity<Hotel> editHotelSubmit(@PathVariable("hotelOwnerId") long hotelOwnerId, @RequestBody Hotel hotel) {
+		return ResponseEntity.ok(hotelService.save(hotel));
 	}
 
 	@GetMapping("AllBookings")
