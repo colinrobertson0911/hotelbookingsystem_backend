@@ -1,9 +1,11 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
+import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -69,23 +71,9 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(hotelService.save(hotel));
 	}
 
-	@GetMapping("AllBookings")
-	public ModelAndView allBookings(@RequestParam("hotelId") Long hotelId) {
-		ModelAndView modelAndView = new ModelAndView("WEB-INF/allBookings.jsp");
-		modelAndView.addObject("bookings", bookingService.findAll());
-		modelAndView.addObject("hotel", hotelService.retrieveOne(hotelId));
-		return modelAndView;
-	}
-
-	@GetMapping("ReturnToOwnerScreen")
-	public ModelAndView returnToOwnerScreen(HttpSession session) {
-		Object idFromSession = session.getAttribute("HOTELOWNERID");
-		String hotelOwnerIdString = idFromSession.toString();
-		Long hotelOwnerId = Long.parseLong(hotelOwnerIdString);
-
-		ModelAndView modelAndView = new ModelAndView("WEB-INF/ownerHotels.jsp");
-		modelAndView.addObject("hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
-		return modelAndView;
+	@GetMapping("/AllBookings/{hotelOwnerId}")
+	public ResponseEntity<List<Bookings>> allBookings(@PathVariable("hotelOwnerId") Long hotelOwnerId) {
+		return ResponseEntity.ok(bookingService.findAll());
 	}
 
 	@GetMapping("NewRoomType")

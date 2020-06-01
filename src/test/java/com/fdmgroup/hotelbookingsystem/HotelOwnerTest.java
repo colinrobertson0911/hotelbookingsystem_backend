@@ -1,9 +1,9 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,4 +100,13 @@ final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/hotelOwner";
 				.getResponse().getContentAsString());
 
 	}
+
+	@Test
+	public void HotelOwnerCanSeeListOfBookings() throws Exception {
+		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/AllBookings/1"))
+				.andExpect(status().isOk());
+
+	}
+
+
 }
