@@ -64,7 +64,7 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@PutMapping("/EditHotelSubmit/{hotelOwnerId}\"")
+	@PutMapping("/EditHotelSubmit/{hotelOwnerId}")
 	public ResponseEntity<Hotel> editHotelSubmit(@PathVariable("hotelOwnerId") long hotelOwnerId, @RequestBody Hotel hotel) {
 		return ResponseEntity.ok(hotelService.save(hotel));
 	}

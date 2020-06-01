@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 
+import java.util.Optional;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class HotelOwnerTest {
@@ -33,6 +36,9 @@ class HotelOwnerTest {
 	
 	@Autowired
 	HotelOwnerService hotelOwnerServce;
+
+	@Autowired
+	HotelService hotelServce;
 	
 	MockMvc mockMvc;
 
@@ -80,15 +86,16 @@ final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/hotelOwner";
 
 	@Test
 	public void editHotel() throws Exception {
-		Hotel hotel = new Hotel("Glasgow Hotel", 100, "Center of Glasgow", "G something", "Glasgow", "TV and bed", null, 4, null, false, 0, false);
+
+		Hotel hotel = hotelServce.retrieveOne(1L).get();
 		hotel.setHotelName("The awesome hotel");
-		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelOwnerSubmit/1")
+		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/1")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelId\":5,\"hotelName\":\"The awesome hotel\","
-				+ "\"numOfRooms\":100,\"address\":\"Center of Glasgow\",\"postcode\":\"G something\",\"city\":\"Glasgow\", \"ammenities\":\"Tv and bed\", \"bookings\":null \"starRating\":4, \"room\":null, \"airportTransfers\":false, \"transferPrice\":0, \"verified\":false}";
+		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"The awesome hotel\","
+				+ "\"numOfRooms\":5,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 
