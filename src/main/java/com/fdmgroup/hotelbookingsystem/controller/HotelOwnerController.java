@@ -5,12 +5,17 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +29,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 
 @RestController
+@RequestMapping("hotelbookingsystem/hotelOwner")
 @CrossOrigin(origins = "http://localhost:4200")
 public class HotelOwnerController {
 
@@ -39,46 +45,22 @@ public class HotelOwnerController {
 	@Autowired
 	BookingService bookingService;
 
-	@RequestMapping("OwnerHotels")
-	public ModelAndView ownerHotels() {
-		return new ModelAndView("WEB-INF/ownerHotels.jsp", "hotels", hotelService.findAll());
-	}
 
-	@GetMapping("AddHotel")
-	public ModelAndView addHotels(HttpSession session) {
-		Object idFromSession = session.getAttribute("HOTELOWNERID");
-		String hotelOwnerIdString = idFromSession.toString();
-		Long hotelOwnerId = Long.parseLong(hotelOwnerIdString);
-
-		ModelAndView modelAndView = new ModelAndView("WEB-INF/addHotel.jsp");
-		modelAndView.addObject("hotel", new Hotel());
-		modelAndView.addObject("allRooms", roomService.findAll());
-		modelAndView.addObject("hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
-		return modelAndView;
-	}
-
-	@PostMapping("AddHotelSubmit")
-	public ModelAndView addHotelSubmit(@ModelAttribute("hotel") Hotel hotel, ModelMap model, HttpSession session) {
+	@PostMapping("/AddHotelSubmit/{hotelOwnerId}")
+	public ResponseEntity<HttpStatus> addHotelSubmit(@PathVariable("hotelOwnerId")long hotelOwnerId, @RequestBody Hotel hotel) {
 		Optional<Hotel> hotelFromDB = hotelService.findByAddress(hotel.getAddress());
-		Object idFromSession = session.getAttribute("HOTELOWNERID");
-		String hotelOwnerIdString = idFromSession.toString();
-		Long hotelOwnerId = Long.parseLong(hotelOwnerIdString);
-		ModelAndView modelAndView = new ModelAndView();
 		if (hotelFromDB.isPresent()) {
-			modelAndView.addObject("errorMessage", "Hotel at that address already exists");
-			modelAndView.addObject("hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
-			modelAndView.setViewName("WEB-INF/addHotel.jsp");
-			return modelAndView;
+			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
 		}
 		if (hotel.isAirportTransfers() != true) {
 			hotel.setTransferPrice(0);
 		}
-		hotelService.save(hotel);
-		modelAndView.addObject("successMessage",
-				"Hotel has been added to system, Hotel will be visible once processed by an Administrator");
-		modelAndView.setViewName("WEB-INF/ownerHotels.jsp");
-		modelAndView.addObject("hotelOwner", hotelOwnerService.retrieveOne(hotelOwnerId));
-		return modelAndView;
+		try {
+			hotelService.save(hotel);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+		}
+		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
 	@GetMapping("EditHotel")
