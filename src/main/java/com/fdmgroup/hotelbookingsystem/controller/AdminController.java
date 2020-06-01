@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
@@ -37,15 +41,20 @@ public class AdminController {
 	}
 	
 	@PostMapping("/addHotelOwner")
-	public ResponseEntity <HotelOwner> add(@RequestBody HotelOwner hotelOwner) {
-		return ResponseEntity.ok(hotelOwnerService.save(hotelOwner));
+	public ResponseEntity <HttpStatus> add(@RequestBody HotelOwner hotelOwner) {
+		try {
+			hotelOwnerService.save(hotelOwner);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+		}
+		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 	
 
 	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")
-	public ResponseEntity <HotelOwner> getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
-		Optional<HotelOwner> hotelOwner = hotelOwnerService.retrieveOne(hotelOwnerId);
-		return ResponseEntity.ok(hotelOwner.get());
+	public HotelOwner getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
+		return ((Optional<HotelOwner>) hotelOwnerService.retrieveOne(hotelOwnerId)).orElseThrow(() 
+				-> new HotelOwnerNotFoundException(hotelOwnerId));
 		
 	}
 

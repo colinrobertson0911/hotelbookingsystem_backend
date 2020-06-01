@@ -81,16 +81,26 @@ class HotelOwnerTest {
 	}
 	
 	@Test
+	public void addHotelOwnerWhenOwnerIsNotValid() throws Exception {
+		HotelOwner hotelOwner = new HotelOwner();
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/addHotelOwner")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(hotelOwner)))
+				.andExpect(status().isConflict());
+	}
+	
+	@Test
 	public void editHotelOwner() throws Exception {
-		HotelOwner hotelOwner = hotelOwnerServce.retrieveOne(3L).get();
+		HotelOwner hotelOwner = new HotelOwner("user6", "password", "user6@email.com", "user 6", null);
 		hotelOwner.setUsername("user99");
 		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelOwnerSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotelOwner)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelOwnerId\":3,\"username\":\"user99\","
-				+ "\"password\":\"password\",\"email\":\"user3@email.com\",\"name\":\"Wee Dan\",\"hotel\":[]}";
+		String expectedResult = "{\"hotelOwnerId\":5,\"username\":\"user99\","
+				+ "\"password\":\"password\",\"email\":\"user6@email.com\",\"name\":\"user 6\",\"hotel\":null}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString()); 
 		
