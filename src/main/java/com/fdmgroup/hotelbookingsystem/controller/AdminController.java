@@ -63,11 +63,6 @@ public class AdminController {
 	public ResponseEntity<HotelOwner> hotelOwnersUpdated(@RequestBody HotelOwner hotelOwner) {
 		return ResponseEntity.ok(hotelOwnerService.save(hotelOwner));
 	}
-	
-//	@PutMapping(value = "/EditHotelOwnerSubmit")
-//	public HotelOwner hotelOwnersUpdated(@RequestBody HotelOwner hotelOwner) {
-//		return hotelOwnerService.save(hotelOwner);
-//	}
 
 	@GetMapping("/AllHotels")
 	public ResponseEntity<List<Hotel>> allHotels() {

@@ -10,6 +10,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdmgroup.hotelbookingsystem.exceptions.HotelCityNotFoundException;
+import com.fdmgroup.hotelbookingsystem.exceptions.HotelNotFoundException;
 import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
@@ -54,9 +58,20 @@ public class HotelController {
 		return ResponseEntity.ok(hotelService.findByCity(city));
 	}
 
+//	@GetMapping("/SearchByCity/{city}")
+//	public ResponseEntity <HttpStatus> searchByCity(@PathVariable("city") String city) {
+//		try {
+//			hotelService.findByCity(city);
+//		}catch (DataIntegrityViolationException ex) {
+//			return new ResponseEntity<HttpStatus> (HttpStatus.NOT_FOUND);
+//		}
+//		return ResponseEntity.ok(HttpStatus.FOUND);
+//	}
+
 	@GetMapping("/SeeHotel/{hotelId}")
-	public ResponseEntity<Optional<Hotel>> seeHotel(@PathVariable("hotelId") Long hotelId) {
-		return ResponseEntity.ok(hotelService.retrieveOne(hotelId));
+	public Hotel verifyHotel(@PathVariable("hotelId") long hotelId) {
+		return ((Optional<Hotel>) hotelService.retrieveOne(hotelId)).orElseThrow(()
+				-> new HotelNotFoundException(hotelId));
 	}
 
 //	@GetMapping("bookingPage")
@@ -78,8 +93,13 @@ public class HotelController {
 //	}
 
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings bookings) {
-		return ResponseEntity.ok(bookingService.save(bookings));
+	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings booking) {
+		try {
+			bookingService.save(booking);
+		} catch(DataIntegrityViolationException e){
+			return new ResponseEntity<HttpStatus>(HttpStatus.CONFLICT);
+		}
+		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
 	@PostMapping("BookingConfirmationSubmit")
