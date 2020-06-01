@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdmgroup.hotelbookingsystem.exceptions.BookingNotFoundException;
 import com.fdmgroup.hotelbookingsystem.exceptions.HotelCityNotFoundException;
 import com.fdmgroup.hotelbookingsystem.exceptions.HotelNotFoundException;
 import com.fdmgroup.hotelbookingsystem.model.Bookings;
@@ -62,8 +63,8 @@ public class HotelController {
 //	public ResponseEntity <HttpStatus> searchByCity(@PathVariable("city") String city) {
 //		try {
 //			hotelService.findByCity(city);
-//		}catch (DataIntegrityViolationException ex) {
-//			return new ResponseEntity<HttpStatus> (HttpStatus.NOT_FOUND);
+//		}catch (DataIntegrityViolationException e) {
+//			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
 //		}
 //		return ResponseEntity.ok(HttpStatus.FOUND);
 //	}
@@ -73,24 +74,6 @@ public class HotelController {
 		return ((Optional<Hotel>) hotelService.retrieveOne(hotelId)).orElseThrow(()
 				-> new HotelNotFoundException(hotelId));
 	}
-
-//	@GetMapping("bookingPage")
-//	public ModelAndView bookingPage(ModelMap model, @RequestParam("hotelId") long hotelId,
-//			@RequestParam("roomId") long roomId) {
-//		ModelAndView modelAndView = new ModelAndView();
-//		Hotel hotel = hotelService.retrieveOne(hotelId).get();
-//		Room room = roomService.retrieveOne(roomId);
-//		modelAndView.setViewName("WEB-INF/bookingPage.jsp");
-//		modelAndView.addObject("hotel", hotel);
-//		modelAndView.addObject("room", room);
-//		modelAndView.addObject("bookings", new Bookings());
-//		if (hotel.isAirportTransfers() == true) {
-//			modelAndView.addObject("Extras", EnumSet.allOf(Extras.class));
-//		} else {
-//			modelAndView.addObject("Extras", EnumSet.of(Extras.NO_EXTRAS));
-//		}
-//		return modelAndView;
-//	}
 
 	@PostMapping("/BookingSubmit")
 	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings booking) {
@@ -102,26 +85,10 @@ public class HotelController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@PostMapping("BookingConfirmationSubmit")
-	public ModelAndView bookingConfirmationSubmit(@ModelAttribute("bookings") Bookings bookings, ModelMap model,
-			HttpSession session) {
-		ModelAndView modelAndView = new ModelAndView();
-		Object idFromSession = session.getAttribute("BOOKINGID");
-		String bookingIdString = idFromSession.toString();
-		Long bookingId = Long.parseLong(bookingIdString);
-		Bookings bookingFromDataBase = bookingService.retrieveOne(bookingId);
-
-		String hotelName = bookingFromDataBase.getHotel();
-		Hotel hotel = hotelService.findByHotelName(hotelName);
-		hotel.getBookings().add(bookingFromDataBase);
-		hotelService.save(hotel);
-
-		modelAndView.setViewName("mainScreen.jsp");
-		modelAndView.addObject("ownerMessage", "Booking Confirmed");
-		modelAndView.addObject("visabilityMessage", "All Hotels");
-		modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-		modelAndView.addObject("allRooms", roomService.findAll());
-		return modelAndView;
+	@GetMapping("BookingConfirmation/{bookingId}")
+	public Bookings bookingConfirmationSubmit(@PathVariable("bookingId") Long bookingId) {
+		return ((Optional<Bookings>) bookingService.retrieveOne(bookingId)).orElseThrow(()
+				-> new BookingNotFoundException(bookingId));
 	}
 
 	@GetMapping("CancelBackToMain")

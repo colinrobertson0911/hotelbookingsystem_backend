@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class BookingService {
 		return totalPrice;
 	}
 
-	public Bookings retrieveOne(long bookingId) {
+	public Optional<Bookings> retrieveOne(long bookingId) {
 		return bookingDao.findByBookingId(bookingId);
 	}
 
