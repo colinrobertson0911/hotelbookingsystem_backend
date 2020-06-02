@@ -92,9 +92,9 @@ class HotelTest {
 
 	@Test
 	public  void listOfHotelsWithAvailabilityisShown() throws Exception {
-		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020/04/05,2020/04/12")
-		.session(session))
-				.andExpect(status().isFound());
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-04-05,2020-04-12")
+				.session(session))
+				.andExpect(status().isOk());
 	}
 
 	@Test
