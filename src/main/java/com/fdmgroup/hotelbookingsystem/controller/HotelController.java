@@ -55,7 +55,7 @@ public class HotelController {
 	@GetMapping("/SearchByCity/{city}")
 	public ResponseEntity<HttpStatus> searchByCity(@PathVariable("city") String city) {
 		List<Hotel> cityInDB = hotelService.findByCity(city);
-		if (cityInDB == null) {
+		if (cityInDB.isEmpty()) {
 			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(HttpStatus.FOUND);
