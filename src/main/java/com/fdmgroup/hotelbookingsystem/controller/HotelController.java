@@ -77,14 +77,14 @@ public class HotelController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@GetMapping("BookingConfirmation/{bookingId}")
+	@GetMapping("/BookingConfirmation/{bookingId}")
 	public Bookings bookingConfirmationSubmit(@PathVariable("bookingId") Long bookingId) {
 		return ((Optional<Bookings>) bookingService.retrieveOne(bookingId)).orElseThrow(()
 				-> new BookingNotFoundException(bookingId));
 	}
 
 	
-	@GetMapping("SearchByRoomType/{roomType}")
+	@GetMapping("/SearchByRoomType/{roomType}")
 	public ResponseEntity<HttpStatus> searchByRoomType(@PathVariable("roomType") String roomType){
 		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType);
 		if(hotelsWithRT.isEmpty()){
@@ -93,48 +93,41 @@ public class HotelController {
 		return ResponseEntity.ok(HttpStatus.FOUND);
 	}
 
-	@PostMapping("SearchByRoomType")
-	public ModelAndView searchByRoomType(@ModelAttribute("room") Room room, ModelMap model) {
-		List<Hotel> hotelList = hotelService.findByVerifiedAndRoomType(room.getRoomType());
-		ModelAndView modelAndView = new ModelAndView();
-		if (hotelList.isEmpty()) {
-			modelAndView.setViewName("mainScreen.jsp");
-			modelAndView.addObject("errorRoomTypeMessage", "No Rooms of that type");
-			modelAndView.addObject("visabilityMessage", "All Hotels");
-			modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-			modelAndView.addObject("allRooms", roomService.findAll());
-			return modelAndView;
-		}
-		modelAndView.setViewName("mainScreen.jsp");
-		modelAndView.addObject("hotel", hotelList);
-		modelAndView.addObject("visabilityMessage", "Hotels With " + room.getRoomType() + " rooms");
-		modelAndView.addObject("allRooms", roomService.findAll());
-		return modelAndView;
-	}
-
-	@PostMapping("SearchByAvailability")
-	public ModelAndView searchbyAvailability(
-			@RequestParam(name = "checkInDate", defaultValue = "") String checkInDateString,
-			@RequestParam(name = "checkOutDate", defaultValue = "") String checkOutDateString, ModelMap model) {
+	@GetMapping("/SearchByAvailability/{checkInDate}, {checkOutDate}")
+	public ResponseEntity<HttpStatus> searchByAvailability(@PathVariable("checkInDate")String checkInDateString,
+														   @PathVariable("checkOutDate")String checkOutDateString){
 		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		List<Hotel> hotelList = hotelService.findByAvailabilityAndVerifiedWithSpecifiedDates(checkInDate, checkOutDate);
-		ModelAndView modelAndView = new ModelAndView();
-		if (hotelList.isEmpty()) {
-			modelAndView.setViewName("mainScreen.jsp");
-			modelAndView.addObject("errorAvailabilityMessage", "No Rooms available");
-			modelAndView.addObject("visabilityMessage", "All Hotels");
-			modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-			modelAndView.addObject("allRooms", roomService.findAll());
-			return modelAndView;
+		if(hotelList.isEmpty()){
+			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 		}
-
-		modelAndView.setViewName("mainScreen.jsp");
-		modelAndView.addObject("visabilityMessage", "Hotels available between " + checkInDate + " and " + checkOutDate);
-		modelAndView.addObject("hotel", hotelList);
-		modelAndView.addObject("allRooms", roomService.findAll());
-		return modelAndView;
-
+		return ResponseEntity.ok(HttpStatus.FOUND);
 	}
+
+//	@PostMapping("SearchByAvailability")
+//	public ModelAndView searchbyAvailability(
+//			@RequestParam(name = "checkInDate", defaultValue = "") String checkInDateString,
+//			@RequestParam(name = "checkOutDate", defaultValue = "") String checkOutDateString, ModelMap model) {
+//		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//		List<Hotel> hotelList = hotelService.findByAvailabilityAndVerifiedWithSpecifiedDates(checkInDate, checkOutDate);
+//		ModelAndView modelAndView = new ModelAndView();
+//		if (hotelList.isEmpty()) {
+//			modelAndView.setViewName("mainScreen.jsp");
+//			modelAndView.addObject("errorAvailabilityMessage", "No Rooms available");
+//			modelAndView.addObject("visabilityMessage", "All Hotels");
+//			modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
+//			modelAndView.addObject("allRooms", roomService.findAll());
+//			return modelAndView;
+//		}
+//
+//		modelAndView.setViewName("mainScreen.jsp");
+//		modelAndView.addObject("visabilityMessage", "Hotels available between " + checkInDate + " and " + checkOutDate);
+//		modelAndView.addObject("hotel", hotelList);
+//		modelAndView.addObject("allRooms", roomService.findAll());
+//		return modelAndView;
+//
+//	}
 
 }

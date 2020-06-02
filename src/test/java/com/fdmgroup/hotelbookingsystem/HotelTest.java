@@ -83,7 +83,21 @@ class HotelTest {
 				.session(session))
 				.andExpect(status().isNotFound());
 	}
-	
+
+	@Test
+	public  void listOfHotelsWithAvailabilityisShown() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020/04/05,2020/04/12")
+		.session(session))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public  void listOfHotelsWithNoAvailabilityisShown() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020/04/20,2020/04/20")
+				.session(session))
+				.andExpect(status().isNotFound());
+	}
+
 	@Test
 	public void seeAHotelThatExists() throws Exception {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotel/2")
