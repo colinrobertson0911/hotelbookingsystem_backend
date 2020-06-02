@@ -34,7 +34,7 @@ public class UserTest {
 	
 	MockHttpSession session;
 	
-	final static String LOGIN_ROOT_URI = "/hotelbookingsystem/login";
+	final static String LOGIN_ROOT_URI = "/login";
 	
 	@BeforeEach
 	public void setUp() {

@@ -46,7 +46,7 @@ class HotelOwnerTest {
 
 	MockHttpSession session;
 	
-final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/hotelOwner";
+final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	
 	@BeforeEach
 	public void setUp() {
@@ -97,7 +97,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelbookingsystem/hotelOwner";
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isOk());
 		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"The awesome hotel\","
-				+ "\"numOfRooms\":5,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
+				+ "\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 
