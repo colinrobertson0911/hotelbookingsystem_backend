@@ -69,6 +69,20 @@ class HotelTest {
 				.session(session))
 				.andExpect(status().isNotFound());
 	}
+
+	@Test
+	public void listOfHotelsWithRoomType() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByRoomType/STANDARD")
+				.session(session))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void listOfHotelsWithInvalidRoomType() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByRoomType/WEDDING")
+				.session(session))
+				.andExpect(status().isNotFound());
+	}
 	
 	@Test
 	public void seeAHotelThatExists() throws Exception {

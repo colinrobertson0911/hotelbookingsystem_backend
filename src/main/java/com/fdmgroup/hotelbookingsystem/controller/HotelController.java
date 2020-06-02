@@ -84,6 +84,14 @@ public class HotelController {
 	}
 
 	
+	@GetMapping("SearchByRoomType/{roomType}")
+	public ResponseEntity<HttpStatus> searchByRoomType(@PathVariable("roomType") String roomType){
+		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType);
+		if(hotelsWithRT.isEmpty()){
+			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(HttpStatus.FOUND);
+	}
 
 	@PostMapping("SearchByRoomType")
 	public ModelAndView searchByRoomType(@ModelAttribute("room") Room room, ModelMap model) {
