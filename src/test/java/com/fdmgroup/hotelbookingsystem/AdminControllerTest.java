@@ -36,7 +36,7 @@ class AdminControllerTest {
 	ObjectMapper objectMapper;
 	
 	@Autowired
-	HotelOwnerService hotelOwnerServce;
+	HotelOwnerService hotelOwnerService;
 	
 	MockMvc mockMvc;
 

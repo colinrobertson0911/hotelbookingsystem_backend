@@ -37,10 +37,10 @@ class HotelOwnerTest {
 	ObjectMapper objectMapper;
 	
 	@Autowired
-	HotelOwnerService hotelOwnerServce;
+	HotelOwnerService hotelOwnerService;
 
 	@Autowired
-	HotelService hotelServce;
+	HotelService hotelService;
 	
 	MockMvc mockMvc;
 
@@ -89,7 +89,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	@Test
 	public void editHotel() throws Exception {
 
-		Hotel hotel = hotelServce.retrieveOne(1L).get();
+		Hotel hotel = hotelService.retrieveOne(1L).get();
 		hotel.setHotelName("The awesome hotel");
 		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/1")
 				.session(session)
