@@ -42,7 +42,7 @@ class AdminControllerTest {
 
 	MockHttpSession session;
 	
-	final static String ADMIN_ROOT_URI = "/hotelbookingsystem/admin";
+	final static String ADMIN_ROOT_URI = "/admin";
 	
 	@BeforeEach
 	public void setUp() {
@@ -121,7 +121,7 @@ class AdminControllerTest {
 				.session(session))
 				.andExpect(status().isOk());
 		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\","
-				+ "\"numOfRooms\":5,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
+				+ "\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travellodge Glasgow\",\"checkInDate\":\"2020-04-23\",\"checkOutDate\":\"2020-04-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"23/04/2020\",\"checkOutDateFormatted\":\"27/04/2020\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travellodge Glasgow\",\"checkInDate\":\"2020-04-15\",\"checkOutDate\":\"2020-04-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"15/04/2020\",\"checkOutDateFormatted\":\"25/04/2020\"}],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 		
