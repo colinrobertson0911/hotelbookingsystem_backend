@@ -36,7 +36,6 @@ public class HotelService {
 	}
 
 	public List<Hotel> findByCity(String city) {
-
 		return hotelDao.findByCity(city);
 	}
 
