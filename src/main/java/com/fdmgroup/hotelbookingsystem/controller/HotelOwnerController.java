@@ -25,7 +25,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 
 @RestController
-@RequestMapping("hotelbookingsystem/hotelOwner")
+@RequestMapping("/hotelOwner")
 @CrossOrigin(origins = "http://localhost:4200")
 public class HotelOwnerController {
 
@@ -69,7 +69,6 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(bookingService.findAll());
 	}
 
-	
 
 	@PostMapping("/AddNewRoomTypeSubmit/{hotelOwnerId}")
 	public ResponseEntity<HttpStatus> newRoomTypeSubmit(@PathVariable("hotelOwnerId")long hotelOwnerId, @RequestBody Room room) {
@@ -84,7 +83,4 @@ public class HotelOwnerController {
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
-
-	
-
 }

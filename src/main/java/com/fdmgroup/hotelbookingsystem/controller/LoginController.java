@@ -12,7 +12,7 @@ import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
 
 @RestController
-@RequestMapping("/hotelbookingsystem/login")
+@RequestMapping("/login")
 @CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
 

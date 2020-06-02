@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 
 @RestController
-@RequestMapping("/hotelbookingsystem/hotel")
+@RequestMapping("/hotel")
 @CrossOrigin(origins = "http://localhost:4200")
 public class HotelController {
 
@@ -52,14 +54,22 @@ public class HotelController {
 //		return ResponseEntity.ok(hotelService.findByCity(city));
 //	}
 
+
 	@GetMapping("/SearchByCity/{city}")
-	public ResponseEntity<HttpStatus> searchByCity(@PathVariable("city") String city) {
+	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
 		List<Hotel> cityInDB = hotelService.findByCity(city);
 		if (cityInDB.isEmpty()) {
-			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Hotel>>(HttpStatus.NOT_FOUND);
 		}
-		return ResponseEntity.ok(HttpStatus.FOUND);
+		return new ResponseEntity<List<Hotel>>(cityInDB,HttpStatus.OK);
 	}
+
+//	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")
+//	public HotelOwner getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
+//		return ((Optional<HotelOwner>) hotelOwnerService.retrieveOne(hotelOwnerId)).orElseThrow(()
+//				-> new HotelOwnerNotFoundException(hotelOwnerId));
+//
+//	}
 
 	@GetMapping("/SeeHotel/{hotelId}")
 	public Hotel verifyHotel(@PathVariable("hotelId") long hotelId) {
@@ -82,7 +92,6 @@ public class HotelController {
 		return ((Optional<Bookings>) bookingService.retrieveOne(bookingId)).orElseThrow(()
 				-> new BookingNotFoundException(bookingId));
 	}
-
 	
 	@GetMapping("/SearchByRoomType/{roomType}")
 	public ResponseEntity<HttpStatus> searchByRoomType(@PathVariable("roomType") String roomType){
@@ -104,30 +113,4 @@ public class HotelController {
 		}
 		return ResponseEntity.ok(HttpStatus.FOUND);
 	}
-
-//	@PostMapping("SearchByAvailability")
-//	public ModelAndView searchbyAvailability(
-//			@RequestParam(name = "checkInDate", defaultValue = "") String checkInDateString,
-//			@RequestParam(name = "checkOutDate", defaultValue = "") String checkOutDateString, ModelMap model) {
-//		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//		List<Hotel> hotelList = hotelService.findByAvailabilityAndVerifiedWithSpecifiedDates(checkInDate, checkOutDate);
-//		ModelAndView modelAndView = new ModelAndView();
-//		if (hotelList.isEmpty()) {
-//			modelAndView.setViewName("mainScreen.jsp");
-//			modelAndView.addObject("errorAvailabilityMessage", "No Rooms available");
-//			modelAndView.addObject("visabilityMessage", "All Hotels");
-//			modelAndView.addObject("hotel", hotelService.findByVerifiedEqualsTrue());
-//			modelAndView.addObject("allRooms", roomService.findAll());
-//			return modelAndView;
-//		}
-//
-//		modelAndView.setViewName("mainScreen.jsp");
-//		modelAndView.addObject("visabilityMessage", "Hotels available between " + checkInDate + " and " + checkOutDate);
-//		modelAndView.addObject("hotel", hotelList);
-//		modelAndView.addObject("allRooms", roomService.findAll());
-//		return modelAndView;
-//
-//	}
-
 }

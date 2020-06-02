@@ -26,7 +26,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 import com.fdmgroup.hotelbookingsystem.services.HotelService;
 
 @RestController
-@RequestMapping("/hotelbookingsystem/admin")
+@RequestMapping("/admin")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
@@ -50,7 +50,6 @@ public class AdminController {
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
-	
 
 	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")
 	public HotelOwner getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
@@ -59,7 +58,7 @@ public class AdminController {
 		
 	}
 
-	@PutMapping("EditHotelOwnerSubmit")
+	@PutMapping("/EditHotelOwnerSubmit")
 	public ResponseEntity<HotelOwner> hotelOwnersUpdated(@RequestBody HotelOwner hotelOwner) {
 		return ResponseEntity.ok(hotelOwnerService.save(hotelOwner));
 	}
@@ -75,7 +74,6 @@ public class AdminController {
 				-> new HotelNotFoundException(hotelId));
 	}
 
-	
 	@PostMapping("/VerifyHotelSubmit")
 	public ResponseEntity <HttpStatus> addHotel(@RequestBody Hotel hotel) {
 		try {
@@ -85,6 +83,4 @@ public class AdminController {
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
-	
-
 }
