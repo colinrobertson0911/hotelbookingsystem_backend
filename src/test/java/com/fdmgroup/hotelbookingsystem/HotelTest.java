@@ -46,7 +46,7 @@ class HotelTest {
 	
 	MockHttpSession session;
 
-	final static String HOTEL_ROOT_URI = "/hotelbookingsystem/hotel";
+	final static String HOTEL_ROOT_URI = "/hotel";
 
 	@BeforeEach
 	public void setUp() {
@@ -58,9 +58,12 @@ class HotelTest {
 	
 	@Test
 	public void listOfHotelsInCityExists() throws Exception {
-		 this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByCity/Edinburgh")
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByCity/Edinburgh")
 				.session(session))
-				.andExpect(status().isOk());
+				.andExpect(status().isFound());
+		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":50,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString());
 	}
 	
 	@Test
@@ -72,9 +75,12 @@ class HotelTest {
 
 	@Test
 	public void listOfHotelsWithRoomType() throws Exception {
-		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByRoomType/STANDARD")
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByRoomType/LUXURY")
 				.session(session))
-				.andExpect(status().isOk());
+				.andExpect(status().isFound());
+		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":50,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -88,7 +94,7 @@ class HotelTest {
 	public  void listOfHotelsWithAvailabilityisShown() throws Exception {
 		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020/04/05,2020/04/12")
 		.session(session))
-				.andExpect(status().isOk());
+				.andExpect(status().isFound());
 	}
 
 	@Test

@@ -61,15 +61,8 @@ public class HotelController {
 		if (cityInDB.isEmpty()) {
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<Hotel>>(cityInDB,HttpStatus.OK);
+		return new ResponseEntity<List<Hotel>>(cityInDB,HttpStatus.FOUND);
 	}
-
-//	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")
-//	public HotelOwner getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
-//		return ((Optional<HotelOwner>) hotelOwnerService.retrieveOne(hotelOwnerId)).orElseThrow(()
-//				-> new HotelOwnerNotFoundException(hotelOwnerId));
-//
-//	}
 
 	@GetMapping("/SeeHotel/{hotelId}")
 	public Hotel verifyHotel(@PathVariable("hotelId") long hotelId) {
@@ -94,12 +87,12 @@ public class HotelController {
 	}
 	
 	@GetMapping("/SearchByRoomType/{roomType}")
-	public ResponseEntity<HttpStatus> searchByRoomType(@PathVariable("roomType") String roomType){
+	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType){
 		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType);
 		if(hotelsWithRT.isEmpty()){
-			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Hotel>>(HttpStatus.NOT_FOUND);
 		}
-		return ResponseEntity.ok(HttpStatus.FOUND);
+		return new ResponseEntity<List<Hotel>>(hotelsWithRT, HttpStatus.FOUND);
 	}
 
 	@GetMapping("/SearchByAvailability/{checkInDate}, {checkOutDate}")
@@ -111,6 +104,6 @@ public class HotelController {
 		if(hotelList.isEmpty()){
 			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 		}
-		return ResponseEntity.ok(HttpStatus.FOUND);
+		return new ResponseEntity<HttpStatus>(HttpStatus.FOUND);
 	}
 }
