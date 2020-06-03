@@ -1,5 +1,6 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -64,9 +65,13 @@ public class HotelController {
 	}
 
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings booking) {
+	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings bookings) {
+		BigDecimal extraCosts = bookings.getExtras().getPrice();
+		bookings.setExtrasPrice(extraCosts);
+		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
+		bookings.setTotalPrice(finalTotal);
 		try {
-			bookingService.save(booking);
+			bookingService.save(bookings);
 		} catch(DataIntegrityViolationException e){
 			return new ResponseEntity<HttpStatus>(HttpStatus.CONFLICT);
 		}
