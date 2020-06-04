@@ -60,7 +60,7 @@ class HotelTest {
 	public void listOfHotelsInCityExists() throws Exception {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByCity/Edinburgh")
 				.session(session))
-				.andExpect(status().isFound());
+				.andExpect(status().isOk());
 		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":0,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
@@ -70,14 +70,14 @@ class HotelTest {
 	public void listOfHotelsInCityDoesNotExists() throws Exception {
 		 this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByCity/London")
 				.session(session))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isNoContent());
 	}
 
 	@Test
 	public void listOfHotelsWithRoomType() throws Exception {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByRoomType/LUXURY")
 				.session(session))
-				.andExpect(status().isFound());
+				.andExpect(status().isOk());
 		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":0,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
@@ -87,14 +87,14 @@ class HotelTest {
 	public void listOfHotelsWithInvalidRoomType() throws Exception {
 		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByRoomType/WEDDING")
 				.session(session))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isNoContent());
 	}
 
 	@Test
 	public  void listOfHotelsWithAvailabilityisShown() throws Exception {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-06-05,2020-06-12")
 				.session(session))
-				.andExpect(status().isFound());
+				.andExpect(status().isOk());
 		String expectedResult = "[{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travellodge Glasgow\",\"checkInDate\":\"2020-04-23\",\"checkOutDate\":\"2020-04-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"23/04/2020\",\"checkOutDateFormatted\":\"27/04/2020\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travellodge Glasgow\",\"checkInDate\":\"2020-04-15\",\"checkOutDate\":\"2020-04-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"15/04/2020\",\"checkOutDateFormatted\":\"25/04/2020\"}],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true},{\"hotelId\":3,\"hotelName\":\"Radisson Blue\",\"numOfRooms\":2,\"address\":\"123 argyle street\",\"postcode\":\"G3 6OP\",\"city\":\"Glasgow\",\"ammenities\":\"Conference Rooms, Bars, Near Central Station\",\"bookings\":[{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-04-20\",\"checkOutDate\":\"2020-04-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\",\"checkInDateFormatted\":\"20/04/2020\",\"checkOutDateFormatted\":\"30/04/2020\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-04-20\",\"checkOutDate\":\"2020-04-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\",\"checkInDateFormatted\":\"20/04/2020\",\"checkOutDateFormatted\":\"30/04/2020\"}],\"starRating\":4,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"}],\"airportTransfers\":false,\"transferPrice\":20,\"verified\":true}]";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
@@ -104,7 +104,7 @@ class HotelTest {
 	public  void listOfHotelsWithNoAvailabilityisShown() throws Exception {
 		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-04-25,2020-04-25")
 				.session(session))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isNoContent());
 	}
 
 	@Test

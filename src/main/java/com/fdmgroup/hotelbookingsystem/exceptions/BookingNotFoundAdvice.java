@@ -11,7 +11,7 @@ public class BookingNotFoundAdvice {
 	
 	@ResponseBody
 	@ExceptionHandler(BookingNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	String bookingNotFoundHandler(BookingNotFoundException ex) {
 		return ex.getMessage();
 	}

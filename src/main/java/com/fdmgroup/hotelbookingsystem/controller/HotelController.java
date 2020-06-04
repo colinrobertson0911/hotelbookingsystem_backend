@@ -53,9 +53,9 @@ public class HotelController {
 	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
 		List<Hotel> cityInDB = hotelService.findByCity(city);
 		if (cityInDB.isEmpty()) {
-			return new ResponseEntity<List<Hotel>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Hotel>>(cityInDB,HttpStatus.FOUND);
+		return new ResponseEntity<List<Hotel>>(cityInDB,HttpStatus.OK);
 	}
 
 	@GetMapping("/SeeHotel/{hotelId}")
@@ -88,9 +88,9 @@ public class HotelController {
 	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType){
 		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType);
 		if(hotelsWithRT.isEmpty()){
-			return new ResponseEntity<List<Hotel>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Hotel>>(hotelsWithRT, HttpStatus.FOUND);
+		return new ResponseEntity<List<Hotel>>(hotelsWithRT, HttpStatus.OK);
 	}
 
 	@GetMapping("/SearchByAvailability/{checkInDate},{checkOutDate}")
@@ -100,9 +100,9 @@ public class HotelController {
 		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		List<Hotel> hotelList = hotelService.findByAvailabilityAndVerifiedWithSpecifiedDates(checkInDate, checkOutDate);
 		if(hotelList.isEmpty()){
-			return new ResponseEntity<List<Hotel>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Hotel>>(hotelList, HttpStatus.FOUND);
+		return new ResponseEntity<List<Hotel>>(hotelList, HttpStatus.OK);
 	}
 
 }

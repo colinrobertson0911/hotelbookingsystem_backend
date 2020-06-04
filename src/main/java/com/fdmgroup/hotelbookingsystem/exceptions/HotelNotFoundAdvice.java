@@ -11,7 +11,7 @@ public class HotelNotFoundAdvice {
 
 	@ResponseBody
 	@ExceptionHandler(HotelNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	String hotelNotFoundHandler(HotelNotFoundException ex) {
 		return ex.getMessage();
 	}

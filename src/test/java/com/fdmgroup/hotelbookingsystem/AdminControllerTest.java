@@ -132,7 +132,7 @@ class AdminControllerTest {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/VerifyHotel/99999")
 				.session(session)
 				.contentType("application/json"))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isNoContent());
 	}
 	
 	@Test
