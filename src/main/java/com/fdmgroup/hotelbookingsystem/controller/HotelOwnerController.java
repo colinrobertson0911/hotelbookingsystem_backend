@@ -42,8 +42,8 @@ public class HotelOwnerController {
 	BookingService bookingService;
 
 
-	@PostMapping("/AddHotelSubmit/{hotelOwnerId}")
-	public ResponseEntity<HttpStatus> addHotelSubmit(@PathVariable("hotelOwnerId")long hotelOwnerId, @RequestBody Hotel hotel) {
+	@PostMapping("/AddHotelSubmit")
+	public ResponseEntity<HttpStatus> addHotelSubmit(@RequestBody Hotel hotel) {
 		Optional<Hotel> hotelFromDB = hotelService.findByAddress(hotel.getAddress());
 		if (hotelFromDB.isPresent()) {
 			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
@@ -59,8 +59,8 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@PutMapping("/EditHotelSubmit/{hotelOwnerId}")
-	public ResponseEntity<Hotel> editHotelSubmit(@PathVariable("hotelOwnerId") long hotelOwnerId, @RequestBody Hotel hotel) {
+	@PutMapping("/EditHotelSubmit/{username}")
+	public ResponseEntity<Hotel> editHotelSubmit(@PathVariable String username, @RequestBody Hotel hotel) {
 		return ResponseEntity.ok(hotelService.save(hotel));
 	}
 

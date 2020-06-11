@@ -59,7 +59,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	@Test
 	public void addHotelThatIsValid() throws Exception {
 		Hotel hotel = new Hotel("Glasgow Hotel", 100, "Center of Glasgow", "G something", "Glasgow", "TV and bed", null, 4, null, false, 0, false);
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit/1")
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
@@ -68,8 +68,8 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	
 	@Test
 	public void addHotelThatIsInDatabase() throws Exception {
-		Hotel hotel = new Hotel("Glasgow Hotel", 100, "Center of Glasgow", "G something", "Glasgow", "TV and bed", null, 4, null, false, 0, false);
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit/1")
+		Hotel hotel = new Hotel("Travelodge Glasgow", 2, "1 main street", "g43 6pq", "Glasgow", "none");
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
@@ -79,7 +79,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	@Test
 	public void addHotelThatIsNotValid() throws Exception {
 		Hotel hotel = new Hotel();
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit/1")
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
@@ -90,7 +90,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	public void editHotel() throws Exception {
 		Hotel hotel = hotelService.retrieveOne(1L).get();
 		hotel.setHotelName("The awesome hotel");
-		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/1")
+		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/hotelOwner1")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))

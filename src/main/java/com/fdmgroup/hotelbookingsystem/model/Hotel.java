@@ -57,9 +57,18 @@ public class Hotel {
 		super();
 	}
 
+	public Hotel(String hotelName, int numOfRooms, String address, String postcode, String city, String ammenities) {
+		this.hotelName = hotelName;
+		this.numOfRooms = numOfRooms;
+		this.address = address;
+		this.postcode = postcode;
+		this.city = city;
+		this.ammenities = ammenities;
+	}
+
 	public Hotel(String hotelName, int numOfRooms, String address, String postcode, String city, String ammenities,
-			List<Bookings> bookings, int starRating, List<Room> room, boolean airportTransfers, int transferPrice,
-			boolean verified) {
+				 List<Bookings> bookings, int starRating, List<Room> room, boolean airportTransfers, int transferPrice,
+				 boolean verified) {
 		super();
 		this.hotelName = hotelName;
 		this.numOfRooms = numOfRooms;
