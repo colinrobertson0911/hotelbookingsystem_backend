@@ -66,6 +66,14 @@ class AdminControllerTest {
 				.andExpect(status().isOk());
 		
 	}
+
+	@Test
+	public void singleHotelOwnerDoesNotExists() throws Exception {
+		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/SeeHotelOwner/hotelOwner3")
+				.session(session))
+				.andExpect(status().isBadRequest());
+
+	}
 	
 	@Test
 	public void addHotelOwner() throws Exception {
