@@ -2,14 +2,7 @@ package com.fdmgroup.hotelbookingsystem.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -40,16 +33,14 @@ public class Hotel {
 	@Column(length = 8000)
 	private String ammenities;
 
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bookingId")
 	private List<Bookings> bookings;
 
 	@Column
 	private int starRating;
 
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "roomId")
 	private List<Room> room;
 

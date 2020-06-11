@@ -67,22 +67,10 @@ public class HotelService {
 		return availableHotels;
 	}
 
-	public List<Hotel> findByAvailabilityAndVerified() {
-		List<Hotel> availableHotels = new ArrayList<Hotel>();
-		List<Hotel> hotels = findByVerifiedEqualsTrue();
-		for (Hotel hotel : hotels) {
-			if (hotel.getNumOfRooms() > hotel.getBookings().size()) {
-				availableHotels.add(hotel);
-			}
-		}
-		return availableHotels;
-	}
-
-	public List<Hotel> findByAvailabilityAndVerifiedWithCurrentDate() {
+	public List<Hotel> findByAvailabilityWithCurrentDate() {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
 		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();
-		List<Hotel> hotels = findByVerifiedEqualsTrue();
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : availableHotelsByDate) {
 			List<Bookings> hotelBookings = hotel.getBookings();
 			for (Bookings booking : hotelBookings) {
 				if (booking.getCheckInDate().isBefore(LocalDate.now())
@@ -97,11 +85,10 @@ public class HotelService {
 		return availableHotelsByDate;
 	}
 
-	public List<Hotel> findByAvailabilityAndVerifiedWithSpecifiedDates(LocalDate startDate, LocalDate endDate) {
+	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate) {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
 		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();
-		List<Hotel> hotels = findByVerifiedEqualsTrue();
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : availableHotelsByDate) {
 			List<Bookings> hotelBookings = hotel.getBookings();
 			for (Bookings booking : hotelBookings) {
 				if (!booking.getCheckInDate().isAfter(endDate) && !booking.getCheckOutDate().isBefore(startDate)) {
@@ -113,10 +100,6 @@ public class HotelService {
 			}
 		}
 		return availableHotelsByDate;
-	}
-
-	public Hotel findByHotelName(String hotelName) {
-		return hotelDao.findByHotelName(hotelName);
 	}
 
 }

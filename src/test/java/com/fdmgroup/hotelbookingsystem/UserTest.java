@@ -4,10 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
-import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.User;
-import com.fdmgroup.hotelbookingsystem.model.UserType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +18,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -61,7 +55,7 @@ public class UserTest {
 
 	@Test
 	public  void newAdminUserCanRegister() throws Exception{
-		User newUser = new User("user100", "password", "user100@email.com", UserType.ADMIN);
+		User newUser = new User("user100", "password");
 		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")
@@ -71,7 +65,7 @@ public class UserTest {
 
 	@Test
 	public  void newCustomerUserCanRegister() throws Exception{
-		User newUser = new User("user101", "password", "user101@email.com", UserType.CUSTOMER);
+		User newUser = new User("user101", "password");
 		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")
@@ -81,7 +75,7 @@ public class UserTest {
 
 	@Test
 	public  void newHotelOwnerUserCanRegister() throws Exception{
-		User newUser = new User("user102", "password", "user102@email.com", UserType.HOTELOWNER);
+		User newUser = new User("user102", "password");
 		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")

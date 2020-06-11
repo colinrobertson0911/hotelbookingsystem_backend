@@ -16,17 +16,13 @@ public class RoomService {
 	@Autowired
 	RoomDao roomDao;
 
-	@Autowired
-	RoomService roomService;
-
-	public List<Room> findAll() {
+	public List<Room> findAll(){
 		return roomDao.findAll();
 	}
 
-	public Room save(Room room) {
+	public Room save(Room room){
 		return roomDao.save(room);
 	}
-
 	public List<Room> findByRoomType(String roomType) {
 		return roomDao.findByRoomType(roomType);
 	}
@@ -36,7 +32,7 @@ public class RoomService {
 		return roomDao.findByPrice(price);
 	}
 
-	public Room retrieveOne(Long roomId) {
+	public Optional<Room> findByRoomId(Long roomId) {
 		return roomDao.findByRoomId(roomId);
 	}
 

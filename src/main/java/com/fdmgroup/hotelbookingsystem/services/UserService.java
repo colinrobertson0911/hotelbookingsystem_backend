@@ -24,7 +24,7 @@ public class UserService implements GeneralServiceRepository<User> {
 		return userDao.findAll();
 	}
 
-	public Optional<User> retrieveOne(long userId) {
+	public Optional<User> findByUserId(long userId) {
 		return userDao.findById(userId);
 	}
 

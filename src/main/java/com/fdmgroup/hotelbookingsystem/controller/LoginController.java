@@ -46,7 +46,7 @@ public class LoginController {
 
 	@GetMapping("login/LoginUserSubmit/{userId}")
 	public ResponseEntity <User> loginUser(@PathVariable("userId") long userId) {
-		User user = userService.retrieveOne(userId).get();
+		User user = userService.findByUserId(userId).get();
 		return ResponseEntity.ok(user);
 	}
 	

@@ -10,10 +10,20 @@ import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.repository.HotelOwnerDao;
 
 @Service
-public class HotelOwnerService {
+public class HotelOwnerService implements GeneralServiceRepository {
 
 	@Autowired
 	HotelOwnerDao hotelOwnerDao;
+
+	@Override
+	public HotelOwner findByUsernameAndPassword(String username, String password) {
+		return null;
+	}
+
+	@Override
+	public HotelOwner findByUsername(String username) {
+		return null;
+	}
 
 	public List<HotelOwner> findAll() {
 		return hotelOwnerDao.findAll();
@@ -21,25 +31,5 @@ public class HotelOwnerService {
 
 	public HotelOwner save(HotelOwner hotelOwner) {
 		return hotelOwnerDao.save(hotelOwner);
-
 	}
-
-	public Optional<HotelOwner> retrieveOne(Long hotelOwnerId) {
-		return hotelOwnerDao.findByHotelOwnerId(hotelOwnerId);
-	}
-
-	public HotelOwner findByEmail(String email) {
-		return hotelOwnerDao.findByEmail(email);
-	}
-
-	public Optional<HotelOwner> findByUsernameAndPassword(String username, String password) {
-		return hotelOwnerDao.findByUsernameAndPassword(username, password);
-	}
-
-	public Optional<HotelOwner> findByUsername(String username) {
-		return hotelOwnerDao.findByUsername(username);
-	}
-	
-	
-
 }

@@ -1,66 +1,66 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
 
-
-import java.util.List;
-import java.util.Optional;
-
+import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
+import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.User;
+import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import com.fdmgroup.hotelbookingsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.fdmgroup.hotelbookingsystem.exceptions.HotelNotFoundException;
-import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
-import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
-import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
-import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
+
+
 	@Autowired
-	HotelOwnerService hotelOwnerService;
+	UserService userService;
 
 	@Autowired
 	HotelService hotelService;
 
 	@GetMapping("/AllOwners")
-	public ResponseEntity<List<HotelOwner>> hotelOwners() {
-		return ResponseEntity.ok(hotelOwnerService.findAll());
+	public ResponseEntity<List<User>> hotelOwners() {
+		List<User> users = userService.findAll();
+		List<User> owners = new ArrayList<>();
+		for (User user : users){
+			if (user.getRole().equals("HOTELOWNER")){
+				owners.add(user);
+			}
+		}
+		return new ResponseEntity<>(owners, HttpStatus.OK);
 	}
 	
 	@PostMapping("/addHotelOwner")
-	public ResponseEntity <HttpStatus> add(@RequestBody HotelOwner hotelOwner) {
+	public ResponseEntity <HttpStatus> add(@RequestBody User user) {
+		user.setRole("HOTELOWNER");
 		try {
-			hotelOwnerService.save(hotelOwner);
+			userService.save(user);
 		} catch (DataIntegrityViolationException e) {
 			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/SeeHotelOwner/{hotelOwnerId}")
-	public HotelOwner getHotelOwner(@PathVariable("hotelOwnerId") long hotelOwnerId) {
-		return ((Optional<HotelOwner>) hotelOwnerService.retrieveOne(hotelOwnerId)).orElseThrow(() 
-				-> new HotelOwnerNotFoundException(hotelOwnerId));
+	@GetMapping("/SeeHotelOwner/{username}")
+	public ResponseEntity<User> getHotelOwner(@PathVariable("username") String username) {
+		return ResponseEntity.ok(userService.findByUsername(username));
 		
 	}
 
 	@PutMapping("/EditHotelOwnerSubmit")
-	public ResponseEntity<HotelOwner> hotelOwnersUpdated(@RequestBody HotelOwner hotelOwner) {
-		return ResponseEntity.ok(hotelOwnerService.save(hotelOwner));
+	public ResponseEntity<User> hotelOwnersUpdated(@RequestBody User user) {
+		return ResponseEntity.ok(userService.save(user));
 	}
 
 	@GetMapping("/AllHotels")
@@ -68,19 +68,10 @@ public class AdminController {
 		return ResponseEntity.ok(hotelService.findAll());
 	}
 
-	@GetMapping("/VerifyHotel/{hotelId}")
-	public Hotel verifyHotel(@PathVariable("hotelId") long hotelId) {
-		return ((Optional<Hotel>) hotelService.retrieveOne(hotelId)).orElseThrow(()
-				-> new HotelNotFoundException(hotelId));
+	@GetMapping("/AllUsers")
+	public ResponseEntity<List<User>> allUsers() {
+		return ResponseEntity.ok(userService.findAll());
 	}
 
-	@PostMapping("/VerifyHotelSubmit")
-	public ResponseEntity <HttpStatus> addHotel(@RequestBody Hotel hotel) {
-		try {
-			hotelService.save(hotel);
-		} catch (DataIntegrityViolationException e) {
-			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
-		}
-		return ResponseEntity.ok(HttpStatus.CREATED);
-	}
+
 }

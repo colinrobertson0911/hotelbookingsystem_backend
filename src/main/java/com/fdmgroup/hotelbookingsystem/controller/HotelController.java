@@ -98,7 +98,7 @@ public class HotelController {
 														   @PathVariable("checkOutDate")@DateTimeFormat(pattern = "yyyy-MM-dd") String checkOutDateString){
 		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		List<Hotel> hotelList = hotelService.findByAvailabilityAndVerifiedWithSpecifiedDates(checkInDate, checkOutDate);
+		List<Hotel> hotelList = hotelService.findByAvailabilityWithSpecifiedDates(checkInDate, checkOutDate);
 		if(hotelList.isEmpty()){
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}

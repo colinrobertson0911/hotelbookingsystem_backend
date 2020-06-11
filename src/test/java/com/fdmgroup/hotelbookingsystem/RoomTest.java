@@ -61,7 +61,7 @@ class RoomTest {
 
 	@Test
 	public void test_RoomCanBeObtainedByTypeAndPrice() {
-		Room knownRoom = roomService.retrieveOne(1L);
+		Room knownRoom = roomService.findByRoomId(1L).get();
 		Optional<Room> room = roomService.findByRoomTypeAndPrice(knownRoom.getRoomType(), knownRoom.getPrice());
 		assertTrue(room.isPresent());
 	}

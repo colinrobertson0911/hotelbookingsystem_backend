@@ -15,7 +15,7 @@ public interface RoomDao extends JpaRepository<Room, Long> {
 
 	List<Room> findByPrice(@Param("price") BigDecimal price);
 
-	Room findByRoomId(Long roomId);
+	Optional<Room> findByRoomId(Long roomId);
 
 	Optional<Room> findByRoomTypeAndPrice(String roomType, BigDecimal price);
 
