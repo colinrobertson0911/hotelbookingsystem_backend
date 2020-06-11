@@ -45,9 +45,6 @@ public class HotelController {
 	@Autowired
 	RoomService roomService;
 
-	@Autowired
-	BookingService bookingService;
-
 
 	@GetMapping("/SearchByCity/{city}")
 	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
@@ -64,25 +61,6 @@ public class HotelController {
 				-> new HotelNotFoundException(hotelId));
 	}
 
-	@PostMapping("/BookingSubmit")
-	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings bookings) {
-		BigDecimal extraCosts = bookings.getExtras().getPrice();
-		bookings.setExtrasPrice(extraCosts);
-		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
-		bookings.setTotalPrice(finalTotal);
-		try {
-			bookingService.save(bookings);
-		} catch(DataIntegrityViolationException e){
-			return new ResponseEntity<HttpStatus>(HttpStatus.CONFLICT);
-		}
-		return ResponseEntity.ok(HttpStatus.CREATED);
-	}
-
-	@GetMapping("/BookingConfirmation/{bookingId}")
-	public Bookings bookingConfirmationSubmit(@PathVariable("bookingId") Long bookingId) {
-		return ((Optional<Bookings>) bookingService.retrieveOne(bookingId)).orElseThrow(()
-				-> new BookingNotFoundException(bookingId));
-	}
 	
 	@GetMapping("/SearchByRoomType/{roomType}")
 	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType){

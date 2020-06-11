@@ -23,8 +23,8 @@ insert into hotel_room(hotel_hotelId, room_roomId) values (2,3);
 insert into hotel_room(hotel_hotelId, room_roomId) values (3,1);
 insert into hotel_room(hotel_hotelId, room_roomId) values (4,1);
 
-insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/23', 'yyyy/mm/dd'), TO_DATE('2020/07/27', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travellodge Glasgow', '60.00', '20.00','440.00');
-insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/15', 'yyyy/mm/dd'), TO_DATE('2020/07/25', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travellodge Glasgow', '60.00', '20.00','440.00');
+insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/23', 'yyyy/mm/dd'), TO_DATE('2020/07/27', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travelodge Glasgow', '60.00', '20.00','440.00');
+insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/15', 'yyyy/mm/dd'), TO_DATE('2020/07/25', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travelodge Glasgow', '60.00', '20.00','440.00');
 insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/20', 'yyyy/mm/dd'), TO_DATE('2020/07/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
 insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/20', 'yyyy/mm/dd'), TO_DATE('2020/07/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
 

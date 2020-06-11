@@ -69,5 +69,10 @@ public class BookingService {
 	public void deleteById(long bookingId) {
 		bookingDao.deleteById(bookingId);
 	}
+	
+	public List<Bookings> findBookingsByCheckInDate(LocalDate checkInDate, String hotel){
+		return bookingDao.findByCheckInDateAndHotel(checkInDate, hotel);
+		
+	}
 
 }
