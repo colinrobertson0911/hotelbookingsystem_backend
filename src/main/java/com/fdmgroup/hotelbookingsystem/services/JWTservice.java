@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class JWTservice {
 
-private String SECRET_KEY = "fiveGcausesCovid";
+private String SECRET_KEY = "superSecretKey";
 	
 	public String extractUsername(String token) {
 
