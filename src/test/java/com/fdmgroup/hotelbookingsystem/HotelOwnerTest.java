@@ -88,7 +88,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 
 	@Test
 	public void editHotel() throws Exception {
-		Hotel hotel = hotelService.retrieveOne(1L).get();
+		Hotel hotel = hotelService.retrieveOne("Travelodge Glasgow").get();
 		hotel.setHotelName("The awesome hotel");
 		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/hotelOwner1")
 				.session(session)

@@ -32,9 +32,13 @@ public class HotelService {
 		return hotelDao.save(hotel);
 	}
 
-	public Optional<Hotel> retrieveOne(long hotelId) {
-		return hotelDao.findByHotelId(hotelId);
+	public Optional<Hotel> retrieveOne(String hotelName) {
+		return hotelDao.findByHotelName(hotelName);
 
+	}
+	
+	public Optional<Hotel> findById( long hotelId) {
+		return hotelDao.findById(hotelId);
 	}
 
 	public List<Hotel> findByCity(String city) {
