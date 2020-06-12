@@ -38,25 +38,7 @@ public class BookingController {
 	
 	@PostMapping("/BookingSubmit")
 	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody BookingRequest bookReq) {
-		Date checkin = new Date();
-		System.out.println("LOGGING LINE : "+ checkin.toString());
-		System.out.println("LOGGING LINE : "+ bookReq.getCheckInDate());
-		System.out.println("LOGGING LINE : "+ bookReq.toString());
-		checkin.parse(bookReq.getCheckInDate());
-		Date checkout = new Date();
-		checkout.parse(bookReq.getCheckOutDate());
-		Bookings bookings = new Bookings(bookReq.getRoomType(),
-				bookReq.getHotel(),
-				checkin.toInstant()
-			      .atZone(ZoneId.systemDefault())
-			      .toLocalDate(),
-			    checkout.toInstant()
-			      .atZone(ZoneId.systemDefault())
-			      .toLocalDate(),
-			    new BigDecimal(0) ,
-			    new BigDecimal(0),
-			    new BigDecimal(0), 
-			    Extras.NO_EXTRAS);
+		Bookings bookings = createBookings(bookReq);
 		BigDecimal extraCosts = bookings.getExtras().getPrice();
 		bookings.setExtrasPrice(extraCosts);
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
@@ -77,6 +59,20 @@ public class BookingController {
 			return new ResponseEntity<List<Bookings>>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Bookings>>(bookings, HttpStatus.OK);
+	}
+	
+	private Bookings createBookings(BookingRequest bookReq) {;
+		LocalDate checkin = LocalDate.parse(bookReq.getCheckInDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate checkout = LocalDate.parse(bookReq.getCheckOutDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		Bookings bookings = new Bookings(bookReq.getRoomType(),
+				bookReq.getHotel(),
+				checkin,
+			    checkout,
+			    new BigDecimal(0),
+			    new BigDecimal(0),
+			    new BigDecimal(0), 
+			    Extras.NO_EXTRAS);
+		return bookings;
 	}
 
 }
