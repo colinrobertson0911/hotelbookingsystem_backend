@@ -112,7 +112,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	@Test
 	public void addNewRoomType() throws Exception {
 		Room room = new Room("HONEYMOON", new BigDecimal("150.00"));
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit/1")
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(room)))
@@ -122,7 +122,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	@Test
 	public void addNewRoomThatIsInDatabase() throws Exception {
 		Room room = new Room("STANDARD", new BigDecimal("60.00"));
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit/1")
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(room)))
@@ -132,7 +132,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	@Test
 	public void addRoomThatIsNotValid() throws Exception {
 		Hotel hotel = new Hotel();
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit/1")
+		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))

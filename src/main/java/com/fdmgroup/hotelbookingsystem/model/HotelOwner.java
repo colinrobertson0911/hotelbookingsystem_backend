@@ -17,6 +17,12 @@ public class HotelOwner extends User {
 	@JoinColumn(name = "hotelId"))
 	private List<Hotel> hotels;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "hotelOwner_bookings", joinColumns =
+	@JoinColumn(name = "userId"), inverseJoinColumns =
+	@JoinColumn(name = "bookingId"))
+	private List<Bookings> bookings;
+
 	public HotelOwner(){
 		super();
 	}
@@ -25,9 +31,10 @@ public class HotelOwner extends User {
 		super(username, password);
 	}
 
-	public HotelOwner(String username, String password, String firstName, String lastName, String role, List<Hotel> hotels) {
+	public HotelOwner(String username, String password, String firstName, String lastName, String role, List<Hotel> hotels, List<Bookings> bookings) {
 		super(username, password, firstName, lastName, role);
 		this.hotels = hotels;
+		this.bookings = bookings;
 	}
 
 	public List<Hotel> getHotels() {
@@ -38,25 +45,34 @@ public class HotelOwner extends User {
 		this.hotels = hotels;
 	}
 
+	public List<Bookings> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(List<Bookings> bookings) {
+		this.bookings = bookings;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof HotelOwner)) return false;
 		if (!super.equals(o)) return false;
 		HotelOwner that = (HotelOwner) o;
-		return getHotels().equals(that.getHotels());
+		return getHotels().equals(that.getHotels()) &&
+				Objects.equals(getBookings(), that.getBookings());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getHotels());
+		return Objects.hash(super.hashCode(), getHotels(), getBookings());
 	}
 
 	@Override
 	public String toString() {
 		return "HotelOwner{" +
 				"hotels=" + hotels +
+				", bookings=" + bookings +
 				'}';
 	}
-
 }

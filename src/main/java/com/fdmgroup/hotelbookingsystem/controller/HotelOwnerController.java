@@ -64,14 +64,14 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(hotelService.save(hotel));
 	}
 
-	@GetMapping("/AllBookings/{hotelOwnerId}")
-	public ResponseEntity<List<Bookings>> allBookings(@PathVariable("hotelOwnerId") Long hotelOwnerId) {
+	@GetMapping("/AllBookings/{userId}")
+	public ResponseEntity<List<Bookings>> allBookings(@PathVariable("userId") long userId) {
 		return ResponseEntity.ok(bookingService.findAll());
 	}
 
 
-	@PostMapping("/AddNewRoomTypeSubmit/{hotelOwnerId}")
-	public ResponseEntity<HttpStatus> newRoomTypeSubmit(@PathVariable("hotelOwnerId")long hotelOwnerId, @RequestBody Room room) {
+	@PostMapping("/AddNewRoomTypeSubmit")
+	public ResponseEntity<HttpStatus> newRoomTypeSubmit(@RequestBody Room room) {
 		Optional<Room> roomFromDB = roomService.findByRoomTypeAndPrice(room.getRoomType(), room.getPrice());
 		if (roomFromDB.isPresent()) {
 			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
