@@ -2,7 +2,9 @@ package com.fdmgroup.hotelbookingsystem.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fdmgroup.hotelbookingsystem.exceptions.BookingNotFoundException;
+import com.fdmgroup.hotelbookingsystem.model.BookingRequest;
 import com.fdmgroup.hotelbookingsystem.model.Bookings;
+import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.services.BookingService;
 
@@ -33,7 +37,26 @@ public class BookingController {
 	BookingService bookingService;
 	
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings bookings) {
+	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody BookingRequest bookReq) {
+		Date checkin = new Date();
+		System.out.println("LOGGING LINE : "+ checkin.toString());
+		System.out.println("LOGGING LINE : "+ bookReq.getCheckInDate());
+		System.out.println("LOGGING LINE : "+ bookReq.toString());
+		checkin.parse(bookReq.getCheckInDate());
+		Date checkout = new Date();
+		checkout.parse(bookReq.getCheckOutDate());
+		Bookings bookings = new Bookings(bookReq.getRoomType(),
+				bookReq.getHotel(),
+				checkin.toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate(),
+			    checkout.toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate(),
+			    new BigDecimal(0) ,
+			    new BigDecimal(0),
+			    new BigDecimal(0), 
+			    Extras.NO_EXTRAS);
 		BigDecimal extraCosts = bookings.getExtras().getPrice();
 		bookings.setExtrasPrice(extraCosts);
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
