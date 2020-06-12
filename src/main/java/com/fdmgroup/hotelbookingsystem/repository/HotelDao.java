@@ -3,6 +3,7 @@ package com.fdmgroup.hotelbookingsystem.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,4 +25,6 @@ public interface HotelDao extends JpaRepository<Hotel, Long> {
 
 	Hotel findByHotelName(String hotelName);
 
+	@Query(value = "SELECT BOOKINGS FROM HOTEL WHERE HOTEL.HOTELNAME = ?", nativeQuery = true)
+	List<Bookings> findAllBookings(String hotelName);
 }

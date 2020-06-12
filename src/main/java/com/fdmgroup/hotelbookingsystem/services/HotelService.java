@@ -22,6 +22,8 @@ public class HotelService {
 		return hotelDao.findAll();
 	}
 
+	public List<Bookings> findAllBookings(String hotelName) { return hotelDao.findAllBookings(hotelName);}
+
 	public Optional<Hotel> findByAddress(String address) {
 		return hotelDao.findByAddress(address);
 	}

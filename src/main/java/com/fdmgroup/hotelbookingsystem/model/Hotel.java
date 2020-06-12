@@ -33,14 +33,16 @@ public class Hotel {
 	@Column(length = 8000)
 	private String ammenities;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "bookingId")
 	private List<Bookings> bookings;
 
 	@Column
 	private int starRating;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "roomId")
 	private List<Room> room;
 
