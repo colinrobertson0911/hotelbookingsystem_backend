@@ -27,4 +27,6 @@ public interface HotelDao extends JpaRepository<Hotel, Long> {
 
 	@Query(value = "SELECT BOOKINGS FROM HOTEL WHERE HOTEL.HOTELNAME = ?", nativeQuery = true)
 	List<Bookings> findAllBookings(String hotelName);
+	
+	List<Hotel> findByVerifiedIsTrue();
 }
