@@ -40,10 +40,6 @@ insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (3, 4);
 
 insert into customer_bookings(userId, bookingId) values (4, 1);
 
-insert into hotelOwner_bookings(userId, bookingId) values (2,1);
-insert into hotelOwner_bookings(userId, bookingId) values (2,2);
-insert into hotelOwner_bookings(userId, bookingId) values (3,3);
-insert into hotelOwner_bookings(userId, bookingId) values (3,4);
 
 
 

@@ -4,8 +4,8 @@ public class HotelNotFoundException extends RuntimeException{
 	
 	private static final long serialVersionUID = 1002L;
 	
-	public HotelNotFoundException(Long id) {
-		super("Could not find hotel " + id);
+	public HotelNotFoundException(String hotelName) {
+		super("Could not find hotel " + hotelName);
 	}
 
 }

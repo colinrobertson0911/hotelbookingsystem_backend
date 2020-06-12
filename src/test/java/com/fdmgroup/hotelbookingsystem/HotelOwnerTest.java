@@ -88,24 +88,16 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 
 	@Test
 	public void editHotel() throws Exception {
-		Hotel hotel = hotelService.retrieveOne(1L).get();
+		Hotel hotel = hotelService.retrieveOne("Travelodge Glasgow").get();
 		hotel.setHotelName("The awesome hotel");
 		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/hotelOwner1")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"The awesome hotel\","
-				+ "\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travellodge Glasgow\",\"checkInDate\":\"2020-04-23\",\"checkOutDate\":\"2020-04-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"23/04/2020\",\"checkOutDateFormatted\":\"27/04/2020\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travellodge Glasgow\",\"checkInDate\":\"2020-04-15\",\"checkOutDate\":\"2020-04-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"15/04/2020\",\"checkOutDateFormatted\":\"25/04/2020\"}],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
+		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"The awesome hotel\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"23/07/2020\",\"checkOutDateFormatted\":\"27/07/2020\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"15/07/2020\",\"checkOutDateFormatted\":\"25/07/2020\"}],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
-
-	}
-
-	@Test
-	public void HotelOwnerCanSeeListOfBookings() throws Exception {
-		this.mockMvc.perform(get(HOTELOWNER_ROOT_URI + "/AllBookings/1"))
-				.andExpect(status().isOk());
 
 	}
 

@@ -55,10 +55,10 @@ public class HotelController {
 		return new ResponseEntity<List<Hotel>>(cityInDB,HttpStatus.OK);
 	}
 
-	@GetMapping("/SeeHotel/{hotelId}")
-	public Hotel verifyHotel(@PathVariable("hotelId") long hotelId) {
-		return ((Optional<Hotel>) hotelService.retrieveOne(hotelId)).orElseThrow(()
-				-> new HotelNotFoundException(hotelId));
+	@GetMapping("/SeeHotel/{hotelName}")
+	public Hotel verifyHotel(@PathVariable("hotelName") String hotelName) {
+		return ((Optional<Hotel>) hotelService.retrieveOne(hotelName)).orElseThrow(()
+				-> new HotelNotFoundException(hotelName));
 	}
 
 	

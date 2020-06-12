@@ -64,11 +64,6 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(hotelService.save(hotel));
 	}
 
-	@GetMapping("/AllBookings/{userId}")
-	public ResponseEntity<List<Bookings>> allBookings(@PathVariable("userId") long userId) {
-		return ResponseEntity.ok(bookingService.findAll());
-	}
-
 
 	@PostMapping("/AddNewRoomTypeSubmit")
 	public ResponseEntity<HttpStatus> newRoomTypeSubmit(@RequestBody Room room) {

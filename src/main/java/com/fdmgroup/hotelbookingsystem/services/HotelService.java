@@ -22,6 +22,8 @@ public class HotelService {
 		return hotelDao.findAll();
 	}
 
+	public List<Bookings> findAllBookings(String hotelName) { return hotelDao.findAllBookings(hotelName);}
+
 	public Optional<Hotel> findByAddress(String address) {
 		return hotelDao.findByAddress(address);
 	}
@@ -30,9 +32,13 @@ public class HotelService {
 		return hotelDao.save(hotel);
 	}
 
-	public Optional<Hotel> retrieveOne(long hotelId) {
-		return hotelDao.findByHotelId(hotelId);
+	public Optional<Hotel> retrieveOne(String hotelName) {
+		return hotelDao.findByHotelName(hotelName);
 
+	}
+	
+	public Optional<Hotel> findById( long hotelId) {
+		return hotelDao.findById(hotelId);
 	}
 
 	public List<Hotel> findByCity(String city) {
@@ -72,10 +78,27 @@ public class HotelService {
 		return availableHotelsByDate;
 	}
 
+	public List<Hotel> findByVerifiedEqualsTrue() {
+		return hotelDao.findByVerifiedIsTrue();
+	}
+	
+	public List<Hotel> findByAvailabilityAndVerified() {
+		List<Hotel> availableHotels = new ArrayList<Hotel>();
+		List<Hotel> hotels = findByVerifiedEqualsTrue();
+		for (Hotel hotel : hotels) {
+			if (hotel.getNumOfRooms() > hotel.getBookings().size()) {
+				availableHotels.add(hotel);
+			}
+		}
+
+		 return availableHotels;
+
+		}
 	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate) {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
 		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();
-		for (Hotel hotel : availableHotelsByDate) {
+		List<Hotel> hotels = findByVerifiedEqualsTrue();
+		for (Hotel hotel : hotels) {
 			List<Bookings> hotelBookings = hotel.getBookings();
 			for (Bookings booking : hotelBookings) {
 				if (!booking.getCheckInDate().isAfter(endDate) && !booking.getCheckOutDate().isBefore(startDate)) {
