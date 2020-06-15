@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.fdmgroup.hotelbookingsystem.exceptions.InvalidDateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,6 +40,7 @@ public class BookingController {
 	@PostMapping("/BookingSubmit")
 	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody BookingRequest bookReq) {
 		Bookings bookings = createBookings(bookReq);
+		bookings.setRoomType(bookReq.getRoomType());
 		BigDecimal extraCosts = bookings.getExtras().getPrice();
 		bookings.setExtrasPrice(extraCosts);
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
@@ -51,16 +53,6 @@ public class BookingController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/BookingConfirmation/{checkInDate},{hotel}")
-	public ResponseEntity<List<Bookings>> bookingConfirmationSubmit(@PathVariable("checkInDate")@DateTimeFormat(pattern = "yyyy-MM-dd") String checkInDateString, @PathVariable("hotel") String hotel) {
-		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		List<Bookings> bookings = bookingService.findBookingsByCheckInDate(checkInDate, hotel);
-		if (bookings.isEmpty()) {
-			return new ResponseEntity<List<Bookings>>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Bookings>>(bookings, HttpStatus.OK);
-	}
-	
 	private Bookings createBookings(BookingRequest bookReq) {;
 		LocalDate checkin = LocalDate.parse(bookReq.getCheckInDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate checkout = LocalDate.parse(bookReq.getCheckOutDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -72,7 +64,19 @@ public class BookingController {
 			    new BigDecimal(0),
 			    new BigDecimal(0), 
 			    Extras.NO_EXTRAS);
+		if (checkout.isBefore(checkin)){
+			throw new InvalidDateException(checkout);
+		}
 		return bookings;
+	}
+
+	@GetMapping("/BookingConfirmation/{bookingId}")
+	public ResponseEntity<Bookings> bookingConfirmationSubmit(@PathVariable("bookingId") long bookingId) {
+		Optional<Bookings> booking = bookingService.retrieveOne(bookingId);
+		if (booking.isPresent()) {
+			return new ResponseEntity<>(booking.get(), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
 }
