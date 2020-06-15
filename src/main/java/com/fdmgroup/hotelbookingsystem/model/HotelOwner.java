@@ -11,7 +11,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 public class HotelOwner extends User {
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "hotelOwner_hotel", joinColumns =
 	@JoinColumn(name = "userId"), inverseJoinColumns =
 	@JoinColumn(name = "hotelId"))

@@ -49,7 +49,7 @@ public class UserTest {
 	
 	@Test
 	public void userLoginExists() throws Exception {
-		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/1"))
+		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/admin1"))
 				.andExpect(status().isOk());
 	}
 

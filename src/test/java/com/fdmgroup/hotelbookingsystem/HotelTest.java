@@ -91,25 +91,25 @@ class HotelTest {
 	}
 
 	@Test
-	public  void listOfHotelsWithAvailabilityisShown() throws Exception {
+	public  void listOfHotelsWithAvailabilityIsShown() throws Exception {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-06-05,2020-06-12")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "[{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkOutDateFormatted\":\"27/07/2020\",\"checkInDateFormatted\":\"23/07/2020\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkOutDateFormatted\":\"25/07/2020\",\"checkInDateFormatted\":\"15/07/2020\"}],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true},{\"hotelId\":3,\"hotelName\":\"Radisson Blue\",\"numOfRooms\":2,\"address\":\"123 argyle street\",\"postcode\":\"G3 6OP\",\"city\":\"Glasgow\",\"ammenities\":\"Conference Rooms, Bars, Near Central Station\",\"bookings\":[{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\",\"checkOutDateFormatted\":\"30/07/2020\",\"checkInDateFormatted\":\"20/07/2020\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\",\"checkOutDateFormatted\":\"30/07/2020\",\"checkInDateFormatted\":\"20/07/2020\"}],\"starRating\":4,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"}],\"airportTransfers\":false,\"transferPrice\":20,\"verified\":true}]";
+		String expectedResult = "[{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"ammenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"23/07/2020\",\"checkOutDateFormatted\":\"27/07/2020\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"15/07/2020\",\"checkOutDateFormatted\":\"25/07/2020\"}],\"starRating\":3,\"room\":[],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true},{\"hotelId\":3,\"hotelName\":\"Radisson Blue\",\"numOfRooms\":2,\"address\":\"123 argyle street\",\"postcode\":\"G3 6OP\",\"city\":\"Glasgow\",\"ammenities\":\"Conference Rooms, Bars, Near Central Station\",\"bookings\":[{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\",\"checkInDateFormatted\":\"20/07/2020\",\"checkOutDateFormatted\":\"30/07/2020\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\",\"checkInDateFormatted\":\"20/07/2020\",\"checkOutDateFormatted\":\"30/07/2020\"}],\"starRating\":4,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"}],\"airportTransfers\":false,\"transferPrice\":20,\"verified\":true}]";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 	}
 
 	@Test
-	public  void listOfHotelsWithNoAvailabilityisShown() throws Exception {
-		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-04-25,2020-04-25")
+	public  void listOfHotelsWithNoAvailabilityIsShown() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-07-20,2020-07-25")
 				.session(session))
 				.andExpect(status().isNoContent());
 	}
 
 	@Test
 	public void seeAHotelThatExists() throws Exception {
-		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotel/2")
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotel/Yotel")
 				.session(session))
 				.andExpect(status().isOk());
 		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":0,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
@@ -117,15 +117,6 @@ class HotelTest {
 				.getResponse().getContentAsString());
 	}
 	
-	@Test
-	public void addABooking() throws Exception {
-		Bookings booking = new Bookings("STANDARD", "Travelodge Glasgow", LocalDate.of(2020, 04, 20), LocalDate.of(2020, 04, 27), new BigDecimal("60.00"), new BigDecimal("0.00"), new BigDecimal("420.00"), Extras.NO_EXTRAS);
-		this.mockMvc.perform(post(HOTEL_ROOT_URI + "/BookingSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(booking)))
-				.andExpect(status().isOk());
-		
-	}
+
 	
 }

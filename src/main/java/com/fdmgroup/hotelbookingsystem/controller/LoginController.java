@@ -44,9 +44,9 @@ public class LoginController {
 	@Autowired
 	private JWTservice jwtService;
 
-	@GetMapping("login/LoginUserSubmit/{userId}")
-	public ResponseEntity <User> loginUser(@PathVariable("userId") long userId) {
-		User user = userService.findByUserId(userId).get();
+	@GetMapping("LoginUserSubmit/{username}")
+	public ResponseEntity <User> loginUser(@PathVariable("username") String username) {
+		User user = userService.findByUsername(username);
 		return ResponseEntity.ok(user);
 	}
 	

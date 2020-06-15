@@ -1,5 +1,8 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +16,8 @@ public class Customer extends User {
     @Column
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "customer_bookings", joinColumns =
     @JoinColumn(name = "userId"), inverseJoinColumns =
     @JoinColumn(name = "bookingId"))

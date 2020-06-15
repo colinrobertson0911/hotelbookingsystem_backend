@@ -52,11 +52,6 @@ public class AdminController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-//	@GetMapping("/SeeHotelOwner/{username}")
-//	public ResponseEntity<User> getHotelOwner(@PathVariable("username") String username) {
-//		return ResponseEntity.ok(userService.findByUsername(username));
-//
-//	}
 
 	@GetMapping("/SeeHotelOwner/{username}")
 	public ResponseEntity<User> getHotelOwner(@PathVariable("username")String username){
