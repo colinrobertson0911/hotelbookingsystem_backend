@@ -28,10 +28,6 @@ import com.fdmgroup.hotelbookingsystem.services.UserService;
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class LoginController {
 
-	public static final String SESSION_ATTRIBUTE_ADMIN = "ADMIN";
-	public final static String SESSION_ATTRIBUTE_HOTELOWNER = "HOTELOWNER";
-	public final static String SESSION_ATTRIBUTE_HOTELOWNERID = "HOTELOWNERID";
-
 	@Autowired
 	UserService userService;
 	

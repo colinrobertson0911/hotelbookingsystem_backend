@@ -2,16 +2,11 @@ package com.fdmgroup.hotelbookingsystem.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
-import com.fdmgroup.hotelbookingsystem.exceptions.InvalidDateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fdmgroup.hotelbookingsystem.exceptions.BookingNotFoundException;
-import com.fdmgroup.hotelbookingsystem.model.BookingRequest;
 import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import com.fdmgroup.hotelbookingsystem.model.Extras;
-import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.services.BookingService;
 
 @RestController
@@ -38,11 +30,26 @@ public class BookingController {
 	BookingService bookingService;
 	
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody BookingRequest bookReq) {
-		Bookings bookings = createBookings(bookReq);
-		bookings.setRoomType(bookReq.getRoomType());
+	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings booking) {
+		LocalDate checkin = booking.getCheckInDate();
+		LocalDate checkout = booking.getCheckOutDate();
+		Bookings bookings = new Bookings(booking.getRoomType(),
+				booking.getHotel(),
+				checkin,
+				checkout,
+				new BigDecimal(0),
+				new BigDecimal(0),
+				new BigDecimal(0),
+				Extras.NO_EXTRAS);
+		if (checkout.isBefore(checkin)){
+			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+		}
+
+		bookings.setRoomType(booking.getRoomType());
 		BigDecimal extraCosts = bookings.getExtras().getPrice();
 		bookings.setExtrasPrice(extraCosts);
+
+
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
 		bookings.setTotalPrice(finalTotal);
 		try {
@@ -51,23 +58,6 @@ public class BookingController {
 			return new ResponseEntity<HttpStatus>(HttpStatus.CONFLICT);
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
-	}
-
-	private Bookings createBookings(BookingRequest bookReq) {;
-		LocalDate checkin = LocalDate.parse(bookReq.getCheckInDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		LocalDate checkout = LocalDate.parse(bookReq.getCheckOutDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		Bookings bookings = new Bookings(bookReq.getRoomType(),
-				bookReq.getHotel(),
-				checkin,
-			    checkout,
-			    new BigDecimal(0),
-			    new BigDecimal(0),
-			    new BigDecimal(0), 
-			    Extras.NO_EXTRAS);
-		if (checkout.isBefore(checkin)){
-			throw new InvalidDateException(checkout);
-		}
-		return bookings;
 	}
 
 	@GetMapping("/BookingConfirmation/{bookingId}")

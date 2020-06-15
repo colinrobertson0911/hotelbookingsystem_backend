@@ -67,13 +67,6 @@ public class Bookings {
 		this.extras = extras;
 	}
 
-	public String getCheckInDateFormatted() {
-		return this.getCheckInDate().format(FormatWithLocale.DATE_FORMATTER);
-	}
-
-	public String getCheckOutDateFormatted() {
-		return this.getCheckOutDate().format(FormatWithLocale.DATE_FORMATTER);
-	}
 
 	public long getBookingId() {
 		return bookingId;

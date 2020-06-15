@@ -16,6 +16,4 @@ public interface BookingDao extends JpaRepository<Bookings, Long> {
 
 	List<Bookings> findByCheckInDateAndHotel(LocalDate checkInDate, String hotel);
 
-//	@Query(value = "SELECT * FROM BOOKINGS INNER JOIN HOTELOWNER_BOOKINGS ON BOOKINGS.BOOKINGID = HOTELOWNER_BOOKINGS.BOOKINGID INNER JOIN HOTELOWNER ON HOTELOWNER_BOOKINGS.HOTELOWNERID = HOTELOWNER.HOTELOWNERID", nativeQuery = true)
-//    List<Bookings> findAllByUsername(String username);
 }

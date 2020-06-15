@@ -24,6 +24,7 @@ private String SECRET_KEY = "superSecretKey";
 	
 
 	public Date extractExpiration(String token) {
+
 		return extractClaim(token, Claims::getExpiration);
 	}
 	

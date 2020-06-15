@@ -26,8 +26,6 @@ public class BookingService {
 		return bookingDao.findAll();
 	}
 
-	//public List<Bookings> findAllByUsername(String username) { return bookingDao.findAllByUsername(username); }
-
 	public Bookings save(Bookings booking) {
 		return bookingDao.save(booking);
 	}
