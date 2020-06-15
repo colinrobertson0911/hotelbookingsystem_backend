@@ -18,6 +18,8 @@ insert into room(roomId, roomType, price) values (ROOM_SEQ.nextval, 'LUXURY', '8
 insert into room(roomId, roomType, price) values (ROOM_SEQ.nextval, 'DELUXE', '100.00');
 insert into room(roomId, roomType, price) values (ROOM_SEQ.nextval, 'SUITE', '120.00');
 
+insert into hotel_room(hotel_hotelId, room_roomId) values (1,1);
+insert into hotel_room(hotel_hotelId, room_roomId) values (1,4);
 insert into hotel_room(hotel_hotelId, room_roomId) values (2,2);
 insert into hotel_room(hotel_hotelId, room_roomId) values (2,3);
 insert into hotel_room(hotel_hotelId, room_roomId) values (3,1);
