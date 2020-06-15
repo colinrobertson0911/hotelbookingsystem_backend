@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import com.fdmgroup.hotelbookingsystem.model.Room;
+import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,9 @@ public class BookingController {
 	
 	@Autowired
 	BookingService bookingService;
+
+	@Autowired
+	RoomService roomService;
 	
 	@PostMapping("/BookingSubmit")
 	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings booking) {
@@ -46,6 +51,8 @@ public class BookingController {
 		}
 
 		bookings.setRoomType(booking.getRoomType());
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		bookings.setRoomPrice(room.getPrice());
 		BigDecimal extraCosts = bookings.getExtras().getPrice();
 		bookings.setExtrasPrice(extraCosts);
 
