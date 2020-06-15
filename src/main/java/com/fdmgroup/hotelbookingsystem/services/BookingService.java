@@ -49,15 +49,13 @@ public class BookingService {
 		LocalDate checkOutDate = booking.getCheckOutDate();
 		long stayDuration = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
 		BigDecimal totalPrice;
-		if (stayDuration > 5) {
+
 			BigDecimal stayDurationBigDec = BigDecimal.valueOf(stayDuration);
 			BigDecimal roomPrice = booking.getRoomPrice();
-			BigDecimal extrasPrice = booking.getExtrasPrice();
+			BigDecimal extrasPrice = booking.getExtras().getPrice();
+		if (stayDuration > 5) {
 			totalPrice = (roomPrice.multiply(stayDurationBigDec).add(extrasPrice).subtract(roomPrice));
 		} else {
-			BigDecimal stayDurationBigDec = BigDecimal.valueOf(stayDuration);
-			BigDecimal roomPrice = booking.getRoomPrice();
-			BigDecimal extrasPrice = booking.getExtrasPrice();
 			totalPrice = (roomPrice.multiply(stayDurationBigDec).add(extrasPrice));
 		}
 

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.Room;
 import com.fdmgroup.hotelbookingsystem.services.BookingService;
 import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,9 @@ class BookingTest {
 
 	@Autowired
 	BookingService bookingService;
+
+	@Autowired
+	RoomService roomService;
 
     MockMvc mockMvc;
 
@@ -78,7 +83,8 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		booking.setRoomPrice(new BigDecimal("15.00"));
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		booking.setExtrasPrice(new BigDecimal("15.00"));
 		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
@@ -87,7 +93,7 @@ class BookingTest {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(booking)))
                 .andExpect(status().isOk());
-		Assertions.assertEquals(totalPrice, new BigDecimal("105.00"));
+		Assertions.assertEquals(totalPrice, new BigDecimal("380.00"));
 	}
 
 	@Test
@@ -100,16 +106,16 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		booking.setRoomPrice(new BigDecimal("15.00"));
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
-		booking.setExtrasPrice(new BigDecimal("15.00"));
 		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
         this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
                 .session(session)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(booking)))
                 .andExpect(status().isOk());
-        Assertions.assertEquals(totalPrice, new BigDecimal("45.00"));
+        Assertions.assertEquals(totalPrice, new BigDecimal("140.00"));
 	}
 	
 	
