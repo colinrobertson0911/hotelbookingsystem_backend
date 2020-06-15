@@ -37,7 +37,6 @@ public class UserTest {
 	MockHttpSession session;
 	
 	final static String LOGIN_ROOT_URI = "/login";
-	final static String REGISTER_ROOT_URI = "/register";
 
 	@BeforeEach
 	public void setUp() {
@@ -46,7 +45,13 @@ public class UserTest {
 				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
 				.build();
 	}
-	
+
+	@Test
+	public void InvalidUserLogin() throws Exception{
+		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/admin99"))
+				.andExpect(status().isConflict());
+	}
+
 	@Test
 	public void userLoginExists() throws Exception {
 		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/admin1"))
@@ -55,8 +60,8 @@ public class UserTest {
 
 	@Test
 	public  void newAdminUserCanRegister() throws Exception{
-		User newUser = new User("user100", "password");
-		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
+		User newUser = new User("user100", "password", "Admin");
+		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(newUser)))
@@ -65,8 +70,8 @@ public class UserTest {
 
 	@Test
 	public  void newCustomerUserCanRegister() throws Exception{
-		User newUser = new User("user101", "password");
-		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
+		User newUser = new User("user101", "password", "Customer");
+		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(newUser)))
@@ -75,8 +80,8 @@ public class UserTest {
 
 	@Test
 	public  void newHotelOwnerUserCanRegister() throws Exception{
-		User newUser = new User("user102", "password");
-		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
+		User newUser = new User("user102", "password", "HotelOwner");
+		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(newUser)))
@@ -86,7 +91,7 @@ public class UserTest {
 	@Test
 	public  void invalidNewUserCantRegister() throws Exception{
 		User newUser = new User();
-		this.mockMvc.perform(post(REGISTER_ROOT_URI + "/RegisterUserSubmit")
+		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(newUser)))

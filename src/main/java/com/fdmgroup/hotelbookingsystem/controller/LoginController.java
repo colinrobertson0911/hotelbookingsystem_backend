@@ -1,6 +1,8 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +24,8 @@ import com.fdmgroup.hotelbookingsystem.services.JWTservice;
 import com.fdmgroup.hotelbookingsystem.services.MyUserDetailsService;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/login")
@@ -41,9 +45,12 @@ public class LoginController {
 	private JWTservice jwtService;
 
 	@GetMapping("LoginUserSubmit/{username}")
-	public ResponseEntity <User> loginUser(@PathVariable("username") String username) {
-		User user = userService.findByUsername(username).get();
-		return ResponseEntity.ok(user);
+	public ResponseEntity <User> loginUser(@PathVariable("username") String username) throws Exception {
+		Optional<User> user = userService.findByUsername(username);
+		if (user.isPresent()){
+			return new ResponseEntity<>(user.get(), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 	
 	@PostMapping(value="/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,6 +68,29 @@ public class LoginController {
 		final String jwt = jwtService.generateToken(userDetails);
 		
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+	}
+
+	@PostMapping("/RegisterUserSubmit")
+	public ResponseEntity<?> registerUserSubmit(@RequestBody User user) throws Exception{
+		try {
+			userService.save(user);
+		}catch(DataIntegrityViolationException e) {
+			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+		}
+
+		try {
+			authManager.authenticate(
+					new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+		} catch (BadCredentialsException e) {
+			throw new Exception("incorrect Username or password", e);
+		}
+
+		final UserDetails userDetails = userDetailsService
+				.loadUserByUsername(user.getUsername());
+		final String jwt = jwtService.generateToken(userDetails);
+
+		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+
 	}
 
 }
