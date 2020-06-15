@@ -9,17 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CustomerService implements GeneralServiceRepository<Optional<Customer>> {
+public class CustomerService {
 
     @Autowired
     CustomerDao customerDao;
 
-    @Override
     public Optional<Customer> findByUsernameAndPassword(String username, String password) {
         return customerDao.findByUsernameAndPassword(username, password);
     }
 
-    @Override
     public Optional<Customer> findByUsername(String username) {
         return customerDao.findByUsername(username);
     }

@@ -20,8 +20,8 @@ public class MyUserDetailsService implements UserDetailsService {
 		// TODO Auto-generated method stub
 //		return new User("jimmy", "pword", new ArrayList<>());
 		
-		return new User(userService.findByUsername(username).getUsername(),
-						userService.findByUsername(username).getPassword(),
+		return new User(userService.findByUsername(username).get().getUsername(),
+						userService.findByUsername(username).get().getPassword(),
 						new ArrayList<>());
 	}
 

@@ -46,7 +46,7 @@ public class LoginController {
 
 	@GetMapping("LoginUserSubmit/{username}")
 	public ResponseEntity <User> loginUser(@PathVariable("username") String username) {
-		User user = userService.findByUsername(username);
+		User user = userService.findByUsername(username).get();
 		return ResponseEntity.ok(user);
 	}
 	

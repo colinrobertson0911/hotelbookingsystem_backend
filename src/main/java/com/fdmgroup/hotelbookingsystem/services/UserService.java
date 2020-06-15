@@ -10,13 +10,12 @@ import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.repository.UserDao;
 
 @Service
-public class UserService implements GeneralServiceRepository<User> {
+public class UserService {
 
 	@Autowired
 	UserDao userDao;
 
-	@Override
-	public User findByUsernameAndPassword(String username, String password) {
+	public Optional<User> findByUsernameAndPassword(String username, String password) {
 		return userDao.findByUsernameAndPassword(username, password);
 	}
 
@@ -32,8 +31,7 @@ public class UserService implements GeneralServiceRepository<User> {
 		return userDao.save(user);
 	}
 
-	@Override
-	public User findByUsername(String username) {
+	public Optional<User> findByUsername(String username) {
 		return userDao.findByUsername(username);
 	}
 

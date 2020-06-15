@@ -10,19 +10,18 @@ import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.repository.HotelOwnerDao;
 
 @Service
-public class HotelOwnerService implements GeneralServiceRepository {
+public class HotelOwnerService {
 
 	@Autowired
 	HotelOwnerDao hotelOwnerDao;
 
-	@Override
-	public HotelOwner findByUsernameAndPassword(String username, String password) {
-		return null;
+
+	public Optional<HotelOwner> findByUsernameAndPassword(String username, String password) {
+		return hotelOwnerDao.findByUsernameAndPassword(username, password);
 	}
 
-	@Override
-	public HotelOwner findByUsername(String username) {
-		return null;
+	public Optional<HotelOwner> findByUsername(String username) {
+		return hotelOwnerDao.findByUsername(username);
 	}
 
 	public List<HotelOwner> findAll() {
