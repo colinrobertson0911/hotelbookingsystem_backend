@@ -92,56 +92,56 @@ class BookingTest {
         ResultActions mvcResult = this.mockMvc.perform(get(BOOKING_ROOT_URI + "/BookingConfirmation/1")
                 .session(session))
                 .andExpect(status().isOk());
-        String expectedResult = "{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\",\"checkInDateFormatted\":\"23/07/2020\",\"checkOutDateFormatted\":\"27/07/2020\"}";
+        String expectedResult = "{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"}";
         Assertions.assertEquals(expectedResult, mvcResult.andReturn()
                 .getResponse().getContentAsString());
 
 	}
 
-//	@Test
-//	public void test_ThatPriceTotalCanBeCalculated() throws Exception {
-//		LocalDate checkInDate = LocalDate.of(2020, 06, 20);
-//		LocalDate checkOutDate = LocalDate.of(2020, 06, 27);
-//		Hotel hotel = hotelService.findById(1L).get();
-//		Bookings booking = new Bookings();
-//		booking.setRoomType("STANDARD");
-//		booking.setHotel(hotel.getHotelName());
-//		booking.setCheckInDate(checkInDate);
-//		booking.setCheckOutDate(checkOutDate);
-//		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
-//		booking.setRoomPrice(room.getPrice());
-//		booking.setExtras(Extras.AIRPORTTRANSFER);
-//		booking.setExtrasPrice(new BigDecimal("15.00"));
-//		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
-//        this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
-//                .session(session)
-//                .contentType("application/json")
-//                .content(objectMapper.writeValueAsString(booking)))
-//                .andExpect(status().isOk());
-////		Assertions.assertEquals(totalPrice, new BigDecimal("380.00"));
-//	}
+	@Test
+	public void test_ThatPriceTotalCanBeCalculated() throws Exception {
+		LocalDate checkInDate = LocalDate.of(2020, 06, 20);
+		LocalDate checkOutDate = LocalDate.of(2020, 06, 27);
+		Hotel hotel = hotelService.findById(1L).get();
+		Bookings booking = new Bookings();
+		booking.setRoomType("STANDARD");
+		booking.setHotel(hotel.getHotelName());
+		booking.setCheckInDate(checkInDate);
+		booking.setCheckOutDate(checkOutDate);
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		booking.setRoomPrice(room.getPrice());
+		booking.setExtras(Extras.AIRPORTTRANSFER);
+		booking.setExtrasPrice(new BigDecimal("15.00"));
+		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
+        this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
+                .session(session)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(booking)))
+                .andExpect(status().isOk());
+		Assertions.assertEquals(totalPrice, new BigDecimal("380.00"));
+	}
 
-//	@Test
-//	public void test_ThatPriceTotalCanBeCalculatedLessThanFiveDays() throws Exception {
-//		LocalDate checkInDate = LocalDate.of(2020, 06, 20);
-//		LocalDate checkOutDate = LocalDate.of(2020, 06, 22);
-//		Hotel hotel = hotelService.findById(1L).get();
-//		Bookings booking = new Bookings();
-//		booking.setRoomType("STANDARD");
-//		booking.setHotel(hotel.getHotelName());
-//		booking.setCheckInDate(checkInDate);
-//		booking.setCheckOutDate(checkOutDate);
-//		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
-//		booking.setRoomPrice(room.getPrice());
-//		booking.setExtras(Extras.AIRPORTTRANSFER);
-//		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
-//        this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
-//                .session(session)
-//                .contentType("application/json")
-//                .content(objectMapper.writeValueAsString(booking)))
-//                .andExpect(status().isOk());
-//        Assertions.assertEquals(totalPrice, new BigDecimal("140.00"));
-//	}
+	@Test
+	public void test_ThatPriceTotalCanBeCalculatedLessThanFiveDays() throws Exception {
+		LocalDate checkInDate = LocalDate.of(2020, 06, 20);
+		LocalDate checkOutDate = LocalDate.of(2020, 06, 22);
+		Hotel hotel = hotelService.findById(1L).get();
+		Bookings booking = new Bookings();
+		booking.setRoomType("STANDARD");
+		booking.setHotel(hotel.getHotelName());
+		booking.setCheckInDate(checkInDate);
+		booking.setCheckOutDate(checkOutDate);
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		booking.setRoomPrice(room.getPrice());
+		booking.setExtras(Extras.AIRPORTTRANSFER);
+		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
+        this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
+                .session(session)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(booking)))
+                .andExpect(status().isOk());
+        Assertions.assertEquals(totalPrice, new BigDecimal("140.00"));
+	}
 	
 	
 
