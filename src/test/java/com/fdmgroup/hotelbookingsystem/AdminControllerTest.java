@@ -80,7 +80,7 @@ class AdminControllerTest {
 	public void singleHotelOwnerDoesNotExists() throws Exception {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/SeeHotelOwner/hotelOwner3")
 				.session(session))
-				.andExpect(status().isBadRequest());
+				.andExpect(status().isConflict());
 
 	}
 	
@@ -92,6 +92,16 @@ class AdminControllerTest {
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(user)))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void addInvalidHotelOwner() throws Exception {
+		User user = new User();
+		this.mockMvc.perform(post(ADMIN_ROOT_URI + "/addHotelOwner")
+				.session(session)
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(user)))
+				.andExpect(status().isConflict());
 	}
 	
 

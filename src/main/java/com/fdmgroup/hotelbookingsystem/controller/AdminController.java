@@ -56,10 +56,17 @@ public class AdminController {
 	@GetMapping("/SeeHotelOwner/{username}")
 	public ResponseEntity<User> getHotelOwner(@PathVariable("username")String username){
 		User user = userService.findByUsername(username);
-		if (user.getUsername().equals(username)){
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+		try {
+			user.getUsername();
+		} catch (HotelOwnerNotFoundException ex){
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+
+//		if (user.getUsername() == null){
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@PutMapping("/EditHotelOwnerSubmit")
