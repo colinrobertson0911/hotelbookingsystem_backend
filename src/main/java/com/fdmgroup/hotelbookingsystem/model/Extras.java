@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public enum Extras {
 	
-	AIRPORTTRANSFER("Airport Transfer",new BigDecimal ("20.00")),
-	NO_EXTRAS("No Extras",new BigDecimal ("0.00"));
+	AIRPORTTRANSFER("Airport Transfer", new BigDecimal ("20.00")),
+	NO_EXTRAS("No Extras", new BigDecimal ("0.00"));
 	
 	private final String service;
 	private final BigDecimal price;
@@ -18,7 +18,6 @@ public enum Extras {
 	public String getService() {
 		return service +" £" + price;
 	}	
-
 
 	public BigDecimal getPrice() {
 		return price;

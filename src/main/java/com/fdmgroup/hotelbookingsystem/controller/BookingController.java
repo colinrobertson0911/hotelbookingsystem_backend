@@ -53,8 +53,8 @@ public class BookingController {
 		bookings.setRoomType(booking.getRoomType());
 		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
 		bookings.setRoomPrice(room.getPrice());
-		BigDecimal extraCosts = bookings.getExtras().getPrice();
-		bookings.setExtrasPrice(extraCosts);
+		bookings.setExtrasPrice(booking.getExtras().getPrice());
+		bookings.setExtras(booking.getExtras());
 
 
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
