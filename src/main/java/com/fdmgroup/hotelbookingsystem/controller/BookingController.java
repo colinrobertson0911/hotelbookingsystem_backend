@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import com.fdmgroup.hotelbookingsystem.model.Customer;
 import com.fdmgroup.hotelbookingsystem.model.Room;
+import com.fdmgroup.hotelbookingsystem.services.CustomerService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,9 +33,12 @@ public class BookingController {
 	BookingService bookingService;
 	@Autowired
 	RoomService roomService;
+	@Autowired
+	CustomerService customerService;
 	
 	@PostMapping("/BookingSubmit")
 	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings booking) {
+		Customer customer = customerService.findByUsername("customer1").get();
 		LocalDate checkin = booking.getCheckInDate();
 		LocalDate checkout = booking.getCheckOutDate();
 		Bookings bookings = new Bookings(booking.getRoomType(),
@@ -56,8 +61,12 @@ public class BookingController {
 
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
 		bookings.setTotalPrice(finalTotal);
+
 		try {
+			customer.getBookings().add(bookings);
 			bookingService.save(bookings);
+			customerService.save(customer);
+
 		} catch(DataIntegrityViolationException e){
 			return new ResponseEntity<Bookings>(HttpStatus.CONFLICT);
 		}
