@@ -2,7 +2,6 @@ package com.fdmgroup.hotelbookingsystem.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import com.fdmgroup.hotelbookingsystem.model.Room;
@@ -30,12 +29,11 @@ public class BookingController {
 	
 	@Autowired
 	BookingService bookingService;
-
 	@Autowired
 	RoomService roomService;
 	
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <HttpStatus> bookingSubmit(@RequestBody Bookings booking) {
+	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings booking) {
 		LocalDate checkin = booking.getCheckInDate();
 		LocalDate checkout = booking.getCheckOutDate();
 		Bookings bookings = new Bookings(booking.getRoomType(),
@@ -47,7 +45,7 @@ public class BookingController {
 				new BigDecimal(0),
 				Extras.NO_EXTRAS);
 		if (checkout.isBefore(checkin)){
-			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Bookings>(HttpStatus.BAD_REQUEST);
 		}
 
 		bookings.setRoomType(booking.getRoomType());
@@ -56,15 +54,14 @@ public class BookingController {
 		bookings.setExtrasPrice(booking.getExtras().getPrice());
 		bookings.setExtras(booking.getExtras());
 
-
 		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
 		bookings.setTotalPrice(finalTotal);
 		try {
 			bookingService.save(bookings);
 		} catch(DataIntegrityViolationException e){
-			return new ResponseEntity<HttpStatus>(HttpStatus.CONFLICT);
+			return new ResponseEntity<Bookings>(HttpStatus.CONFLICT);
 		}
-		return ResponseEntity.ok(HttpStatus.CREATED);
+		return new ResponseEntity<Bookings>(bookings, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/BookingConfirmation/{bookingId}")
