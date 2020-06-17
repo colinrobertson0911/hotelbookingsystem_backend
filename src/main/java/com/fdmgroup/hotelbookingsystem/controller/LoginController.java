@@ -54,7 +54,7 @@ public class LoginController {
 	}
 	
 	@PostMapping(value="/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createAuthenticationToken (@RequestBody AuthenticationRequest authRequest) throws Exception {
+	public ResponseEntity<User> createAuthenticationToken (@RequestBody AuthenticationRequest authRequest) throws Exception {
 
 		try {
 			authManager.authenticate(
@@ -66,9 +66,11 @@ public class LoginController {
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authRequest.getUsername());
 		final String jwt = jwtService.generateToken(userDetails);
-		
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		User user = userService.findByUsername(authRequest.getUsername()).get();
+		user.setToken(jwt);
+		return ResponseEntity.ok(user);
 	}
+	//new AuthenticationResponse(jwt)
 
 	@PostMapping("/RegisterUserSubmit")
 	public ResponseEntity<?> registerUserSubmit(@RequestBody User user) throws Exception{
