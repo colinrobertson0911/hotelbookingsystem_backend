@@ -116,6 +116,16 @@ class HotelTest {
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
 	}
+
+	@Test
+	public void seeAHotelThatExistsById() throws Exception {
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotelById/2")
+				.session(session))
+				.andExpect(status().isOk());
+		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":0,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"ammenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
+		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+				.getResponse().getContentAsString());
+	}
 	
 
 	

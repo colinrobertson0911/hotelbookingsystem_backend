@@ -45,7 +45,6 @@ public class HotelController {
 	@Autowired
 	RoomService roomService;
 
-
 	@GetMapping("/SearchByCity/{city}")
 	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
 		List<Hotel> cityInDB = hotelService.findByCity(city);
@@ -61,7 +60,13 @@ public class HotelController {
 				-> new HotelNotFoundException(hotelName));
 	}
 
-	
+	@GetMapping("/SeeHotelById/{hotelId}")
+	public Hotel getHotelById(@PathVariable("hotelId") int hotelId) {
+		return ((Optional<Hotel>) hotelService.findById(hotelId)).orElseThrow(()
+				-> new HotelNotFoundException(hotelId + ""));
+	}
+
+
 	@GetMapping("/SearchByRoomType/{roomType}")
 	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType){
 		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType);
