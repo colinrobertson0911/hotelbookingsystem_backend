@@ -88,4 +88,9 @@ public class HotelController {
 		return new ResponseEntity<List<Hotel>>(hotelList, HttpStatus.OK);
 	}
 
+	@GetMapping("/AllRooms")
+	public ResponseEntity<List<Room>> allRooms(){
+		return ResponseEntity.ok(roomService.findAll());
+	}
+
 }
