@@ -127,6 +127,11 @@ class HotelTest {
 				.getResponse().getContentAsString());
 	}
 	
+	@Test
+	public void seeAllRooms() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/AllRooms"))
+				.andExpect(status().isOk());
+	}
 
 	
 }
