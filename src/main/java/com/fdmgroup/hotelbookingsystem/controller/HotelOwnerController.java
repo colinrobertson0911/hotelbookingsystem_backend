@@ -63,6 +63,7 @@ public class HotelOwnerController {
 	public ResponseEntity<HttpStatus> editHotelSubmit(@RequestBody Hotel hotel) {
 		Optional<Hotel> hotelFromDB = hotelService.findById(hotel.getHotelId());
 		if(hotelFromDB.isPresent()){
+			hotelService.save(hotel);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
