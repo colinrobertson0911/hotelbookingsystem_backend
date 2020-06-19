@@ -90,11 +90,13 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	public void editHotel() throws Exception {
 		Hotel hotel = hotelService.findById(1).get();
 		hotel.setHotelName("The awesome hotel");
-		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/")
+		this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isOk());
+		Hotel updatedHotel = hotelService.findById(1).get();
+		Assertions.assertNotEquals(hotel, updatedHotel);
 	}
 
 	@Test
@@ -102,7 +104,7 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 		Hotel hotel = hotelService.findById(1).get();
 		hotel.setHotelId(123);
 		hotel.setHotelName("The awesome hotel");
-		ResultActions mvcResult = this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/")
+		this.mockMvc.perform(put(HOTELOWNER_ROOT_URI + "/EditHotelSubmit/")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
