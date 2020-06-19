@@ -1,101 +1,71 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
+import com.fdmgroup.hotelbookingsystem.model.Role;
 import com.fdmgroup.hotelbookingsystem.model.User;
-import org.junit.jupiter.api.BeforeEach;
+import com.fdmgroup.hotelbookingsystem.services.UserSecurityService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdmgroup.hotelbookingsystem.services.UserService;
+import java.util.Optional;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpMethod.POST;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserTest {
 
-	@Autowired
-	WebApplicationContext webApplicationContext;
-	
-	@Autowired
-	UserService userService;
+	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "1234", "Harry", "Wilson");
+	private User user = new User(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), new Role());
 
 	@Autowired
-	ObjectMapper objectMapper;
-	
-	MockMvc mockMvc;
-	
-	MockHttpSession session;
-	
-	final static String LOGIN_ROOT_URI = "/login";
+	private TestRestTemplate restTemplate;
 
-	@BeforeEach
-	public void setUp() {
-		this.session = new MockHttpSession();
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
-				.build();
+	@MockBean
+	private UserSecurityService service;
+
+	@Test
+	public void signin(){
+		restTemplate.postForEntity("/login/LoginUser", new AuthenticationRequest("admin", "myPass"), Void.class);
+		verify(this.service).signin("admin", "myPass");
 	}
 
 	@Test
-	public void InvalidUserLogin() throws Exception{
-		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/admin99"))
-				.andExpect(status().isConflict());
+	public void registerUser(){
+		when(service.signup(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName())).thenReturn(Optional.of(user));
+
+		ResponseEntity<User> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
+				new HttpEntity<>(signupDto),
+				User.class);
+
+		assertThat(responseEntity.getStatusCode().value(), is(201));
+		assertThat(responseEntity.getBody().getUsername(), is(user.getUsername()));
+		assertThat(responseEntity.getBody().getFirstName(), is(user.getFirstName()));
+		assertThat(responseEntity.getBody().getLastName(), is(user.getLastName()));
+		assertThat(responseEntity.getBody().getRoles().size(), is(user.getRoles().size()));
 	}
 
 	@Test
-	public void userLoginExists() throws Exception {
-		this.mockMvc.perform(get(LOGIN_ROOT_URI + "/LoginUserSubmit/admin1"))
-				.andExpect(status().isOk());
-	}
+	public void registerInvalidUser() {
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+		when(service.signup(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getFirstName(), authenticationRequest.getLastName())).thenReturn(Optional.of(user));
+		ResponseEntity<User> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
+				new HttpEntity<>(authenticationRequest),
+				User.class);
 
-	@Test
-	public  void newAdminUserCanRegister() throws Exception{
-		User newUser = new User("user100", "password", "Admin");
-		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(newUser)))
-				.andExpect(status().isOk());
-	}
+		assertThat(responseEntity.getStatusCode().value(), is(400));
 
-	@Test
-	public  void newCustomerUserCanRegister() throws Exception{
-		User newUser = new User("user101", "password", "Customer");
-		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(newUser)))
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public  void newHotelOwnerUserCanRegister() throws Exception{
-		User newUser = new User("user102", "password", "HotelOwner");
-		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(newUser)))
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public  void invalidNewUserCantRegister() throws Exception{
-		User newUser = new User();
-		this.mockMvc.perform(post(LOGIN_ROOT_URI + "/RegisterUserSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(newUser)))
-				.andExpect(status().isConflict());
 	}
 
 }

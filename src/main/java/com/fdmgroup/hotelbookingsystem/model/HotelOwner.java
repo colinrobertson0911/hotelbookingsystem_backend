@@ -26,7 +26,7 @@ public class HotelOwner extends User {
 		super(username, password);
 	}
 
-	public HotelOwner(String username, String password, String firstName, String lastName, String role, List<Hotel> hotels) {
+	public HotelOwner(String username, String password, String firstName, String lastName, Role role, List<Hotel> hotels) {
 		super(username, password, firstName, lastName, role);
 		this.hotels = hotels;
 	}

@@ -1,12 +1,21 @@
-insert into users(userId, username, password, firstName, lastName, role) values (USER_SEQ.nextval, 'admin1', 'password', 'Administrator', 'Administrator', 'ADMIN');
-insert into users(userId, username, password, firstName, lastName, role) values (USER_SEQ.nextval, 'hotelOwner1', 'password', 'Tom', 'Smith', 'HOTELOWNER');
-insert into users(userId, username, password, firstName, lastName, role) values (USER_SEQ.nextval, 'hotelOwner2', 'password', 'Mike', 'Brown', 'HOTELOWNER');
-insert into users(userId, username, password, firstName, lastName, role) values (USER_SEQ.nextval, 'customer1', 'password', 'Harry', 'Wilson', 'CUSTOMER');
+insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'admin1', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Administrator', 'Administrator');
+insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'hotelOwner1', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Tom', 'Smith');
+insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'hotelOwner2', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Mike', 'Brown');
+insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'customer1', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Harry', 'Wilson');
 
 insert into customer(userId, address, email) values (4, '1, somewhere, Glasgow, g24 0nt', 'harry@email.com');
 
 insert into hotelOwner(userId) values (2);
 insert into hotelOwner(userId) values (3);
+
+insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_ADMIN');
+insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_HOTELOWNER');
+insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_CUSTOMER');
+
+insert into user_role(userId, roleId) values (1,1);
+insert into user_role(userId, roleId) values (2,2);
+insert into user_role(userId, roleId) values (3,2);
+insert into user_role(userId, roleId) values (4,3);
 
 insert into hotel(hotelId, hotelName, numOfRooms, address, postcode, city, amenities, starRating, airportTransfers, transferprice, verified) values (HOTEL_SEQ.nextval, 'Travelodge Glasgow', 2,'1 main street', 'g43 6pq', 'Glasgow','none', 3, true, 20, true);
 insert into hotel(hotelId, hotelName, numOfRooms, address, postcode, city, amenities, starRating, airportTransfers, transferprice, verified) values (HOTEL_SEQ.nextval, 'Yotel', 0,'some street','EH71 7FA', 'Edinburgh','bowling alley', 4, true, 20, true);

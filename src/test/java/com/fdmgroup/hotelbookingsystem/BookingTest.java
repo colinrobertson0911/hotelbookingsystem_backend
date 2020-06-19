@@ -117,7 +117,7 @@ class BookingTest {
                 .session(session)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(booking)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 		Assertions.assertEquals(totalPrice, new BigDecimal("380.00"));
 	}
 
@@ -139,7 +139,7 @@ class BookingTest {
                 .session(session)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(booking)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         Assertions.assertEquals(totalPrice, new BigDecimal("140.00"));
 	}
 	

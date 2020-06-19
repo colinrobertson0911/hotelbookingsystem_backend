@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import com.fdmgroup.hotelbookingsystem.services.RoomService;
 @RestController
 @RequestMapping("/hotelOwner")
 @CrossOrigin(origins = "http://localhost:4200")
+@PreAuthorize("hasRole('ROLE_HOTELOWNER')")
 public class HotelOwnerController {
 
 	@Autowired

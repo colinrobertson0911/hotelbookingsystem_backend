@@ -1,8 +1,8 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Entity(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -13,10 +13,19 @@ public class User {
 	@SequenceGenerator(name = "user_gen", sequenceName = "USER_SEQ", allocationSize = 1)
 	private long userId;
 
-	@Column(nullable = false, length = 50, unique = true)
+	public User(String username, String password, String firstName, String lastName, Role role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.roles = Arrays.asList(role);
+	}
+
+	@Column
 	private String username;
 
-	@Column(nullable = false, length = 50)
+	@Column
 	private String password;
 
 	@Column
@@ -25,34 +34,18 @@ public class User {
 	@Column
 	private String lastName;
 
-	@Column
-	private String role;
-	
-	private String token;
-
-
-
 	public User() {
-		super();
 	}
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns =
+	@JoinColumn(name = "userId"), inverseJoinColumns =
+	@JoinColumn(name = "roleId"))
+	private List<Role> roles;
 
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
-	}
-
-	public User(String username, String password, String role) {
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
-
-	public User(String username, String password, String firstName, String lastName, String role) {
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
 	}
 
 	public long getUserId() {
@@ -95,49 +88,71 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof User)) return false;
-		User user = (User) o;
-		return getUserId() == user.getUserId() &&
-				getUsername().equals(user.getUsername()) &&
-				getPassword().equals(user.getPassword()) &&
-				getFirstName().equals(user.getFirstName()) &&
-				getLastName().equals(user.getLastName()) &&
-				getRole().equals(user.getRole());
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getUserId(), getUsername(), getPassword(), getFirstName(), getLastName(), getRole());
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result + (int) (userId ^ (userId >>> 32));
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (userId != other.userId)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "User{" +
-				"userId=" + userId +
-				", username='" + username + '\'' +
-				", password='" + password + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", role='" + role + '\'' +
-				'}';
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", roles=" + roles + "]";
 	}
+
+
 }

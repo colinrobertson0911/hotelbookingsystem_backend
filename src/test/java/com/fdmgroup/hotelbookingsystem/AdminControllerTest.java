@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 
+import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -31,6 +33,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithUserDetails("admin1")
 class AdminControllerTest {
 
 	@Autowired
@@ -86,12 +89,12 @@ class AdminControllerTest {
 	
 	@Test
 	public void addHotelOwner() throws Exception {
-		User user = new User("user5", "password", "Simon", "Wilson", "HOTELOWNER");
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest("user5", "password", "Simon", "Wilson");
 		this.mockMvc.perform(post(ADMIN_ROOT_URI + "/addHotelOwner")
 				.session(session)
 				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(user)))
-				.andExpect(status().isOk());
+				.content(objectMapper.writeValueAsString(authenticationRequest)))
+				.andExpect(status().isCreated());
 	}
 
 	@Test
@@ -101,7 +104,7 @@ class AdminControllerTest {
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(user)))
-				.andExpect(status().isConflict());
+				.andExpect(status().isBadRequest());
 	}
 	
 
@@ -115,7 +118,7 @@ class AdminControllerTest {
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotelOwner)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"userId\":5,\"username\":\"user99\",\"password\":\"password\",\"firstName\":null,\"lastName\":null,\"role\":null}";
+		String expectedResult = "{\"userId\":5,\"username\":\"user99\",\"password\":\"password\",\"firstName\":null,\"lastName\":null,\"roles\":null}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString()); 
 		
