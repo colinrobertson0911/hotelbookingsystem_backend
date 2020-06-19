@@ -44,7 +44,3 @@ insert into customer_bookings(userId, bookingId) values (4, 1);
 insert into customer_bookings(userId, bookingId) values (4, 2);
 insert into customer_bookings(userId, bookingId) values (4, 3);
 insert into customer_bookings(userId, bookingId) values (4, 4);
-
-
-
-
