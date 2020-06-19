@@ -31,7 +31,7 @@ public class Hotel {
 	private String city;
 
 	@Column(length = 8000)
-	private String ammenities;
+	private String amenities;
 
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -65,10 +65,10 @@ public class Hotel {
 		this.address = address;
 		this.postcode = postcode;
 		this.city = city;
-		this.ammenities = ammenities;
+		this.amenities = ammenities;
 	}
 
-	public Hotel(String hotelName, int numOfRooms, String address, String postcode, String city, String ammenities,
+	public Hotel(String hotelName, int numOfRooms, String address, String postcode, String city, String amenities,
 				 List<Bookings> bookings, int starRating, List<Room> room, boolean airportTransfers, int transferPrice,
 				 boolean verified) {
 		super();
@@ -77,7 +77,7 @@ public class Hotel {
 		this.address = address;
 		this.postcode = postcode;
 		this.city = city;
-		this.ammenities = ammenities;
+		this.amenities = amenities;
 		this.bookings = bookings;
 		this.starRating = starRating;
 		this.room = room;
@@ -134,12 +134,12 @@ public class Hotel {
 		this.city = city;
 	}
 
-	public String getAmmenities() {
-		return ammenities;
+	public String getAmenities() {
+		return amenities;
 	}
 
-	public void setAmmenities(String ammenities) {
-		this.ammenities = ammenities;
+	public void setAmenities(String ammenities) {
+		this.amenities = ammenities;
 	}
 
 	public List<Bookings> getBookings() {
@@ -196,7 +196,7 @@ public class Hotel {
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + (airportTransfers ? 1231 : 1237);
-		result = prime * result + ((ammenities == null) ? 0 : ammenities.hashCode());
+		result = prime * result + ((amenities == null) ? 0 : amenities.hashCode());
 		result = prime * result + ((bookings == null) ? 0 : bookings.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + (int) (hotelId ^ (hotelId >>> 32));
@@ -226,10 +226,10 @@ public class Hotel {
 			return false;
 		if (airportTransfers != other.airportTransfers)
 			return false;
-		if (ammenities == null) {
-			if (other.ammenities != null)
+		if (amenities == null) {
+			if (other.amenities != null)
 				return false;
-		} else if (!ammenities.equals(other.ammenities))
+		} else if (!amenities.equals(other.amenities))
 			return false;
 		if (bookings == null) {
 			if (other.bookings != null)
@@ -272,7 +272,7 @@ public class Hotel {
 	@Override
 	public String toString() {
 		return "Hotel [hotelId=" + hotelId + ", hotelName=" + hotelName + ", numOfRooms=" + numOfRooms + ", address="
-				+ address + ", postcode=" + postcode + ", city=" + city + ", ammenities=" + ammenities + ", bookings="
+				+ address + ", postcode=" + postcode + ", city=" + city + ", amenities=" + amenities + ", bookings="
 				+ bookings + ", starRating=" + starRating + ", room=" + room + ", airportTransfers=" + airportTransfers
 				+ ", transferPrice=" + transferPrice + ", verified=" + verified + "]";
 	}
