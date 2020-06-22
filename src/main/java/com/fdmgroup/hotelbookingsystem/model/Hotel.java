@@ -3,6 +3,7 @@ package com.fdmgroup.hotelbookingsystem.model;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.LazyCollection;
@@ -21,7 +22,7 @@ public class Hotel {
 	private String hotelName;
 
 	@Column
-	@Size(min = 1, message = "Hotel must have at least one room")
+	@Min(value = 1, message = "Hotel must have at least one room")
 	private int numOfRooms;
 
 	@Column(unique = true, nullable = false)

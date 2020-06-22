@@ -87,15 +87,13 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isImUsed());
 	}
-
-	@Test
-	public void addHotelThatIsNotValid() throws Exception {
+	
+	@Test public void addHotelThatIsNotValidValidator() throws Exception {
 		Hotel hotel = new Hotel();
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(hotel)))
-				.andExpect(status().isConflict());
+
+		 Set<ConstraintViolation<Hotel>> violations = validator.validate(hotel);
+
+		 assertEquals(violations.size(), 1);
 	}
 
 	@Test
@@ -152,4 +150,5 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 
 		assertEquals(violations.size(), 1);
 	}
+	
 }

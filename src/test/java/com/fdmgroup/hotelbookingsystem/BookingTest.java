@@ -100,8 +100,8 @@ class BookingTest {
 
 	@Test
 	public void test_ThatPriceTotalCanBeCalculated() throws Exception {
-		LocalDate checkInDate = LocalDate.of(2020, 06, 20);
-		LocalDate checkOutDate = LocalDate.of(2020, 06, 27);
+		LocalDate checkInDate = LocalDate.of(2020, 12, 20);
+		LocalDate checkOutDate = LocalDate.of(2020, 12, 27);
 		Hotel hotel = hotelService.findById(1L).get();
 		Bookings booking = new Bookings();
 		booking.setRoomType("STANDARD");
@@ -123,8 +123,8 @@ class BookingTest {
 
 	@Test
 	public void test_ThatPriceTotalCanBeCalculatedLessThanFiveDays() throws Exception {
-		LocalDate checkInDate = LocalDate.of(2020, 06, 20);
-		LocalDate checkOutDate = LocalDate.of(2020, 06, 22);
+		LocalDate checkInDate = LocalDate.of(2020, 12, 20);
+		LocalDate checkOutDate = LocalDate.of(2020, 12, 22);
 		Hotel hotel = hotelService.findById(1L).get();
 		Bookings booking = new Bookings();
 		booking.setRoomType("STANDARD");
