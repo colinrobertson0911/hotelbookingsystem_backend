@@ -11,11 +11,16 @@ insert into hotelOwner(userId) values (3);
 insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_ADMIN');
 insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_HOTELOWNER');
 insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_CUSTOMER');
+insert into role(roleId, roleName) values (ROLE_SEQ.nextval, 'ROLE_VIEWER');
 
 insert into user_role(userId, roleId) values (1,1);
 insert into user_role(userId, roleId) values (2,2);
 insert into user_role(userId, roleId) values (3,2);
 insert into user_role(userId, roleId) values (4,3);
+insert into user_role(userId, roleId) values (1,4);
+insert into user_role(userId, roleId) values (2,4);
+insert into user_role(userId, roleId) values (3,4);
+insert into user_role(userId, roleId) values (4,4);
 
 insert into hotel(hotelId, hotelName, numOfRooms, address, postcode, city, amenities, starRating, airportTransfers, transferprice, verified) values (HOTEL_SEQ.nextval, 'Travelodge Glasgow', 2,'1 main street', 'g43 6pq', 'Glasgow','none', 3, true, 20, true);
 insert into hotel(hotelId, hotelName, numOfRooms, address, postcode, city, amenities, starRating, airportTransfers, transferprice, verified) values (HOTEL_SEQ.nextval, 'Yotel', 1,'some street','EH71 7FA', 'Edinburgh','bowling alley', 4, true, 20, true);

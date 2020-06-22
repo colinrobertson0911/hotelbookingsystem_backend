@@ -25,10 +25,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		
 		//Entry Points
 		http.authorizeRequests()
-				.antMatchers("/admin/AllHotels").permitAll()
+				.antMatchers("/admin/**").permitAll()
+				.antMatchers("/hotelOwner/**").permitAll()
 				.antMatchers("/booking/**").permitAll()
 				.antMatchers("/hotel/**").permitAll()
 				.antMatchers("/login/**").permitAll()
+				.antMatchers("/customer/**").permitAll()
+				.antMatchers("/h2-console/**").permitAll()
 				// Disallow everything else
 				.anyRequest().authenticated();
 		

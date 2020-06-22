@@ -72,6 +72,7 @@ class AdminControllerTest {
 	}
 
 	@Test
+	@WithUserDetails("hotelOwner1")
 	public void singleHotelOwnerOneExists() throws Exception {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/SeeHotelOwner/hotelOwner2")
 				.session(session))
@@ -80,6 +81,7 @@ class AdminControllerTest {
 	}
 
 	@Test
+	@WithUserDetails("hotelOwner1")
 	public void singleHotelOwnerDoesNotExists() throws Exception {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/SeeHotelOwner/hotelOwner3")
 				.session(session))

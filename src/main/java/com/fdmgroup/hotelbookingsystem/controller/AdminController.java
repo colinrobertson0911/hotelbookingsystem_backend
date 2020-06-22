@@ -56,7 +56,7 @@ public class AdminController {
 
 
 	@GetMapping("/SeeHotelOwner/{username}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_HOTELOWNER')")
 	public ResponseEntity<User> getHotelOwner(@PathVariable("username")String username){
 		Optional<User> user = userService.findByUsername(username);
 		if (user.isPresent()){

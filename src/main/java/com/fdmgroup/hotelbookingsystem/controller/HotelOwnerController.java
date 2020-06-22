@@ -27,7 +27,7 @@ import com.fdmgroup.hotelbookingsystem.services.RoomService;
 
 @RestController
 @RequestMapping("/hotelOwner")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @PreAuthorize("hasRole('ROLE_HOTELOWNER')")
 public class HotelOwnerController {
 
@@ -61,7 +61,7 @@ public class HotelOwnerController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
-	@PutMapping("/EditHotelSubmit/")
+	@PutMapping("/EditHotelSubmit")
 	public ResponseEntity<HttpStatus> editHotelSubmit(@RequestBody Hotel hotel) {
 		Optional<Hotel> hotelFromDB = hotelService.findById(hotel.getHotelId());
 		if(hotelFromDB.isPresent()){

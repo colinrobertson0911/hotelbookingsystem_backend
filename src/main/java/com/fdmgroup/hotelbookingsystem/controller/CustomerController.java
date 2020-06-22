@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -19,12 +20,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/customer")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
 
+	@PreAuthorize("hasRole('ROLE_VIEWER')")
 	@GetMapping("/Details/{user}")
 	public ResponseEntity<Customer> userDetails(@PathVariable("user") String user) {
 		Optional<Customer> customer = customerService.findByUsername(user);
