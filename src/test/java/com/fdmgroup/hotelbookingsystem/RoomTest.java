@@ -70,19 +70,6 @@ class RoomTest {
 	}
 
 	@Test
-	public void test_ThatANewRoomCannotBeAdded_whenPriceLowerThan0(){
-		Room room = new Room();
-		room.setRoomType("STANDARD");
-		room.setPrice(new BigDecimal("0.00"));
-		roomService.save(room);
-
-		Set<ConstraintViolation<Room>> violations = validator.validate(room);
-
-		assertEquals(violations.size(), 1);
-	}
-
-
-	@Test
 	public void test_ThatAListOfRoomsCanBeRetrieved() {
 		List<Room> allRooms = roomService.findAll();
 		int numOfRooms = allRooms.size();
