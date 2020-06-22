@@ -10,6 +10,8 @@ import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,10 @@ import com.fdmgroup.hotelbookingsystem.services.RoomService;
 @CrossOrigin(origins = "http://localhost:4200")
 public class HotelController {
 
+	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+
+	Pageable secondPageWithFiveElements = PageRequest.of(1, 5);
+	
 	@Autowired
 	HotelService hotelService;
 
@@ -47,7 +53,7 @@ public class HotelController {
 
 	@GetMapping("/SearchByCity/{city}")
 	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
-		List<Hotel> cityInDB = hotelService.findByCity(city);
+		List<Hotel> cityInDB = hotelService.findByCity(city,firstPageWithTwoElements);
 		if (cityInDB.isEmpty()) {
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
@@ -69,7 +75,7 @@ public class HotelController {
 
 	@GetMapping("/SearchByRoomType/{roomType}")
 	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType){
-		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType);
+		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType,firstPageWithTwoElements);
 		if(hotelsWithRT.isEmpty()){
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
@@ -81,7 +87,7 @@ public class HotelController {
 														   @PathVariable("checkOutDate")@DateTimeFormat(pattern = "yyyy-MM-dd") String checkOutDateString){
 		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		List<Hotel> hotelList = hotelService.findByAvailabilityWithSpecifiedDates(checkInDate, checkOutDate);
+		List<Hotel> hotelList = hotelService.findByAvailabilityWithSpecifiedDates(checkInDate, checkOutDate, firstPageWithTwoElements);
 		if(hotelList.isEmpty()){
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
