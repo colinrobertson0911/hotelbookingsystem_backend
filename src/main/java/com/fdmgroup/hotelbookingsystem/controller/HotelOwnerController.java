@@ -1,6 +1,5 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.model.Room;
 import com.fdmgroup.hotelbookingsystem.services.BookingService;
 import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
@@ -47,6 +44,7 @@ public class HotelOwnerController {
 	@PostMapping("/AddHotelSubmit")
 	public ResponseEntity<HttpStatus> addHotelSubmit(@RequestBody Hotel hotel) {
 		Optional<Hotel> hotelFromDB = hotelService.findByAddress(hotel.getAddress());
+		HotelOwner hotelOwner = hotelOwnerService.findByUsername("hotelOwner1").get();
 		if (hotelFromDB.isPresent()) {
 			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
 		}
@@ -54,7 +52,9 @@ public class HotelOwnerController {
 			hotel.setTransferPrice(0);
 		}
 		try {
+			hotelOwner.getHotels().add(hotel);
 			hotelService.save(hotel);
+			hotelOwnerService.save(hotelOwner);
 		} catch (DataIntegrityViolationException e) {
 			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
 		}
