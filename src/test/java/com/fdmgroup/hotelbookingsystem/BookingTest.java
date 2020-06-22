@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -53,7 +55,9 @@ class BookingTest {
 
     final static String BOOKING_ROOT_URI = "/booking";
 
-    @BeforeEach
+	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+
+	@BeforeEach
     public void setUp() {
         this.session = new MockHttpSession();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -73,7 +77,7 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType(), firstPageWithTwoElements).get(0);
 		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		booking.setExtrasPrice(new BigDecimal("15.00"));
@@ -108,7 +112,7 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType(), firstPageWithTwoElements).get(0);
 		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		booking.setExtrasPrice(new BigDecimal("15.00"));
@@ -131,7 +135,7 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType(), firstPageWithTwoElements).get(0);
 		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);

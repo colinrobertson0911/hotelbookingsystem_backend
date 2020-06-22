@@ -10,6 +10,8 @@ import com.fdmgroup.hotelbookingsystem.services.CustomerService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +30,9 @@ import com.fdmgroup.hotelbookingsystem.services.BookingService;
 @RequestMapping("/booking")
 @CrossOrigin(origins = "http://localhost:4200")
 public class BookingController {
-	
+
+	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+
 	@Autowired
 	BookingService bookingService;
 	@Autowired
@@ -54,7 +58,7 @@ public class BookingController {
 		}
 
 		bookings.setRoomType(booking.getRoomType());
-		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType(),firstPageWithTwoElements).get(0);
 		bookings.setRoomPrice(room.getPrice());
 		bookings.setExtrasPrice(booking.getExtras().getPrice());
 		bookings.setExtras(booking.getExtras());

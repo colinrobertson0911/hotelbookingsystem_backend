@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fdmgroup.hotelbookingsystem.model.User;
@@ -15,16 +17,8 @@ public class UserService {
 	@Autowired
 	UserDao userDao;
 
-	public Optional<User> findByUsernameAndPassword(String username, String password) {
-		return userDao.findByUsernameAndPassword(username, password);
-	}
-
-	public List<User> findAll() {
-		return userDao.findAll();
-	}
-
-	public Optional<User> findByUserId(long userId) {
-		return userDao.findById(userId);
+	public Page<User> findAll(Pageable pageable) {
+		return userDao.findAll(pageable);
 	}
 
 	public User save(User user) {

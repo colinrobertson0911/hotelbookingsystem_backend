@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,8 @@ public class HotelService {
 	@Autowired
 	HotelDao hotelDao;
 
-	public List<Hotel> findAll() {
-		return hotelDao.findAll();
-	}
-
-	public List<Bookings> findAllBookings(String hotelName,Pageable pageable) { 
-		return hotelDao.findAllBookings(hotelName, pageable);
+	public Page<Hotel> findAll(Pageable pageable) {
+		return hotelDao.findAll(pageable);
 	}
 
 	public Optional<Hotel> findByAddress(String address) {
@@ -51,51 +48,12 @@ public class HotelService {
 		return hotelDao.findByRoomType(roomType, pageable);
 	}
 
-	public List<Hotel> findByAvailability() {
-		List<Hotel> availableHotels = new ArrayList<Hotel>();
-		List<Hotel> hotels = findAll();
-		for (Hotel hotel : hotels) {
-			if (hotel.getNumOfRooms() > hotel.getBookings().size()) {
-				availableHotels.add(hotel);
-			}
-		}
-		return availableHotels;
-	}
-
-	public List<Hotel> findByAvailabilityWithCurrentDate() {
-		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
-		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();
-		for (Hotel hotel : availableHotelsByDate) {
-			List<Bookings> hotelBookings = hotel.getBookings();
-			for (Bookings booking : hotelBookings) {
-				if (booking.getCheckInDate().isBefore(LocalDate.now())
-						&& booking.getCheckOutDate().isAfter(LocalDate.now())) {
-					bookingsInDateWindow.add(booking);
-				}
-			}
-			if (hotel.getNumOfRooms() > bookingsInDateWindow.size()) {
-				availableHotelsByDate.add(hotel);
-			}
-		}
-		return availableHotelsByDate;
-	}
 
 	public List<Hotel> findByVerifiedEqualsTrue(Pageable pageable) {
 		return hotelDao.findByVerifiedIsTrue(pageable);
 	}
 	
-	public List<Hotel> findByAvailabilityAndVerified(Pageable pageable) {
-		List<Hotel> availableHotels = new ArrayList<Hotel>();
-		List<Hotel> hotels = findByVerifiedEqualsTrue(pageable);
-		for (Hotel hotel : hotels) {
-			if (hotel.getNumOfRooms() > hotel.getBookings().size()) {
-				availableHotels.add(hotel);
-			}
-		}
 
-		 return availableHotels;
-
-		}
 	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate, Pageable pageable) {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
 		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();

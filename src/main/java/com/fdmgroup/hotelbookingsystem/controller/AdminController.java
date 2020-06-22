@@ -1,6 +1,7 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.User;
@@ -8,6 +9,8 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.UserSecurityService;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +27,8 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
+	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+
 	@Autowired
 	UserService userService;
 
@@ -35,15 +40,15 @@ public class AdminController {
 
 	@GetMapping("/AllOwners")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<List<User>> hotelOwners() {
-		List<User> users = userService.findAll();
+	public ResponseEntity<Page<User>> hotelOwners() {
+		Page<User> users = userService.findAll(firstPageWithTwoElements);
 		List<User> owners = new ArrayList<>();
 		for (User user : users){
 			if (user.getRoles().equals("HOTELOWNER")){
 				owners.add(user);
 			}
 		}
-		return new ResponseEntity<>(owners, HttpStatus.OK);
+		return new ResponseEntity<Page<User>>((Page<User>) owners, HttpStatus.OK);
 	}
 
 	@PostMapping("/addHotelOwner")
@@ -72,14 +77,14 @@ public class AdminController {
 	}
 
 	@GetMapping("/AllHotels")
-	public ResponseEntity<List<Hotel>> allHotels() {
-		return ResponseEntity.ok(hotelService.findAll());
+	public ResponseEntity<Page<Hotel>> allHotels(Pageable pageable) {
+		return ResponseEntity.ok(hotelService.findAll(pageable));
 	}
 
 	@GetMapping("/AllUsers")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<List<User>> allUsers() {
-		return ResponseEntity.ok(userService.findAll());
+	public ResponseEntity<Page<User>> allUsers() {
+		return ResponseEntity.ok(userService.findAll(firstPageWithTwoElements));
 	}
 
 

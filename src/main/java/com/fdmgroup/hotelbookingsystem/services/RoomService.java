@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fdmgroup.hotelbookingsystem.model.Room;
@@ -16,20 +18,20 @@ public class RoomService {
 	@Autowired
 	RoomDao roomDao;
 
-	public List<Room> findAll(){
-		return roomDao.findAll();
+	public Page<Room> findAll(Pageable pageable){
+		return roomDao.findAll(pageable);
 	}
 
 	public Room save(Room room){
 		return roomDao.save(room);
 	}
-	public List<Room> findByRoomType(String roomType) {
-		return roomDao.findByRoomType(roomType);
+	public List<Room> findByRoomType(String roomType, Pageable pageable) {
+		return roomDao.findByRoomType(roomType, pageable);
 	}
 
-	public List<Room> findByPrice(BigDecimal price) {
+	public List<Room> findByPrice(BigDecimal price, Pageable pageable) {
 
-		return roomDao.findByPrice(price);
+		return roomDao.findByPrice(price, pageable);
 	}
 
 	public Optional<Room> findByRoomId(Long roomId) {

@@ -18,6 +18,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.DirtiesContext;
@@ -49,8 +52,11 @@ class RoomTest {
 	@Autowired
 	HotelService hotelService;
 
+	Pageable pageable;
 
 	private static Validator validator;
+
+	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
 
 	@BeforeEach
 	public void createValidator() {
@@ -62,30 +68,30 @@ class RoomTest {
 		Room room = new Room();
 		room.setRoomType("STANDARD");
 		room.setPrice(new BigDecimal("70.00"));
-		int numBeforeAdding = roomService.findAll().size();
+		int numBeforeAdding = roomService.findAll(pageable).getSize();
 		roomService.save(room);
-		int numAfterAdding = roomService.findAll().size();
+		int numAfterAdding = roomService.findAll(pageable).getSize();
 		assertNotEquals(numBeforeAdding, numAfterAdding);
 
 	}
 
 	@Test
 	public void test_ThatAListOfRoomsCanBeRetrieved() {
-		List<Room> allRooms = roomService.findAll();
-		int numOfRooms = allRooms.size();
+		Page<Room> allRooms = roomService.findAll(firstPageWithTwoElements);
+		int numOfRooms = allRooms.getSize();
 		assert (numOfRooms > 0);
 	}
 
 	@Test
 	public void test_FindByRoomType() {
-		List<Room> allRooms = roomService.findByRoomType("STANDARD");
+		List<Room> allRooms = roomService.findByRoomType("STANDARD", firstPageWithTwoElements);
 		int numOfRooms = allRooms.size();
 		assert (numOfRooms > 0);
 	}
 
 	@Test
 	public void test_ThatRoomsCanBefoundByExactPrice() {
-		List<Room> allRooms = roomService.findByPrice(new BigDecimal("120"));
+		List<Room> allRooms = roomService.findByPrice(new BigDecimal("120"), firstPageWithTwoElements);
 		int numOfRooms = allRooms.size();
 		assert (numOfRooms > 0);
 	}

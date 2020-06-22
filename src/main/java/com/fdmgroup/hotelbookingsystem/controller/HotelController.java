@@ -10,6 +10,7 @@ import com.fdmgroup.hotelbookingsystem.exceptions.HotelOwnerNotFoundException;
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,8 +45,6 @@ public class HotelController {
 
 	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
 
-	Pageable secondPageWithFiveElements = PageRequest.of(1, 5);
-	
 	@Autowired
 	HotelService hotelService;
 
@@ -97,8 +96,8 @@ public class HotelController {
 
 	@PreAuthorize("hasRole('ROLE_VIEWER')")
 	@GetMapping("/AllRooms")
-	public ResponseEntity<List<Room>> allRooms(){
-		return ResponseEntity.ok(roomService.findAll());
+	public ResponseEntity<Page<Room>> allRooms(){
+		return ResponseEntity.ok(roomService.findAll(firstPageWithTwoElements));
 	}
 
 }

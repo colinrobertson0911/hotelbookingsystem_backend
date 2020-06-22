@@ -13,10 +13,5 @@ import java.util.Optional;
 
 public interface UserDao extends JpaRepository<User, Long> {
 
-	Optional<User> findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
-
-	Optional<User> findByUsername(@Param("username") String username);
-
-	Optional<User> findByUserId(long userId);
-
+	Optional<User> findByUsername(String username);
 }
