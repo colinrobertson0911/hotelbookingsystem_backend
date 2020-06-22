@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,17 +28,23 @@ public class Bookings {
 	private long bookingId;
 
 	@Column
+	@NotNull
 	private String roomType;
 
 	@Column
 	private String hotel;
 
+	//@Past and @PastOrPresent – validate that a date value is in the past or the past including the present; can be applied to date types including those added in Java 8
+	//@Future and @FutureOrPresent – validates that a date value is in the future, or in the future including the present
+
 	@Column
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@FutureOrPresent
 	private LocalDate checkInDate;
 
 	@Column
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@FutureOrPresent
 	private LocalDate checkOutDate;
 
 	@Column

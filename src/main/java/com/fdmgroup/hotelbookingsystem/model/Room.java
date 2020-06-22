@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 
 @Entity
 public class Room {
@@ -21,6 +24,10 @@ public class Room {
 	private String roomType;
 
 	@Column(nullable = false)
+	@DecimalMin(value =
+			"0.0", inclusive =
+			false)    @Digits(integer=3,
+			fraction=2, message = "Price must not be lower than 0.0")
 	private BigDecimal price;
 
 	public Room() {

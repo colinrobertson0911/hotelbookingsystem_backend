@@ -3,6 +3,7 @@ package com.fdmgroup.hotelbookingsystem.model;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -16,9 +17,11 @@ public class Hotel {
 	private long hotelId;
 
 	@Column(nullable = false)
+	@Size(min = 1, message = "Hotel name must be at least one character")
 	private String hotelName;
 
 	@Column
+	@Size(min = 1, message = "Hotel must have at least one room")
 	private int numOfRooms;
 
 	@Column(unique = true, nullable = false)
@@ -27,7 +30,7 @@ public class Hotel {
 	@Column(nullable = false)
 	private String postcode;
 
-	@Column
+	@Column(nullable = false)
 	private String city;
 
 	@Column(length = 8000)

@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,11 @@ import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.Room;
 import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import static org.junit.Assert.assertEquals;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,11 +53,15 @@ class HotelOwnerTest {
 	MockMvc mockMvc;
 
 	MockHttpSession session;
-	
+
+	private static ValidatorFactory validatorFactory;
+	private static Validator validator;
 final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	
 	@BeforeEach
 	public void setUp() {
+		validatorFactory = Validation.buildDefaultValidatorFactory();
+		validator = validatorFactory.getValidator();
 		this.session = new MockHttpSession();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
 				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
@@ -135,11 +145,11 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	
 	@Test
 	public void addRoomThatIsNotValid() throws Exception {
-		Hotel hotel = new Hotel();
-		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddNewRoomTypeSubmit")
-				.session(session)
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(hotel)))
-				.andExpect(status().isConflict());
+		Room room = new Room("STANDARD", new BigDecimal("0.0"));
+
+		Set<ConstraintViolation<Room>> violations
+				= validator.validate(room);
+
+		assertEquals(violations.size(), 1);
 	}
 }
