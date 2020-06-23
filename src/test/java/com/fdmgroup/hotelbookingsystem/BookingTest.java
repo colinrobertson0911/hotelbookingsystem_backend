@@ -77,7 +77,7 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		Room room = roomService.findByRoomType(booking.getRoomType(), firstPageWithTwoElements).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
 		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		booking.setExtrasPrice(new BigDecimal("15.00"));
@@ -112,7 +112,7 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		Room room = roomService.findByRoomType(booking.getRoomType(), firstPageWithTwoElements).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
 		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		booking.setExtrasPrice(new BigDecimal("15.00"));
@@ -135,7 +135,7 @@ class BookingTest {
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
 		booking.setCheckOutDate(checkOutDate);
-		Room room = roomService.findByRoomType(booking.getRoomType(), firstPageWithTwoElements).get(0);
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
 		booking.setRoomPrice(room.getPrice());
 		booking.setExtras(Extras.AIRPORTTRANSFER);
 		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);

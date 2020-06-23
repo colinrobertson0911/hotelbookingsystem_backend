@@ -46,15 +46,8 @@ public class AdminController {
 
 	@GetMapping("/AllOwners")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Page<User>> hotelOwners(@RequestParam("page")int page, @RequestParam("size")int size) {
-		Page<User> users = userService.findAll(page, size);
-		List<User> owners = new ArrayList<>();
-		for (User user : users){
-			if (user.getRoles().equals("HOTELOWNER")){
-				owners.add(user);
-			}
-		}
-		return new ResponseEntity<Page<User>>((Page<User>) owners, HttpStatus.OK);
+	public ResponseEntity<List<User>> hotelOwners(@RequestParam("page")int page, @RequestParam("size")int size) {
+		return ResponseEntity.ok( userService.findAllHotelOwners(page, size));
 	}
 
 	@PostMapping("/addHotelOwner")
@@ -67,7 +60,7 @@ public class AdminController {
 
 
 	@GetMapping("/SeeHotelOwner/{username}")
-	@PreAuthorize("hasRole('ROLE_HOTELOWNER')")
+	@PreAuthorize("hasRole('ROLE_HOTELOWNER') || hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> getHotelOwner(@PathVariable("username")String username){
 		Optional<User> user = userService.findByUsername(username);
 		if (user.isPresent()){
@@ -83,8 +76,8 @@ public class AdminController {
 	}
 
 	@GetMapping("/AllHotels")
-	public ResponseEntity<Page<Hotel>> allHotels(@RequestParam("page")int page, @RequestParam("value")int value) {
-		return ResponseEntity.ok(hotelService.findAll(page,value));
+	public ResponseEntity<Page<Hotel>> allHotels(@RequestParam("page")int page, @RequestParam("size")int size) {
+		return ResponseEntity.ok(hotelService.findAll(page,size));
 	}
 
 	@GetMapping("/AllUsers")

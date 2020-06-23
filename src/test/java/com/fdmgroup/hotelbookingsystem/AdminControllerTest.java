@@ -66,8 +66,10 @@ class AdminControllerTest {
 	}
 	
 	@Test
+	@WithUserDetails("admin1")
 	public void getAllHotelOwners() throws Exception {
-		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllOwners"))
+		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllOwners")
+				.param("page", "0").param("size", "2"))
 		.andExpect(status().isOk());
 	}
 
@@ -128,14 +130,16 @@ class AdminControllerTest {
 
 	@Test
 	public void getListOfHotels() throws Exception {
-		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllHotels"))
+		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllHotels")
+				.param("page", "0").param("size", "2"))
 		.andExpect(status().isOk());
 				
 	}
 
 	@Test
 	public void getListOfAllUsers() throws Exception {
-		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllUsers"))
+		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllUsers")
+				.param("page", "0").param("size", "2"))
 				.andExpect(status().isOk());
 	}
 

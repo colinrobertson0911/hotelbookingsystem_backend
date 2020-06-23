@@ -68,30 +68,30 @@ class RoomTest {
 		Room room = new Room();
 		room.setRoomType("STANDARD");
 		room.setPrice(new BigDecimal("70.00"));
-		int numBeforeAdding = roomService.findAll(pageable).getSize();
+		int numBeforeAdding = roomService.findAll().size();
 		roomService.save(room);
-		int numAfterAdding = roomService.findAll(pageable).getSize();
+		int numAfterAdding = roomService.findAll().size();
 		assertNotEquals(numBeforeAdding, numAfterAdding);
 
 	}
 
 	@Test
 	public void test_ThatAListOfRoomsCanBeRetrieved() {
-		Page<Room> allRooms = roomService.findAll(firstPageWithTwoElements);
-		int numOfRooms = allRooms.getSize();
+		List<Room> allRooms = roomService.findAll();
+		int numOfRooms = allRooms.size();
 		assert (numOfRooms > 0);
 	}
 
 	@Test
 	public void test_FindByRoomType() {
-		List<Room> allRooms = roomService.findByRoomType("STANDARD", firstPageWithTwoElements);
+		List<Room> allRooms = roomService.findByRoomType("STANDARD");
 		int numOfRooms = allRooms.size();
 		assert (numOfRooms > 0);
 	}
 
 	@Test
 	public void test_ThatRoomsCanBefoundByExactPrice() {
-		List<Room> allRooms = roomService.findByPrice(new BigDecimal("120"), firstPageWithTwoElements);
+		List<Room> allRooms = roomService.findByPrice(new BigDecimal("120"));
 		int numOfRooms = allRooms.size();
 		assert (numOfRooms > 0);
 	}
