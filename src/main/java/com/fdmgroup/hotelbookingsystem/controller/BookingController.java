@@ -1,6 +1,7 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -37,8 +38,12 @@ public class BookingController {
 	CustomerService customerService;
 	
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings booking) {
-		Customer customer = customerService.findByUsername("customer1").get();
+	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings booking, Principal principal) {
+		Optional<Customer> optional = customerService.findByUsername(principal.getName());
+		if (optional.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Customer customer = optional.get();
 		LocalDate checkin = booking.getCheckInDate();
 		LocalDate checkout = booking.getCheckOutDate();
 		Bookings bookings = new Bookings(booking.getRoomType(),

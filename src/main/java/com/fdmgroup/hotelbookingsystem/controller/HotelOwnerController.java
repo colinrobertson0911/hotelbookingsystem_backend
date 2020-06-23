@@ -1,5 +1,6 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,13 @@ public class HotelOwnerController {
 
 
 	@PostMapping("/AddHotelSubmit")
-	public ResponseEntity<HttpStatus> addHotelSubmit(@RequestBody Hotel hotel) {
-		Optional<Hotel> hotelFromDB = hotelService.findByAddress(hotel.getAddress());
-		HotelOwner hotelOwner = hotelOwnerService.findByUsername("hotelOwner1").get();
+	public ResponseEntity<HttpStatus> addHotelSubmit(@RequestBody Hotel hotel, Principal principal) {
+		Optional<Hotel> hotelFromDB = hotelService.findById(hotel.getHotelId());
+		Optional<HotelOwner> optionalHotelOwner = hotelOwnerService.findByUsername(principal.getName());
+		if (optionalHotelOwner.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		HotelOwner hotelOwner = optionalHotelOwner.get();
 		if (hotelFromDB.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.IM_USED);
 		}
