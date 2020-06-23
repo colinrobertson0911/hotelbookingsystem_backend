@@ -20,4 +20,8 @@ public class ReviewService {
     public List<Review> findAll() { return reviewDao.findAll(); }
 
     public Optional<Review> findByReviewId(long reviewId) { return reviewDao.findById(reviewId); }
+
+    public List<Review> findAllByHotelId(long hotelId){
+        return reviewDao.findAllByHotelId(hotelId);
+    }
 }

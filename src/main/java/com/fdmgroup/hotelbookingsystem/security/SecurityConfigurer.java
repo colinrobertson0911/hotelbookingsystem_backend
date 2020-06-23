@@ -32,6 +32,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				.antMatchers("/login/**").permitAll()
 				.antMatchers("/customer/**").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
+				.antMatchers("/reviews/**").permitAll()
 				// Disallow everything else
 				.anyRequest().authenticated();
 		

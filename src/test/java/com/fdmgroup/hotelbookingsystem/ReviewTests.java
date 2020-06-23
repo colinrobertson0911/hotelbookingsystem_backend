@@ -1,8 +1,7 @@
 package com.fdmgroup.hotelbookingsystem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +35,7 @@ import java.util.Optional;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithUserDetails("customer1")
 public class ReviewTests {
 
     @Autowired
@@ -100,7 +100,6 @@ public class ReviewTests {
     }
 
     @Test
-    @WithUserDetails("customer1")
     public void addReviewThatIsValid() throws Exception {
         Hotel hotel = hotelService.findByHotelId(1L);
         User customerId = userService.findByUsername("customer1").get();
@@ -111,8 +110,27 @@ public class ReviewTests {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(review)))
                 .andExpect(status().isCreated());
+    }
 
-        System.out.println(review);
+    @Test
+    public void editReview() throws Exception {
+        Review review = reviewService.findByReviewId(1L).get();
+        review.setMessage("This hotel was ok");
+        this.mockMvc.perform(put(REVIEW_ROOT_URI + "/editReview/1")
+                .session(session)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(review)))
+                .andExpect(status().isOk());
+        Review updatedReview = reviewService.findByReviewId(1L).get();
+        Assertions.assertNotEquals(review, updatedReview);
+    }
+
+    @Test
+    public void viewAllReviewsByHotelId() throws Exception {
+        this.mockMvc.perform(get(REVIEW_ROOT_URI +"/allReviews/1")
+                .session(session)
+                .contentType("application/json"))
+                .andExpect(status().isOk());
     }
 
 }

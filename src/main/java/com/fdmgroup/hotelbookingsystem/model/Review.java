@@ -1,6 +1,9 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -19,10 +22,12 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "hotelId")
+    @JsonIgnore
     private Hotel hotel;
 
     @ManyToOne
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User customer;
 
     @Column

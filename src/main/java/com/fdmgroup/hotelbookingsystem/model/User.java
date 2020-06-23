@@ -1,5 +1,7 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,6 +30,7 @@ public class User {
 	private String username;
 
 	@Column
+	@JsonIgnore
 	private String password;
 
 	@Column
