@@ -1,6 +1,7 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -41,11 +42,6 @@ public class Hotel {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "bookingId")
 	private List<Bookings> bookings;
-
-	@OneToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinColumn(name = "reviewId")
-	private List<Review> reviews;
 
 	@Column
 	private int starRating;
@@ -147,8 +143,8 @@ public class Hotel {
 		return amenities;
 	}
 
-	public void setAmenities(String ammenities) {
-		this.amenities = ammenities;
+	public void setAmenities(String amenities) {
+		this.amenities = amenities;
 	}
 
 	public List<Bookings> getBookings() {
@@ -158,6 +154,7 @@ public class Hotel {
 	public void setBookings(List<Bookings> bookings) {
 		this.bookings = bookings;
 	}
+
 
 	public int getStarRating() {
 		return starRating;
@@ -200,90 +197,46 @@ public class Hotel {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + (airportTransfers ? 1231 : 1237);
-		result = prime * result + ((amenities == null) ? 0 : amenities.hashCode());
-		result = prime * result + ((bookings == null) ? 0 : bookings.hashCode());
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + (int) (hotelId ^ (hotelId >>> 32));
-		result = prime * result + ((hotelName == null) ? 0 : hotelName.hashCode());
-		result = prime * result + numOfRooms;
-		result = prime * result + ((postcode == null) ? 0 : postcode.hashCode());
-		result = prime * result + ((room == null) ? 0 : room.hashCode());
-		result = prime * result + starRating;
-		result = prime * result + transferPrice;
-		result = prime * result + (verified ? 1231 : 1237);
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Hotel hotel = (Hotel) o;
+		return hotelId == hotel.hotelId &&
+				numOfRooms == hotel.numOfRooms &&
+				starRating == hotel.starRating &&
+				airportTransfers == hotel.airportTransfers &&
+				transferPrice == hotel.transferPrice &&
+				verified == hotel.verified &&
+				Objects.equals(hotelName, hotel.hotelName) &&
+				Objects.equals(address, hotel.address) &&
+				Objects.equals(postcode, hotel.postcode) &&
+				Objects.equals(city, hotel.city) &&
+				Objects.equals(amenities, hotel.amenities) &&
+				Objects.equals(bookings, hotel.bookings) &&
+				Objects.equals(room, hotel.room);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Hotel other = (Hotel) obj;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
-			return false;
-		if (airportTransfers != other.airportTransfers)
-			return false;
-		if (amenities == null) {
-			if (other.amenities != null)
-				return false;
-		} else if (!amenities.equals(other.amenities))
-			return false;
-		if (bookings == null) {
-			if (other.bookings != null)
-				return false;
-		} else if (!bookings.equals(other.bookings))
-			return false;
-		if (city == null) {
-			if (other.city != null)
-				return false;
-		} else if (!city.equals(other.city))
-			return false;
-		if (hotelId != other.hotelId)
-			return false;
-		if (hotelName == null) {
-			if (other.hotelName != null)
-				return false;
-		} else if (!hotelName.equals(other.hotelName))
-			return false;
-		if (numOfRooms != other.numOfRooms)
-			return false;
-		if (postcode == null) {
-			if (other.postcode != null)
-				return false;
-		} else if (!postcode.equals(other.postcode))
-			return false;
-		if (room == null) {
-			if (other.room != null)
-				return false;
-		} else if (!room.equals(other.room))
-			return false;
-		if (starRating != other.starRating)
-			return false;
-		if (transferPrice != other.transferPrice)
-			return false;
-		if (verified != other.verified)
-			return false;
-		return true;
+	public int hashCode() {
+		return Objects.hash(hotelId, hotelName, numOfRooms, address, postcode, city, amenities, bookings, starRating, room, airportTransfers, transferPrice, verified);
 	}
 
 	@Override
 	public String toString() {
-		return "Hotel [hotelId=" + hotelId + ", hotelName=" + hotelName + ", numOfRooms=" + numOfRooms + ", address="
-				+ address + ", postcode=" + postcode + ", city=" + city + ", amenities=" + amenities + ", bookings="
-				+ bookings + ", starRating=" + starRating + ", room=" + room + ", airportTransfers=" + airportTransfers
-				+ ", transferPrice=" + transferPrice + ", verified=" + verified + "]";
+		return "Hotel{" +
+				"hotelId=" + hotelId +
+				", hotelName='" + hotelName + '\'' +
+				", numOfRooms=" + numOfRooms +
+				", address='" + address + '\'' +
+				", postcode='" + postcode + '\'' +
+				", city='" + city + '\'' +
+				", amenities='" + amenities + '\'' +
+				", bookings=" + bookings +
+				", starRating=" + starRating +
+				", room=" + room +
+				", airportTransfers=" + airportTransfers +
+				", transferPrice=" + transferPrice +
+				", verified=" + verified +
+				'}';
 	}
-
 }

@@ -74,7 +74,7 @@ public class ReviewTests {
     public void test_ThatReviewCanBeCreated() {
         Review review = new Review();
         review.setHotel(hotelService.findById(1L).get());
-        review.setCustomer(customerService.findByUsername("customer1").get());
+        review.setCustomer(userService.findByUsername("customer1").get());
         review.setMessage("Your hotel sucks");
         review.setScore(2);
 
@@ -89,7 +89,7 @@ public class ReviewTests {
     public void test_ThatAReviewCanBeRetrivedById() {
         Review review = new Review();
         review.setHotel(hotelService.findById(1L).get());
-        review.setCustomer(customerService.findByUsername("customer1").get());
+        review.setCustomer(userService.findByUsername("customer1").get());
         review.setMessage("Your hotel sucks");
         review.setScore(2);
         reviewService.save(review);
@@ -102,10 +102,10 @@ public class ReviewTests {
     @Test
     @WithUserDetails("customer1")
     public void addReviewThatIsValid() throws Exception {
-        Hotel hotelForReview = hotelService.findByHotelId(1L);
-        User customer = userService.findByUsername("customer1").get();
+        Hotel hotel = hotelService.findByHotelId(1L);
+        User customerId = userService.findByUsername("customer1").get();
 
-        Review review = new Review(hotelForReview, customer, "The hotel was great", 5);
+        Review review = new Review(hotel, customerId, "The hotel was great", 5);
         this.mockMvc.perform(post(REVIEW_ROOT_URI + "/createReview")
                 .session(session)
                 .contentType("application/json")

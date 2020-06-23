@@ -2,8 +2,10 @@ insert into users(userId, username, password, firstName, lastName) values (USER_
 insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'hotelOwner1', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Tom', 'Smith');
 insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'hotelOwner2', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Mike', 'Brown');
 insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'customer1', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Harry', 'Wilson');
+insert into users(userId, username, password, firstName, lastName) values (USER_SEQ.nextval, 'customer2', '$2a$12$ax483KXnei/I7jStkI.xwe/EMXubNNN6/fhqzmXIRe3nY8pfhbEfq', 'Sally', 'Wilson');
 
 insert into customer(userId, address, email) values (4, '1, somewhere, Glasgow, g24 0nt', 'harry@email.com');
+insert into customer(userId, address, email) values (5, '1, somewhere, Glasgow, g24 0nt', 'sally@email.com');
 
 insert into hotelOwner(userId) values (2);
 insert into hotelOwner(userId) values (3);
@@ -58,3 +60,6 @@ insert into customer_bookings(userId, bookingId) values (4, 1);
 insert into customer_bookings(userId, bookingId) values (4, 2);
 insert into customer_bookings(userId, bookingId) values (4, 3);
 insert into customer_bookings(userId, bookingId) values (4, 4);
+
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was great', 5);
+

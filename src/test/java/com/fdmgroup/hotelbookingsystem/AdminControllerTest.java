@@ -117,12 +117,12 @@ class AdminControllerTest {
 	public void editHotelOwner() throws Exception {
 		HotelOwner hotelOwner = new HotelOwner("user6", "password");
 		hotelOwner.setUsername("user99");
-		ResultActions mvcResult = this.mockMvc.perform(put(ADMIN_ROOT_URI + "/EditHotelOwnerSubmit")
+		ResultActions mvcResult = this.mockMvc.perform(put(ADMIN_ROOT_URI + "/EditUser")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotelOwner)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"userId\":5,\"username\":\"user99\",\"password\":\"password\",\"firstName\":null,\"lastName\":null,\"roles\":null}";
+		String expectedResult = "{\"userId\":6,\"username\":\"user99\",\"password\":\"password\",\"firstName\":null,\"lastName\":null,\"roles\":null}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString()); 
 		

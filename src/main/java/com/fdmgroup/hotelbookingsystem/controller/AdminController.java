@@ -69,7 +69,7 @@ public class AdminController {
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
-	@PutMapping("/EditHotelOwnerSubmit")
+	@PutMapping("/EditUser")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> hotelOwnersUpdated(@RequestBody User user) {
 		return ResponseEntity.ok(userService.save(user));

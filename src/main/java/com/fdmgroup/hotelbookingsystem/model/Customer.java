@@ -22,11 +22,6 @@ public class Customer extends User {
     @JoinTable(name = "customer_bookings", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "bookingId"))
     private List<Bookings> bookings;
 
-    @OneToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "reviewId")
-    private List<Review> reviews;
-
     public Customer() {
         super();
     }
@@ -36,7 +31,6 @@ public class Customer extends User {
         this.address = address;
         this.email = email;
         this.bookings = new ArrayList<>();
-        this.reviews = new ArrayList<>();
     }
 
     public String getAddress() {
@@ -63,13 +57,7 @@ public class Customer extends User {
         this.bookings = bookings;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -79,13 +67,12 @@ public class Customer extends User {
         Customer customer = (Customer) o;
         return Objects.equals(address, customer.address) &&
                 Objects.equals(email, customer.email) &&
-                Objects.equals(bookings, customer.bookings) &&
-                Objects.equals(reviews, customer.reviews);
+                Objects.equals(bookings, customer.bookings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), address, email, bookings, reviews);
+        return Objects.hash(super.hashCode(), address, email, bookings);
     }
 
     @Override
@@ -94,7 +81,6 @@ public class Customer extends User {
                 "address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", bookings=" + bookings +
-                ", reviews=" + reviews +
                 '}';
     }
 }

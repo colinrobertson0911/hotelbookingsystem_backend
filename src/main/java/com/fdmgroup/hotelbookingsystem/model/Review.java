@@ -17,13 +17,12 @@ public class Review {
     @SequenceGenerator(name = "review_gen",sequenceName = "REVIEW_SEQ", allocationSize = 1)
     private long reviewId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 
-
-    @OneToOne
-    @JoinColumn(name = "customerId")
+    @ManyToOne
+    @JoinColumn(name = "userId")
     private User customer;
 
     @Column
@@ -39,13 +38,12 @@ public class Review {
     public Review() {
     }
 
-    public Review(Hotel hotel, User customer, String message, int score) {
+    public Review(Hotel hotel, User customer, @NotNull String message, @NotNull @Min(value = 0) @Max(value = 5) int score) {
         this.hotel = hotel;
         this.customer = customer;
         this.message = message;
         this.score = score;
     }
-
 
     public long getReviewId() {
         return reviewId;
@@ -67,7 +65,7 @@ public class Review {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(User customer) {
         this.customer = customer;
     }
 
@@ -94,9 +92,9 @@ public class Review {
         Review review = (Review) o;
         return reviewId == review.reviewId &&
                 score == review.score &&
-                hotel.equals(review.hotel) &&
-                customer.equals(review.customer) &&
-                message.equals(review.message);
+                Objects.equals(hotel, review.hotel) &&
+                Objects.equals(customer, review.customer) &&
+                Objects.equals(message, review.message);
     }
 
     @Override
