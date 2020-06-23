@@ -34,9 +34,6 @@ public class Bookings {
 	@Column
 	private String hotel;
 
-	//@Past and @PastOrPresent – validate that a date value is in the past or the past including the present; can be applied to date types including those added in Java 8
-	//@Future and @FutureOrPresent – validates that a date value is in the future, or in the future including the present
-
 	@Column
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@FutureOrPresent

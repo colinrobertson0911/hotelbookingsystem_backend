@@ -76,4 +76,5 @@ public class HotelService {
 		return availableHotelsByDate;
 	}
 
+	public Hotel findByHotelId(long hotelId) { return hotelDao.findByHotelId(hotelId); }
 }

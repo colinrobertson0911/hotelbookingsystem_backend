@@ -42,6 +42,11 @@ public class Hotel {
 	@JoinColumn(name = "bookingId")
 	private List<Bookings> bookings;
 
+	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name = "reviewId")
+	private List<Review> reviews;
+
 	@Column
 	private int starRating;
 

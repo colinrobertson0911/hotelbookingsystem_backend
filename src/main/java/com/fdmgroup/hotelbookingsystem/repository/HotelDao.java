@@ -26,5 +26,6 @@ public interface HotelDao extends JpaRepository<Hotel, Long> {
 	Optional<Hotel> findByHotelName(String hotelName);
 	
 	List<Hotel> findByVerifiedIsTrue();
-	
+
+	Hotel findByHotelId(long hotelId);
 }
