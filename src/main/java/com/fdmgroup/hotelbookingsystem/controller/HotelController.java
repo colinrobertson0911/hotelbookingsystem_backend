@@ -52,8 +52,8 @@ public class HotelController {
 	RoomService roomService;
 
 	@GetMapping("/SearchByCity/{city}")
-	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city) {
-		List<Hotel> cityInDB = hotelService.findByCity(city,firstPageWithTwoElements);
+	public ResponseEntity<List<Hotel>> searchByCity(@PathVariable("city") String city, @RequestParam("page")int page, @RequestParam("size")int size) {
+		List<Hotel> cityInDB = hotelService.findByCity(city, page, size);
 		if (cityInDB.isEmpty()) {
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
@@ -74,8 +74,8 @@ public class HotelController {
 
 
 	@GetMapping("/SearchByRoomType/{roomType}")
-	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType){
-		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType,firstPageWithTwoElements);
+	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType,@RequestParam("page")int page, @RequestParam("size")int size){
+		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType,page,size);
 		if(hotelsWithRT.isEmpty()){
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
@@ -84,10 +84,11 @@ public class HotelController {
 
 	@GetMapping("/SearchByAvailability/{checkInDate},{checkOutDate}")
 	public ResponseEntity<List<Hotel>> searchByAvailability(@PathVariable("checkInDate")@DateTimeFormat(pattern = "yyyy-MM-dd") String checkInDateString,
-														   @PathVariable("checkOutDate")@DateTimeFormat(pattern = "yyyy-MM-dd") String checkOutDateString){
+														   @PathVariable("checkOutDate")@DateTimeFormat(pattern = "yyyy-MM-dd") String checkOutDateString
+														   ){
 		LocalDate checkInDate = LocalDate.parse(checkInDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate checkOutDate = LocalDate.parse(checkOutDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		List<Hotel> hotelList = hotelService.findByAvailabilityWithSpecifiedDates(checkInDate, checkOutDate, firstPageWithTwoElements);
+		List<Hotel> hotelList = hotelService.findByAvailabilityWithSpecifiedDates(checkInDate, checkOutDate);
 		if(hotelList.isEmpty()){
 			return new ResponseEntity<List<Hotel>>(HttpStatus.NO_CONTENT);
 		}
@@ -96,8 +97,8 @@ public class HotelController {
 
 	@PreAuthorize("hasRole('ROLE_VIEWER')")
 	@GetMapping("/AllRooms")
-	public ResponseEntity<Page<Room>> allRooms(){
-		return ResponseEntity.ok(roomService.findAll(firstPageWithTwoElements));
+	public ResponseEntity<List<Room>> allRooms(){
+		return ResponseEntity.ok(roomService.findAll());
 	}
 
 }

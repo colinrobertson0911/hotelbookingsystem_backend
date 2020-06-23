@@ -18,20 +18,20 @@ public class RoomService {
 	@Autowired
 	RoomDao roomDao;
 
-	public Page<Room> findAll(Pageable pageable){
-		return roomDao.findAll(pageable);
+	public List<Room> findAll(){
+		return roomDao.findAll();
 	}
 
 	public Room save(Room room){
 		return roomDao.save(room);
 	}
-	public List<Room> findByRoomType(String roomType, Pageable pageable) {
-		return roomDao.findByRoomType(roomType, pageable);
+	public List<Room> findByRoomType(String roomType) {
+		return roomDao.findByRoomType(roomType);
 	}
 
-	public List<Room> findByPrice(BigDecimal price, Pageable pageable) {
+	public List<Room> findByPrice(BigDecimal price) {
 
-		return roomDao.findByPrice(price, pageable);
+		return roomDao.findByPrice(price);
 	}
 
 	public Optional<Room> findByRoomId(Long roomId) {

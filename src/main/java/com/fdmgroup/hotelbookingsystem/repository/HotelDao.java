@@ -25,6 +25,6 @@ public interface HotelDao extends JpaRepository<Hotel, Long> {
 
 	Optional<Hotel> findByHotelName(String hotelName);
 	
-	List<Hotel> findByVerifiedIsTrue(Pageable pageable);
+	List<Hotel> findByVerifiedIsTrue();
 	
 }

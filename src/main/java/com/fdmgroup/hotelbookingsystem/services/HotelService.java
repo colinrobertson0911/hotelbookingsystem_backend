@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,9 @@ public class HotelService {
 	@Autowired
 	HotelDao hotelDao;
 
-	public Page<Hotel> findAll(Pageable pageable) {
-		return hotelDao.findAll(pageable);
+	public Page<Hotel> findAll(int page, int size) {
+		Pageable pageRequest = PageRequest.of(page, size);
+		return hotelDao.findAll(pageRequest);
 	}
 
 	public Optional<Hotel> findByAddress(String address) {
@@ -40,24 +42,26 @@ public class HotelService {
 		return hotelDao.findById(hotelId);
 	}
 
-	public List<Hotel> findByCity(String city, Pageable pageable) {
-		return hotelDao.findByCity(city, pageable);
+	public List<Hotel> findByCity(String city, int page, int size) {
+		Pageable pageRequest = PageRequest.of(page, size);
+		return hotelDao.findByCity(city, pageRequest);
 	}
 
-	public List<Hotel> findByRoomType(String roomType, Pageable pageable) {
-		return hotelDao.findByRoomType(roomType, pageable);
+	public List<Hotel> findByRoomType(String roomType, int page, int size) {
+		Pageable pageRequest = PageRequest.of(page, size);
+		return hotelDao.findByRoomType(roomType, pageRequest);
 	}
 
 
-	public List<Hotel> findByVerifiedEqualsTrue(Pageable pageable) {
-		return hotelDao.findByVerifiedIsTrue(pageable);
+	public List<Hotel> findByVerifiedEqualsTrue() {
+		return hotelDao.findByVerifiedIsTrue();
 	}
 	
 
-	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate) {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
 		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();
-		List<Hotel> hotels = findByVerifiedEqualsTrue(pageable);
+		List<Hotel> hotels = findByVerifiedEqualsTrue();
 		for (Hotel hotel : hotels) {
 			List<Bookings> hotelBookings = hotel.getBookings();
 			for (Bookings booking : hotelBookings) {
