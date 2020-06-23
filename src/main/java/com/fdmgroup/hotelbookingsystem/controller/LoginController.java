@@ -1,7 +1,6 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
 import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
-import com.fdmgroup.hotelbookingsystem.model.Customer;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.services.UserSecurityService;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
@@ -46,9 +45,9 @@ public class LoginController {
 	public ResponseEntity<User> userDetails(@PathVariable("username") String username) {
 		Optional<User> user = userService.findByUsername(username);
 		if (user.isEmpty()) {
-			return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
 
 }

@@ -1,15 +1,12 @@
 package com.fdmgroup.hotelbookingsystem.repository;
 
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 public interface HotelOwnerDao extends JpaRepository<HotelOwner, Long> {
 
-	Optional<HotelOwner> findByUsernameAndPassword(String username, String password);
 
 	Optional<HotelOwner> findByUsername(String username);
 	

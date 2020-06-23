@@ -4,10 +4,6 @@ import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
 import com.fdmgroup.hotelbookingsystem.model.Role;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.services.UserSecurityService;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,17 +16,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.POST;

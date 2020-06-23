@@ -1,16 +1,13 @@
 package com.fdmgroup.hotelbookingsystem.services;
 
+import com.fdmgroup.hotelbookingsystem.model.Room;
+import com.fdmgroup.hotelbookingsystem.repository.RoomDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import com.fdmgroup.hotelbookingsystem.model.Room;
-import com.fdmgroup.hotelbookingsystem.repository.RoomDao;
 
 @Service
 public class RoomService {

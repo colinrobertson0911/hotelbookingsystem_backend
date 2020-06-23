@@ -1,14 +1,10 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.model.User;
+import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
-import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
-import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -122,7 +116,7 @@ class AdminControllerTest {
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotelOwner)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"userId\":6,\"username\":\"user99\",\"password\":\"password\",\"firstName\":null,\"lastName\":null,\"roles\":null}";
+		String expectedResult = "{\"userId\":6,\"username\":\"user99\",\"firstName\":null,\"lastName\":null,\"roles\":null}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString()); 
 		

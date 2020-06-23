@@ -50,7 +50,7 @@ public class BookingController {
 				new BigDecimal(0),
 				Extras.NO_EXTRAS);
 		if (checkout.isBefore(checkin)){
-			return new ResponseEntity<Bookings>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		bookings.setRoomType(booking.getRoomType());
@@ -68,9 +68,9 @@ public class BookingController {
 			customerService.save(customer);
 
 		} catch(DataIntegrityViolationException e){
-			return new ResponseEntity<Bookings>(HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<Bookings>(bookings, HttpStatus.CREATED);
+		return new ResponseEntity<>(bookings, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/BookingConfirmation/{bookingId}")

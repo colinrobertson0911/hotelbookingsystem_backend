@@ -14,10 +14,6 @@ public class CustomerService {
     @Autowired
     CustomerDao customerDao;
 
-    public Optional<Customer> findByUsernameAndPassword(String username, String password) {
-        return customerDao.findByUsernameAndPassword(username, password);
-    }
-
     public Optional<Customer> findByUsername(String username) {
         return customerDao.findByUsername(username);
     }

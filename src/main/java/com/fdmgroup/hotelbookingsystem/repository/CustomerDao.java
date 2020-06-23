@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface CustomerDao extends JpaRepository<Customer, Long> {
 
-    Optional<Customer> findByUsernameAndPassword(String username, String password);
-
     Optional<Customer> findByUsername(String username);
 
 }

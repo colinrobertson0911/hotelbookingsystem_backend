@@ -46,7 +46,7 @@ public class HotelOwnerController {
 		Optional<Hotel> hotelFromDB = hotelService.findByAddress(hotel.getAddress());
 		HotelOwner hotelOwner = hotelOwnerService.findByUsername("hotelOwner1").get();
 		if (hotelFromDB.isPresent()) {
-			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
+			return new ResponseEntity<>(HttpStatus.IM_USED);
 		}
 		if (hotel.isAirportTransfers() != true) {
 			hotel.setTransferPrice(0);
@@ -56,7 +56,7 @@ public class HotelOwnerController {
 			hotelService.save(hotel);
 			hotelOwnerService.save(hotelOwner);
 		} catch (DataIntegrityViolationException e) {
-			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
@@ -78,12 +78,12 @@ public class HotelOwnerController {
 	public ResponseEntity<HttpStatus> newRoomTypeSubmit(@RequestBody Room room) {
 		Optional<Room> roomFromDB = roomService.findByRoomTypeAndPrice(room.getRoomType(), room.getPrice());
 		if (roomFromDB.isPresent()) {
-			return new ResponseEntity<HttpStatus> (HttpStatus.IM_USED);
+			return new ResponseEntity<>(HttpStatus.IM_USED);
 		}
 		try {
 			roomService.save(room);
 		} catch (DataIntegrityViolationException e) {
-			return new ResponseEntity<HttpStatus> (HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}

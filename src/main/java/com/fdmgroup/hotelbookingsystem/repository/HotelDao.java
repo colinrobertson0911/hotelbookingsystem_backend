@@ -1,16 +1,13 @@
 package com.fdmgroup.hotelbookingsystem.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
-
+import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import java.util.List;
+import java.util.Optional;
 
 public interface HotelDao extends JpaRepository<Hotel, Long> {
 

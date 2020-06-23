@@ -1,23 +1,12 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fdmgroup.hotelbookingsystem.controller.utility.FormatWithLocale;
+import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 public class Bookings {

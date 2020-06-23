@@ -1,6 +1,5 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
 import com.fdmgroup.hotelbookingsystem.model.Review;
 import com.fdmgroup.hotelbookingsystem.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,9 @@ public class ReviewController {
         try {
             reviewService.save(review);
         }catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<Review>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<Review>(review, HttpStatus.CREATED);
+        return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PutMapping("/editReview/{reviewId}")

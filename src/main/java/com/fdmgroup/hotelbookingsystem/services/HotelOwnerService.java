@@ -15,11 +15,6 @@ public class HotelOwnerService {
 	@Autowired
 	HotelOwnerDao hotelOwnerDao;
 
-
-	public Optional<HotelOwner> findByUsernameAndPassword(String username, String password) {
-		return hotelOwnerDao.findByUsernameAndPassword(username, password);
-	}
-
 	public Optional<HotelOwner> findByUsername(String username) {
 		return hotelOwnerDao.findByUsername(username);
 	}
