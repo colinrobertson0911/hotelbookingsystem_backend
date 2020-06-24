@@ -29,6 +29,33 @@ public class BookingController {
 	RoomService roomService;
 	@Autowired
 	CustomerService customerService;
+
+	@PostMapping("/PriceTotal")
+	public ResponseEntity<BigDecimal> priceTotal(@RequestBody Booking booking) {
+		LocalDate checkin = booking.getCheckInDate();
+		LocalDate checkout = booking.getCheckOutDate();
+		Booking bookings = new Booking(booking.getRoomType(),
+				booking.getHotel(),
+				checkin,
+				checkout,
+				new BigDecimal(0),
+				new BigDecimal(0),
+				new BigDecimal(0),
+				Extras.NO_EXTRAS);
+		if (checkout.isBefore(checkin)){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		bookings.setRoomType(booking.getRoomType());
+		Room room = roomService.findByRoomType(booking.getRoomType()).get(0);
+		bookings.setRoomPrice(room.getPrice());
+		bookings.setExtrasPrice(booking.getExtras().getPrice());
+		bookings.setExtras(booking.getExtras());
+		BigDecimal finalTotal = bookingService.calculateTotalPrice(bookings);
+		bookings.setTotalPrice(finalTotal);
+
+		return new ResponseEntity<>(bookings.getTotalPrice(), HttpStatus.OK);
+	}
 	
 	@PostMapping("/BookingSubmit")
 	public ResponseEntity <Booking> bookingSubmit(@RequestBody Booking booking, Principal principal) {

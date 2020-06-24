@@ -57,7 +57,6 @@ class BookingTest {
 
     final static String BOOKING_ROOT_URI = "/booking";
 
-	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
 
 	@BeforeEach
     public void setUp() {
@@ -66,7 +65,6 @@ class BookingTest {
                 .apply(SharedHttpSessionConfigurer.sharedHttpSession())
                 .build();
     }
-
 
 
 	@Test

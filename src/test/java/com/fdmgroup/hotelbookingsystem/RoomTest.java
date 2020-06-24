@@ -37,7 +37,6 @@ class RoomTest {
 
 	private static Validator validator;
 
-	Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
 
 	@BeforeEach
 	public void createValidator() {
