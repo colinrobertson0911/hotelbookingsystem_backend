@@ -46,20 +46,24 @@ insert into hotelOwner_hotel(userId, hotelId) values (2, 2);
 insert into hotelOwner_hotel(userId, hotelId) values (3, 3);
 insert into hotelOwner_hotel(userId, hotelId) values (3, 4);
 
-insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/23', 'yyyy/mm/dd'), TO_DATE('2020/07/27', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travelodge Glasgow', '60.00', '20.00','440.00');
-insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/15', 'yyyy/mm/dd'), TO_DATE('2020/07/25', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travelodge Glasgow', '60.00', '20.00','440.00');
-insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/20', 'yyyy/mm/dd'), TO_DATE('2020/07/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
-insert into bookings(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/20', 'yyyy/mm/dd'), TO_DATE('2020/07/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
+insert into booking(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/23', 'yyyy/mm/dd'), TO_DATE('2020/07/27', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travelodge Glasgow', '60.00', '20.00','440.00');
+insert into booking(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/15', 'yyyy/mm/dd'), TO_DATE('2020/07/25', 'yyyy/mm/dd'), 'STANDARD', 'AIRPORTTRANSFER', 'Travelodge Glasgow', '60.00', '20.00','440.00');
+insert into booking(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/20', 'yyyy/mm/dd'), TO_DATE('2020/07/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
+insert into booking(bookingId, checkInDate, checkOutDate, roomType, extras, hotel, roomPrice, extrasPrice, totalPrice) values (BOOKING_SEQ.nextval, TO_DATE('2020/07/20', 'yyyy/mm/dd'), TO_DATE('2020/07/30', 'yyyy/mm/dd'), 'STANDARD', 'NO_EXTRAS', 'Radisson Blue', '60.00', '0.00','540.00');
 
-insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (1, 1);
-insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (1, 2);
-insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (3, 3);
-insert into hotel_bookings(hotel_hotelId, bookings_bookingId) values (3, 4);
+insert into hotel_booking(hotelId, bookingId) values (1, 1);
+insert into hotel_booking(hotelId, bookingId) values (1, 2);
+insert into hotel_booking(hotelId, bookingId) values (3, 3);
+insert into hotel_booking(hotelId, bookingId) values (3, 4);
 
-insert into customer_bookings(userId, bookingId) values (4, 1);
-insert into customer_bookings(userId, bookingId) values (4, 2);
-insert into customer_bookings(userId, bookingId) values (4, 3);
-insert into customer_bookings(userId, bookingId) values (4, 4);
+insert into customer_booking(userId, bookingId) values (4, 1);
+insert into customer_booking(userId, bookingId) values (4, 2);
+insert into customer_booking(userId, bookingId) values (4, 3);
+insert into customer_booking(userId, bookingId) values (4, 4);
 
 insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was great', 5);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was ok', 4);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was brilliant', 5);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was dirty', 2);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was awful', 1);
 

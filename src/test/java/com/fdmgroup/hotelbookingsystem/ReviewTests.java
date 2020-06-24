@@ -131,4 +131,13 @@ public class ReviewTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void getAverageReview() throws Exception {
+        this.mockMvc.perform(get(REVIEW_ROOT_URI + "/averageReview/1")
+            .session(session)
+            .contentType("application/json"))
+                .andExpect(status().isOk());
+
+    }
+
 }

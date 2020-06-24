@@ -1,7 +1,7 @@
 package com.fdmgroup.hotelbookingsystem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
+import com.fdmgroup.hotelbookingsystem.model.Booking;
 import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.Room;
@@ -72,7 +72,7 @@ class BookingTest {
 		LocalDate checkInDate = LocalDate.of(2020, 06, 29);
 		LocalDate checkOutDate = LocalDate.of(2020, 06, 27);
 		Hotel hotel = hotelService.findById(1L).get();
-		Bookings booking = new Bookings();
+		Booking booking = new Booking();
 		booking.setRoomType("STANDARD");
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
@@ -107,7 +107,7 @@ class BookingTest {
 		LocalDate checkInDate = LocalDate.of(2020, 12, 20);
 		LocalDate checkOutDate = LocalDate.of(2020, 12, 27);
 		Hotel hotel = hotelService.findById(1L).get();
-		Bookings booking = new Bookings();
+		Booking booking = new Booking();
 		booking.setRoomType("STANDARD");
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);
@@ -130,7 +130,7 @@ class BookingTest {
 		LocalDate checkInDate = LocalDate.of(2020, 12, 20);
 		LocalDate checkOutDate = LocalDate.of(2020, 12, 22);
 		Hotel hotel = hotelService.findById(1L).get();
-		Bookings booking = new Bookings();
+		Booking booking = new Booking();
 		booking.setRoomType("STANDARD");
 		booking.setHotel(hotel.getHotelName());
 		booking.setCheckInDate(checkInDate);

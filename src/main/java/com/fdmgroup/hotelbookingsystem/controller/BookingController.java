@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
+import com.fdmgroup.hotelbookingsystem.model.Booking;
 import com.fdmgroup.hotelbookingsystem.model.Customer;
 import com.fdmgroup.hotelbookingsystem.model.Extras;
 import com.fdmgroup.hotelbookingsystem.model.Room;
@@ -37,11 +37,11 @@ public class BookingController {
 	CustomerService customerService;
 	
 	@PostMapping("/BookingSubmit")
-	public ResponseEntity <Bookings> bookingSubmit(@RequestBody Bookings booking) {
+	public ResponseEntity <Booking> bookingSubmit(@RequestBody Booking booking) {
 		Customer customer = customerService.findByUsername("customer1").get();
 		LocalDate checkin = booking.getCheckInDate();
 		LocalDate checkout = booking.getCheckOutDate();
-		Bookings bookings = new Bookings(booking.getRoomType(),
+		Booking bookings = new Booking(booking.getRoomType(),
 				booking.getHotel(),
 				checkin,
 				checkout,
@@ -74,8 +74,8 @@ public class BookingController {
 	}
 
 	@GetMapping("/BookingConfirmation/{bookingId}")
-	public ResponseEntity<Bookings> bookingConfirmationSubmit(@PathVariable("bookingId") long bookingId) {
-		Optional<Bookings> booking = bookingService.retrieveOne(bookingId);
+	public ResponseEntity<Booking> bookingConfirmationSubmit(@PathVariable("bookingId") long bookingId) {
+		Optional<Booking> booking = bookingService.retrieveOne(bookingId);
 		if (booking.isPresent()) {
 			return new ResponseEntity<>(booking.get(), HttpStatus.OK);
 		}

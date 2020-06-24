@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 @RestController
@@ -39,5 +40,10 @@ public class ReviewController {
     @GetMapping("/allReviews/{hotelId}")
     public ResponseEntity<List<Review>> allReviews(@PathVariable("hotelId") Long hotelId){
         return ResponseEntity.ok(reviewService.findAllByHotelId(hotelId));
+    }
+
+    @GetMapping("/averageReview/{hotelId}")
+    public AbstractMap.SimpleEntry<String, Double> getAverage(@PathVariable("hotelId")Long hotelId){
+        return new AbstractMap.SimpleEntry<>("average", reviewService.getAverageScore(hotelId));
     }
 }

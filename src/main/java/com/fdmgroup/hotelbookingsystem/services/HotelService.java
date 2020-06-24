@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
+import com.fdmgroup.hotelbookingsystem.model.Booking;
 import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.repository.HotelDao;
 
@@ -60,16 +60,16 @@ public class HotelService {
 
 	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate) {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();
-		List<Bookings> bookingsInDateWindow = new ArrayList<Bookings>();
+		List<Booking> bookingInDateWindow = new ArrayList<Booking>();
 		List<Hotel> hotels = findByVerifiedEqualsTrue();
 		for (Hotel hotel : hotels) {
-			List<Bookings> hotelBookings = hotel.getBookings();
-			for (Bookings booking : hotelBookings) {
+			List<Booking> hotelBookings = hotel.getBookings();
+			for (Booking booking : hotelBookings) {
 				if (!booking.getCheckInDate().isAfter(endDate) && !booking.getCheckOutDate().isBefore(startDate)) {
-					bookingsInDateWindow.add(booking);
+					bookingInDateWindow.add(booking);
 				}
 			}
-			if (hotel.getNumOfRooms() > bookingsInDateWindow.size()) {
+			if (hotel.getNumOfRooms() > bookingInDateWindow.size()) {
 				availableHotelsByDate.add(hotel);
 			}
 		}

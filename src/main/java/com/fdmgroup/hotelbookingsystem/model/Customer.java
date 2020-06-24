@@ -19,8 +19,8 @@ public class Customer extends User {
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "customer_bookings", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "bookingId"))
-    private List<Bookings> bookings;
+    @JoinTable(name = "customer_booking", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "bookingId"))
+    private List<Booking> bookings;
 
     public Customer() {
         super();
@@ -49,11 +49,11 @@ public class Customer extends User {
         this.email = email;
     }
 
-    public List<Bookings> getBookings() {
+    public List<Booking> getBookings() {
         return bookings;
     }
 
-    public void setBookings(List<Bookings> bookings) {
+    public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
     }
 

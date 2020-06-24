@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-public class Bookings {
+public class Booking {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "booking_gen")
@@ -45,12 +45,12 @@ public class Bookings {
 	@Enumerated(EnumType.STRING)
 	private Extras extras;
 
-	public Bookings() {
+	public Booking() {
 		super();
 	}
 
-	public Bookings(String roomType, String hotel, LocalDate checkInDate, LocalDate checkOutDate, BigDecimal roomPrice,
-			BigDecimal extrasPrice, BigDecimal totalPrice, Extras extras) {
+	public Booking(String roomType, String hotel, LocalDate checkInDate, LocalDate checkOutDate, BigDecimal roomPrice,
+				   BigDecimal extrasPrice, BigDecimal totalPrice, Extras extras) {
 		super();
 		this.roomType = roomType;
 		this.hotel = hotel;
@@ -159,7 +159,7 @@ public class Bookings {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Bookings other = (Bookings) obj;
+		Booking other = (Booking) obj;
 		if (bookingId != other.bookingId)
 			return false;
 		if (checkInDate == null) {

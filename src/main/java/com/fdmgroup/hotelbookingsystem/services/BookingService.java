@@ -3,15 +3,12 @@ package com.fdmgroup.hotelbookingsystem.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fdmgroup.hotelbookingsystem.model.Bookings;
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.Booking;
 import com.fdmgroup.hotelbookingsystem.repository.BookingDao;
 
 @Service
@@ -23,12 +20,12 @@ public class BookingService {
 	@Autowired
 	HotelService hotelService;
 
-	public Bookings save(Bookings booking) {
+	public Booking save(Booking booking) {
 		return bookingDao.save(booking);
 	}
 
 
-	public BigDecimal calculateTotalPrice(Bookings booking) {
+	public BigDecimal calculateTotalPrice(Booking booking) {
 
 		LocalDate checkInDate = booking.getCheckInDate();
 		LocalDate checkOutDate = booking.getCheckOutDate();
@@ -47,7 +44,7 @@ public class BookingService {
 		return totalPrice;
 	}
 
-	public Optional<Bookings> retrieveOne(long bookingId) {
+	public Optional<Booking> retrieveOne(long bookingId) {
 		return bookingDao.findByBookingId(bookingId);
 	}
 
