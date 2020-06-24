@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,10 @@ public class UserService {
 		return userDao.save(user);
 	}
 
+	public Optional<User> findById(long userId){
+		return userDao.findById(userId);
+	}
+
 	public Optional<User> findByUsername(String username) {
 		return userDao.findByUsername(username);
 	}
@@ -40,6 +45,20 @@ public class UserService {
 			}
 		}
 		return owners;
+	}
+
+	public User update(long userId, String username, String firstName, String lastName) throws NoSuchElementException {
+		User user = userDao.findById(userId).get();
+		if (username != null){
+			user.setUsername(username);
+		}
+		if (firstName != null){
+			user.setFirstName(firstName);
+		}
+		if (lastName != null){
+			user.setLastName(lastName);
+		}
+		return userDao.save(user);
 	}
 
 }
