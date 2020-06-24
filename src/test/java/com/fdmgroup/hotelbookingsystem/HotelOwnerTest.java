@@ -8,6 +8,7 @@ import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -63,13 +65,19 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
 				.apply(SharedHttpSessionConfigurer.sharedHttpSession())
 				.build();
+
 	}
 	
 	@Test
 	public void addHotelThatIsValid() throws Exception {
+
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+		Mockito.when(mockPrincipal.getName()).thenReturn("hotelOwner1");
+
 		Hotel hotel = new Hotel("Glasgow Hotel", 100, "Center of Glasgow", "G something", "Glasgow", "TV and bed", null, 4, null, false, 0, false);
 		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit")
 				.session(session)
+				.principal(mockPrincipal)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isOk());
@@ -77,9 +85,14 @@ final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	
 	@Test
 	public void addHotelThatIsInDatabase() throws Exception {
-		Hotel hotel = new Hotel("Travelodge Glasgow", 2, "1 main street", "g43 6pq", "Glasgow", "none");
+
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+		Mockito.when(mockPrincipal.getName()).thenReturn("hotelOwner1");
+
+		Hotel hotel =  hotelService.findById(2).get();
 		this.mockMvc.perform(post(HOTELOWNER_ROOT_URI + "/AddHotelSubmit")
 				.session(session)
+				.principal(mockPrincipal)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(hotel)))
 				.andExpect(status().isImUsed());

@@ -11,6 +11,7 @@ import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -69,6 +71,10 @@ class BookingTest {
 
 	@Test
 	public void test_ThatABookingCanBeCreatedWithInvalidDates() throws Exception{
+
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+		Mockito.when(mockPrincipal.getName()).thenReturn("customer1");
+
 		LocalDate checkInDate = LocalDate.of(2020, 06, 29);
 		LocalDate checkOutDate = LocalDate.of(2020, 06, 27);
 		Hotel hotel = hotelService.findById(1L).get();
@@ -85,6 +91,7 @@ class BookingTest {
 
 		this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
 				.session(session)
+				.principal(mockPrincipal)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(booking)))
 				.andExpect(status().isBadRequest());
@@ -104,6 +111,10 @@ class BookingTest {
 
 	@Test
 	public void test_ThatPriceTotalCanBeCalculated() throws Exception {
+
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+		Mockito.when(mockPrincipal.getName()).thenReturn("customer1");
+
 		LocalDate checkInDate = LocalDate.of(2020, 12, 20);
 		LocalDate checkOutDate = LocalDate.of(2020, 12, 27);
 		Hotel hotel = hotelService.findById(1L).get();
@@ -119,6 +130,7 @@ class BookingTest {
 		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
         this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
                 .session(session)
+				.principal(mockPrincipal)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(booking)))
                 .andExpect(status().isCreated());
@@ -127,6 +139,10 @@ class BookingTest {
 
 	@Test
 	public void test_ThatPriceTotalCanBeCalculatedLessThanFiveDays() throws Exception {
+
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+		Mockito.when(mockPrincipal.getName()).thenReturn("customer1");
+
 		LocalDate checkInDate = LocalDate.of(2020, 12, 20);
 		LocalDate checkOutDate = LocalDate.of(2020, 12, 22);
 		Hotel hotel = hotelService.findById(1L).get();
@@ -141,6 +157,7 @@ class BookingTest {
 		BigDecimal totalPrice = bookingService.calculateTotalPrice(booking);
         this.mockMvc.perform(post(BOOKING_ROOT_URI + "/BookingSubmit")
                 .session(session)
+				.principal(mockPrincipal)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(booking)))
                 .andExpect(status().isCreated());
