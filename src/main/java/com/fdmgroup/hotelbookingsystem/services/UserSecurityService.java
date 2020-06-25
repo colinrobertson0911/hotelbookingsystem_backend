@@ -1,7 +1,9 @@
 package com.fdmgroup.hotelbookingsystem.services;
 
+import com.fdmgroup.hotelbookingsystem.model.Customer;
 import com.fdmgroup.hotelbookingsystem.model.Role;
 import com.fdmgroup.hotelbookingsystem.model.User;
+import com.fdmgroup.hotelbookingsystem.repository.CustomerDao;
 import com.fdmgroup.hotelbookingsystem.repository.RoleDao;
 import com.fdmgroup.hotelbookingsystem.repository.UserDao;
 import com.fdmgroup.hotelbookingsystem.security.JwtProvider;
@@ -22,6 +24,8 @@ public class UserSecurityService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserSecurityService.class);
 	
 	private UserDao userDao;
+
+	private CustomerDao customerDao;
 	
     private AuthenticationManager authenticationManager;
     
@@ -32,9 +36,10 @@ public class UserSecurityService {
     private JwtProvider jwtProvider;
     
     @Autowired
-    public UserSecurityService(UserDao userDao, AuthenticationManager authenticationManager,
+    public UserSecurityService(UserDao userDao, CustomerDao customerDao, AuthenticationManager authenticationManager,
                                PasswordEncoder passwordEncoder, RoleDao roleDao, JwtProvider jwtProvider) {
     	this.userDao = userDao;
+    	this.customerDao = customerDao;
     	this.authenticationManager = authenticationManager;
     	this.roleDao = roleDao;
     	this.passwordEncoder = passwordEncoder;
@@ -72,18 +77,20 @@ public class UserSecurityService {
      * @param lastName last name
      * @return Optional of user, empty if the user already exists.
      */
-	public Optional<User> signup(String username, String password, String firstName, String lastName){
+	public Optional<Customer> signup(String username, String password, String firstName, String lastName, String address, String email){
 		LOGGER.info("New user attempting to sign in");
-		Optional<User> user = Optional.empty();
+		Optional<Customer> customer = Optional.empty();
 		if (!userDao.findByUsername(username).isPresent()) {
 			Optional<Role> role = roleDao.findByRoleName("ROLE_CUSTOMER");
-			user = Optional.of(userDao.save(new User(username,
+			customer = Optional.of(customerDao.save(new Customer(username,
 					passwordEncoder.encode(password),
 					firstName,
 					lastName,
-					role.get())));
+					role.get(),
+					address,
+					email)));
 		}
-		return user;
+		return customer;
 	}
 
 	public Optional<User> addHotelOwner(String username, String password, String firstName, String lastName){

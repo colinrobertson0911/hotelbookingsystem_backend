@@ -1,6 +1,7 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
 import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
+import com.fdmgroup.hotelbookingsystem.model.Customer;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.services.UserSecurityService;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
@@ -36,8 +37,8 @@ public class LoginController {
 
 	@PostMapping("/RegisterUser")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User registerUser(@RequestBody @Valid AuthenticationRequest authRequest) {
-		return userSecurityService.signup(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName()).orElseThrow(() ->
+	public Customer registerUser(@RequestBody @Valid AuthenticationRequest authRequest) {
+		return userSecurityService.signup(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName(), authRequest.getAddress(), authRequest.getEmail()).orElseThrow(() ->
 				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
 	}
 

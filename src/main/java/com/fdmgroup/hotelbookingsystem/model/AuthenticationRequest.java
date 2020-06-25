@@ -16,6 +16,11 @@ public class AuthenticationRequest {
 
 	private String lastName;
 
+	private String address;
+
+	private String email;
+
+
 	public AuthenticationRequest() {
 
 	}
@@ -32,6 +37,15 @@ public class AuthenticationRequest {
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	public AuthenticationRequest(String username, String password, String firstName, String lastName, String address, String email) {
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.email = email;
 	}
 
 	public String getUsername() {
@@ -57,6 +71,13 @@ public class AuthenticationRequest {
 	public String getLastName() {
 		return lastName;
 	}
-	
-	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
 }
