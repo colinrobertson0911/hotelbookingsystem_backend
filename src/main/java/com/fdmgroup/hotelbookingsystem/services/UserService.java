@@ -1,17 +1,19 @@
 package com.fdmgroup.hotelbookingsystem.services;
 
-import com.fdmgroup.hotelbookingsystem.model.User;
-import com.fdmgroup.hotelbookingsystem.repository.UserDao;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import com.fdmgroup.hotelbookingsystem.model.Role;
+import com.fdmgroup.hotelbookingsystem.model.User;
+import com.fdmgroup.hotelbookingsystem.repository.UserDao;
 
 @Service
 public class UserService {
@@ -47,7 +49,7 @@ public class UserService {
 		return owners;
 	}
 
-	public User update(long userId, String username, String firstName, String lastName) throws NoSuchElementException {
+	public User update(long userId, String username, String firstName, String lastName, List<Role> role) throws NoSuchElementException {
 		User user = userDao.findById(userId).get();
 		if (username != null){
 			user.setUsername(username);
@@ -57,6 +59,9 @@ public class UserService {
 		}
 		if (lastName != null){
 			user.setLastName(lastName);
+		}
+		if (role != null){
+			user.setRoles(role);
 		}
 		return userDao.save(user);
 	}

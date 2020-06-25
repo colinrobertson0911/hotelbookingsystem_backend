@@ -68,7 +68,7 @@ public class AdminController {
 	@PatchMapping("/EditUser")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> hotelOwnersUpdated(@RequestBody User user) {
-		return ResponseEntity.ok(userService.update(user.getUserId(), user.getUsername(), user.getFirstName(), user.getLastName()));
+		return ResponseEntity.ok(userService.update(user.getUserId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getRoles()));
 	}
 
 	@GetMapping("/AllHotels")
