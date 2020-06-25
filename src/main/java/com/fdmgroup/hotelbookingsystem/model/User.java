@@ -1,7 +1,6 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -9,7 +8,6 @@ import java.util.List;
 
 @Entity(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 public class User {
 
 	@Id

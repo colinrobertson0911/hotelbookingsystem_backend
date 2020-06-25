@@ -112,7 +112,7 @@ class AdminControllerTest {
 	public void editUser() throws Exception {
 		User user = userService.findById(2L).get();
 		user.setUsername("user99");
-		ResultActions mvcResult = this.mockMvc.perform(patch(ADMIN_ROOT_URI + "/EditUser/2")
+		ResultActions mvcResult = this.mockMvc.perform(patch(ADMIN_ROOT_URI + "/EditUser")
 				.session(session)
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(user)))
