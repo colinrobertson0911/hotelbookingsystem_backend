@@ -1,9 +1,11 @@
 package com.fdmgroup.hotelbookingsystem.services;
 
 import com.fdmgroup.hotelbookingsystem.model.Customer;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import com.fdmgroup.hotelbookingsystem.model.Role;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.repository.CustomerDao;
+import com.fdmgroup.hotelbookingsystem.repository.HotelOwnerDao;
 import com.fdmgroup.hotelbookingsystem.repository.RoleDao;
 import com.fdmgroup.hotelbookingsystem.repository.UserDao;
 import com.fdmgroup.hotelbookingsystem.security.JwtProvider;
@@ -26,6 +28,8 @@ public class UserSecurityService {
 	private UserDao userDao;
 
 	private CustomerDao customerDao;
+
+	private HotelOwnerDao hotelOwnerDao;
 	
     private AuthenticationManager authenticationManager;
     
@@ -36,10 +40,11 @@ public class UserSecurityService {
     private JwtProvider jwtProvider;
     
     @Autowired
-    public UserSecurityService(UserDao userDao, CustomerDao customerDao, AuthenticationManager authenticationManager,
+    public UserSecurityService(UserDao userDao, CustomerDao customerDao, HotelOwnerDao hotelOwnerDao, AuthenticationManager authenticationManager,
                                PasswordEncoder passwordEncoder, RoleDao roleDao, JwtProvider jwtProvider) {
     	this.userDao = userDao;
     	this.customerDao = customerDao;
+    	this.hotelOwnerDao = hotelOwnerDao;
     	this.authenticationManager = authenticationManager;
     	this.roleDao = roleDao;
     	this.passwordEncoder = passwordEncoder;
@@ -93,18 +98,18 @@ public class UserSecurityService {
 		return customer;
 	}
 
-	public Optional<User> addHotelOwner(String username, String password, String firstName, String lastName){
+	public Optional<HotelOwner> addHotelOwner(String username, String password, String firstName, String lastName){
 		LOGGER.info("New user attempting to sign in");
-		Optional<User> user = Optional.empty();
+		Optional<HotelOwner> hotelOwner = Optional.empty();
 		if (!userDao.findByUsername(username).isPresent()) {
 			Optional<Role> role = roleDao.findByRoleName("ROLE_HOTELOWNER");
-			user = Optional.of(userDao.save(new User(username,
+			hotelOwner = Optional.of(hotelOwnerDao.save(new HotelOwner(username,
 					passwordEncoder.encode(password),
 					firstName,
 					lastName,
 					role.get())));
 		}
-		return user;
+		return hotelOwner;
 	}
 
 }

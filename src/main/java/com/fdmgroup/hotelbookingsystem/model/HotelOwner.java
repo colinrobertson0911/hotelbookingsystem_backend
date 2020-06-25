@@ -1,5 +1,6 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,9 +27,9 @@ public class HotelOwner extends User {
 		super(username, password);
 	}
 
-	public HotelOwner(String username, String password, String firstName, String lastName, Role role, List<Hotel> hotels) {
+	public HotelOwner(String username, String password, String firstName, String lastName, Role role) {
 		super(username, password, firstName, lastName, role);
-		this.hotels = hotels;
+		this.hotels = new ArrayList<>();
 	}
 
 	public List<Hotel> getHotels() {
