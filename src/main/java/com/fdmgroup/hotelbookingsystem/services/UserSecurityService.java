@@ -78,7 +78,7 @@ public class UserSecurityService {
 		LOGGER.info("New user attempting to sign in");
 		Optional<User> user = Optional.empty();
 		if (!userDao.findByUsername(username).isPresent()) {
-			Optional<Role> role = roleDao.findByRoleName("ROLE_CUSTOMER");
+			Optional<Role> role = roleDao.findByRoleName("ROLE_VIEWER");
 			user = Optional.of(userDao.save(new User(username,
 					passwordEncoder.encode(password),
 					firstName,
