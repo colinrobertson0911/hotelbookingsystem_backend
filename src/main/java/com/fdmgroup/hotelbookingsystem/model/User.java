@@ -52,13 +52,6 @@ public class User {
 		this.password = password;
 	}
 
-	public User(long userId, String username, String password, String firstName, String lastName) {
-		this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
 
 	public long getUserId() {
 		return userId;

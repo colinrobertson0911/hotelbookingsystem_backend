@@ -23,7 +23,6 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    @JsonIgnore
     private User customer;
 
     @Column

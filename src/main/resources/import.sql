@@ -58,7 +58,7 @@ insert into customer_booking(userId, bookingId) values (4, 3);
 insert into customer_booking(userId, bookingId) values (4, 4);
 
 insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was great', 5);
-insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was ok', 4);
-insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was brilliant', 5);
-insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was dirty', 2);
-insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 4, 'The hotel was awful', 1);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 1, 5, 'The hotel was ok', 4);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 2, 4, 'The hotel was brilliant', 5);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 3, 5, 'The hotel was dirty', 2);
+insert into review(reviewId, hotelId, userId, message, score) values (REVIEW_SEQ.nextval, 4, 4, 'The hotel was awful', 1);
