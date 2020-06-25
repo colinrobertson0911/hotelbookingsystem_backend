@@ -24,7 +24,6 @@ public class BookingService {
 		return bookingDao.save(booking);
 	}
 
-
 	public BigDecimal calculateTotalPrice(Booking booking) {
 
 		LocalDate checkInDate = booking.getCheckInDate();
@@ -47,6 +46,5 @@ public class BookingService {
 	public Optional<Booking> retrieveOne(long bookingId) {
 		return bookingDao.findByBookingId(bookingId);
 	}
-
 
 }

@@ -18,7 +18,6 @@ public class CustomerController {
 	@Autowired
 	CustomerService customerService;
 
-	@PreAuthorize("hasRole('ROLE_VIEWER')")
 	@GetMapping("/Details/{user}")
 	public ResponseEntity<Customer> userDetails(@PathVariable("user") String user) {
 		Optional<Customer> customer = customerService.findByUsername(user);

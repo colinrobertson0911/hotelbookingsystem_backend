@@ -21,9 +21,10 @@ import java.util.Optional;
 public class LoginController {
 
 	@Autowired
-	private UserSecurityService userSecurityService;
+	UserSecurityService userSecurityService;
+
 	@Autowired
-	private UserService userService;
+	UserService userService;
 
 
 	@PostMapping("/LoginUser")
@@ -40,7 +41,6 @@ public class LoginController {
 				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
 	}
 
-	@PreAuthorize("hasRole('ROLE_VIEWER')")
 	@GetMapping("/Details/{username}")
 	public ResponseEntity<User> userDetails(@PathVariable("username") String username) {
 		Optional<User> user = userService.findByUsername(username);

@@ -1,6 +1,5 @@
 package com.fdmgroup.hotelbookingsystem.security;
 
-
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +12,11 @@ import java.util.Optional;
 
 import static org.springframework.security.core.userdetails.User.withUsername;
 
-
 @Component
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UserDao userDao;
+	UserDao userDao;
 	
 	@Autowired
 	JwtProvider jwtProvider;

@@ -40,9 +40,6 @@ public class ReviewTests {
     WebApplicationContext webApplicationContext;
 
     @Autowired
-    CustomerService customerService;
-
-    @Autowired
     HotelService hotelService;
 
     @Autowired

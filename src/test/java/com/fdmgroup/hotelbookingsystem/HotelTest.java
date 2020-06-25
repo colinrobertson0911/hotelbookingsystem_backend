@@ -26,15 +26,6 @@ class HotelTest {
 
 	@Autowired
 	WebApplicationContext webApplicationContext;
-	
-	@Autowired
-	ObjectMapper objectMapper;
-	
-	@Autowired
-	HotelService hotelService;
-	
-	@Autowired
-	BookingService bookingService;
 
 	MockMvc mockMvc;
 	
@@ -99,11 +90,6 @@ class HotelTest {
 				.getResponse().getContentAsString());
 	}
 
-
-
-
-
-
 	@Test
 	public  void listOfHotelsWithNoAvailabilityIsShown() throws Exception {
 		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SearchByAvailability/2020-07-20,2020-07-25")
@@ -119,6 +105,14 @@ class HotelTest {
 		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
 		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
 				.getResponse().getContentAsString());
+	}
+
+	@Test
+	public void seeAHotelThatDoesnotExist() throws Exception {
+		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotel/The Okay Hotel")
+				.session(session))
+				.andExpect(status().isNoContent());
+
 	}
 
 	@Test
@@ -138,5 +132,4 @@ class HotelTest {
 				.andExpect(status().isOk());
 	}
 
-	
 }

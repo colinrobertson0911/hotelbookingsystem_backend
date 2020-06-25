@@ -57,8 +57,6 @@ public class Customer extends User {
         this.bookings = bookings;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -6,8 +6,6 @@ import com.fdmgroup.hotelbookingsystem.model.Room;
 import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/hotel")
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class HotelController {
-
 
 	@Autowired
 	HotelService hotelService;
@@ -52,7 +48,6 @@ public class HotelController {
 				-> new HotelNotFoundException(hotelId + ""));
 	}
 
-
 	@GetMapping("/SearchByRoomType/{roomType}")
 	public ResponseEntity<List<Hotel>> searchByRoomType(@PathVariable("roomType") String roomType,@RequestParam("page")int page, @RequestParam("size")int size){
 		List<Hotel> hotelsWithRT = hotelService.findByRoomType(roomType,page,size);
@@ -75,7 +70,6 @@ public class HotelController {
 		return new ResponseEntity<>(hotelList, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasRole('ROLE_VIEWER')")
 	@GetMapping("/AllRooms")
 	public ResponseEntity<List<Room>> allRooms(){
 		return ResponseEntity.ok(roomService.findAll());

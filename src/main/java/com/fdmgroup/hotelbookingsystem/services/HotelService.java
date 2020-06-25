@@ -52,11 +52,9 @@ public class HotelService {
 		return hotelDao.findByRoomType(roomType, pageRequest);
 	}
 
-
 	public List<Hotel> findByVerifiedEqualsTrue() {
 		return hotelDao.findByVerifiedIsTrue();
 	}
-	
 
 	public List<Hotel> findByAvailabilityWithSpecifiedDates(LocalDate startDate, LocalDate endDate) {
 		List<Hotel> availableHotelsByDate = new ArrayList<Hotel>();

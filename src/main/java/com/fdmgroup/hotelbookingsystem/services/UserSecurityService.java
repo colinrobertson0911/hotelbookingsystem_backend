@@ -41,8 +41,6 @@ public class UserSecurityService {
     	this.jwtProvider = jwtProvider;
     }
 
-	
-	
 	/**
      * Sign in a user into the application, with JWT-enabled authentication
      *
@@ -78,7 +76,7 @@ public class UserSecurityService {
 		LOGGER.info("New user attempting to sign in");
 		Optional<User> user = Optional.empty();
 		if (!userDao.findByUsername(username).isPresent()) {
-			Optional<Role> role = roleDao.findByRoleName("ROLE_VIEWER");
+			Optional<Role> role = roleDao.findByRoleName("ROLE_CUSTOMER");
 			user = Optional.of(userDao.save(new User(username,
 					passwordEncoder.encode(password),
 					firstName,

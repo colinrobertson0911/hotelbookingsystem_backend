@@ -62,7 +62,6 @@ public class Booking {
 		this.extras = extras;
 	}
 
-
 	public long getBookingId() {
 		return bookingId;
 	}

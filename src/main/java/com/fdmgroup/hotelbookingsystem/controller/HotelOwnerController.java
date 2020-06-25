@@ -38,8 +38,6 @@ public class HotelOwnerController {
 	@Autowired
 	RoomService roomService;
 
-	@Autowired
-	BookingService bookingService;
 
 
 	@PostMapping("/AddHotelSubmit")

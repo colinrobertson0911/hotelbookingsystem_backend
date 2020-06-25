@@ -1,7 +1,5 @@
 package com.fdmgroup.hotelbookingsystem.services;
 
-
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.Review;
 import com.fdmgroup.hotelbookingsystem.repository.ReviewDao;
 import org.springframework.beans.factory.annotation.Autowired;

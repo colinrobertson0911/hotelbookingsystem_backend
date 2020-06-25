@@ -15,8 +15,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -57,7 +55,6 @@ class BookingTest {
 
     final static String BOOKING_ROOT_URI = "/booking";
 
-
 	@BeforeEach
     public void setUp() {
         this.session = new MockHttpSession();
@@ -65,7 +62,6 @@ class BookingTest {
                 .apply(SharedHttpSessionConfigurer.sharedHttpSession())
                 .build();
     }
-
 
 	@Test
 	public void test_ThatABookingCanBeCreatedWithInvalidDates() throws Exception{
@@ -161,7 +157,5 @@ class BookingTest {
                 .andExpect(status().isCreated());
         Assertions.assertEquals(totalPrice, new BigDecimal("140.00"));
 	}
-	
-	
 
 }

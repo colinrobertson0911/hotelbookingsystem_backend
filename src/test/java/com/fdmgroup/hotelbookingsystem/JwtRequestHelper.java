@@ -14,7 +14,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class JwtRequestHelper {
 
     @Autowired
-    private JwtProvider jwtProvider;
+    JwtProvider jwtProvider;
 
     /**
      * Generate the appropriate headers for JWT Authentication.

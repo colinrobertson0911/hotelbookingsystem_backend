@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -30,13 +29,7 @@ class RoomTest {
 	@Autowired
 	RoomService roomService;
 
-	@Autowired
-	HotelService hotelService;
-
-	Pageable pageable;
-
 	private static Validator validator;
-
 
 	@BeforeEach
 	public void createValidator() {

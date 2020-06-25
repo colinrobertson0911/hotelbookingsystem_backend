@@ -55,7 +55,7 @@ class HotelOwnerTest {
 
 	private static ValidatorFactory validatorFactory;
 	private static Validator validator;
-final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
+	final static String HOTELOWNER_ROOT_URI = "/hotelOwner";
 	
 	@BeforeEach
 	public void setUp() {
