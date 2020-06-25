@@ -45,13 +45,13 @@ public class AdminController {
 		return ResponseEntity.ok( userService.findAllHotelOwners(page, size));
 	}
 
-	@PostMapping("/addHotelOwner")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@ResponseStatus(HttpStatus.CREATED)
-	public User addHotelOwner(@RequestBody @Valid AuthenticationRequest authRequest) {
-		return userSecurityService.addHotelOwner(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName()).orElseThrow(() ->
-				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
-	}
+//	@PostMapping("/addHotelOwner")
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public User addHotelOwner(@RequestBody @Valid AuthenticationRequest authRequest) {
+//		return userSecurityService.addHotelOwner(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName()).orElseThrow(() ->
+//				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
+//	}
 
 
 	@GetMapping("/SeeHotelOwner/{username}")
@@ -66,8 +66,14 @@ public class AdminController {
 
 	@PatchMapping("/EditUser") 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<User> hotelOwnersUpdated(@RequestBody User user) {
-		return ResponseEntity.ok(userService.update(user.getUserId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getRoles()));
+	public ResponseEntity<User> updatedUser(@RequestBody User user) {
+		return ResponseEntity.ok(userService.updateUser(user.getUserId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getRoles()));
+	}
+
+	@PutMapping("/EditRole")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<User> updatedRole(@RequestBody User user) {
+		return ResponseEntity.ok(userService.updateRole(user.getUserId(), user.getRoles()));
 	}
 
 	@GetMapping("/AllHotels")

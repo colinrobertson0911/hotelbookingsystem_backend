@@ -91,14 +91,14 @@ public class UserSecurityService {
 					passwordEncoder.encode(password),
 					firstName,
 					lastName,
-					role.get(),
 					address,
-					email)));
+					email,
+					role.get())));
 		}
 		return customer;
 	}
 
-	public Optional<HotelOwner> addHotelOwner(String username, String password, String firstName, String lastName){
+	public Optional<HotelOwner> addHotelOwner(String username, String password, String firstName, String lastName, String address, String email){
 		LOGGER.info("New user attempting to sign in");
 		Optional<HotelOwner> hotelOwner = Optional.empty();
 		if (!userDao.findByUsername(username).isPresent()) {
@@ -107,6 +107,8 @@ public class UserSecurityService {
 					passwordEncoder.encode(password),
 					firstName,
 					lastName,
+					address,
+					email,
 					role.get())));
 		}
 		return hotelOwner;

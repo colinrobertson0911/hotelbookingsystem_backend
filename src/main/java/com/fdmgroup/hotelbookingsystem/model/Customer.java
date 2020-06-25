@@ -11,11 +11,6 @@ import java.util.Objects;
 @Entity
 public class Customer extends User {
 
-    @Column
-    private String address;
-
-    @Column
-    private String email;
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -26,27 +21,9 @@ public class Customer extends User {
         super();
     }
 
-    public Customer(String username, String password, String firstName, String lastName, Role role, String address, String email) {
-        super(username, password, firstName, lastName, role);
-        this.address = address;
-        this.email = email;
+    public Customer(String username, String password, String firstName, String lastName, String address, String email, Role role) {
+        super(username, password, firstName, lastName, address, email, role);
         this.bookings = new ArrayList<>();
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public List<Booking> getBookings() {
@@ -60,25 +37,21 @@ public class Customer extends User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Customer)) return false;
         if (!super.equals(o)) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(address, customer.address) &&
-                Objects.equals(email, customer.email) &&
-                Objects.equals(bookings, customer.bookings);
+        return Objects.equals(getBookings(), customer.getBookings());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), address, email, bookings);
+        return Objects.hash(super.hashCode(), getBookings());
     }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", bookings=" + bookings +
+                "bookings=" + bookings +
                 '}';
     }
 }

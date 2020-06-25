@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import com.fdmgroup.hotelbookingsystem.model.Customer;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,12 @@ public class UserService {
 
 	@Autowired
 	UserDao userDao;
+
+	@Autowired
+	CustomerService customerService;
+
+	@Autowired
+	HotelOwnerService hotelOwnerService;
 
 	public Page<User> findAll(int page, int size) {
 		Pageable pageRequest = PageRequest.of(page, size);
@@ -49,7 +57,7 @@ public class UserService {
 		return owners;
 	}
 
-	public User update(long userId, String username, String firstName, String lastName, List<Role> role) throws NoSuchElementException {
+	public User updateUser(long userId, String username, String firstName, String lastName, List<Role> role) throws NoSuchElementException {
 		User user = userDao.findById(userId).get();
 		if (username != null){
 			user.setUsername(username);
@@ -57,11 +65,22 @@ public class UserService {
 		if (firstName != null){
 			user.setFirstName(firstName);
 		}
-		if (lastName != null){
+		if (lastName != null) {
 			user.setLastName(lastName);
 		}
-		if (role != null){
-			user.setRoles(role);
+		return userDao.save(user);
+	}
+
+	public User updateRole(long userId, List<Role> role) throws NoSuchElementException {
+		User user = userDao.findById(userId).get();
+		user.setRoles(role);
+		if (role.equals("ROLE_CUSTOMER")){
+			Customer customer = new Customer();
+			customerService.save(customer);
+		}
+		if (role.equals("ROLE_HOTELOWNER")){
+			HotelOwner hotelOwner = new HotelOwner();
+			hotelOwnerService.save(hotelOwner);
 		}
 		return userDao.save(user);
 	}

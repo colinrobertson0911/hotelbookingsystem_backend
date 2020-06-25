@@ -2,6 +2,8 @@ package com.fdmgroup.hotelbookingsystem.model;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Arrays;
+import java.util.List;
 
 public class AuthenticationRequest {
 
@@ -19,6 +21,8 @@ public class AuthenticationRequest {
 	private String address;
 
 	private String email;
+
+	private List<Role> roles;
 
 
 	public AuthenticationRequest() {
@@ -39,13 +43,14 @@ public class AuthenticationRequest {
 		this.lastName = lastName;
 	}
 
-	public AuthenticationRequest(String username, String password, String firstName, String lastName, String address, String email) {
+	public AuthenticationRequest(String username, String password, String firstName, String lastName, String address, String email, Role role) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
 		this.email = email;
+		this.roles = Arrays.asList(role);
 	}
 
 	public String getUsername() {
@@ -80,4 +85,7 @@ public class AuthenticationRequest {
 		return email;
 	}
 
+	public List<Role> getRoles() {
+		return roles;
+	}
 }

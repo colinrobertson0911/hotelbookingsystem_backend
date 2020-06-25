@@ -46,8 +46,8 @@ public class UserTest {
 		validatorFactory.close();
 	}
 
-	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "12345678", "Harry", "Wilson", "1 somewhere", "harry@email.com");
-	private Customer customer = new Customer(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), new Role(), signupDto.getAddress(), signupDto.getEmail());
+	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "12345678", "Harry", "Wilson", "1 somewhere", "harry@email.com", new Role());
+	private Customer customer = new Customer(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail(), new Role());
 
 	@Autowired
 	private TestRestTemplate restTemplate;

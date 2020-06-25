@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -15,15 +16,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
 	@SequenceGenerator(name = "user_gen", sequenceName = "USER_SEQ", allocationSize = 1)
 	private long userId;
-
-	public User(String username, String password, String firstName, String lastName, Role role) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.roles = Arrays.asList(role);
-	}
 
 	@Column
 	private String username;
@@ -38,8 +30,11 @@ public class User {
 	@Column
 	private String lastName;
 
-	public User() {
-	}
+	@Column
+	private String address;
+
+	@Column
+	private String email;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns =
@@ -47,11 +42,23 @@ public class User {
 	@JoinColumn(name = "roleId"))
 	private List<Role> roles;
 
+	public User() {
+	}
+
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 
+	public User(String username, String password, String firstName, String lastName, String address, String email, Role role) {
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.email = email;
+		this.roles = Arrays.asList(role);
+	}
 
 	public long getUserId() {
 		return userId;
@@ -93,6 +100,22 @@ public class User {
 		this.lastName = lastName;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public List<Role> getRoles() {
 		return roles;
 	}
@@ -102,62 +125,36 @@ public class User {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-		result = prime * result + (int) (userId ^ (userId >>> 32));
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof User)) return false;
+		User user = (User) o;
+		return getUserId() == user.getUserId() &&
+				getUsername().equals(user.getUsername()) &&
+				getPassword().equals(user.getPassword()) &&
+				Objects.equals(getFirstName(), user.getFirstName()) &&
+				Objects.equals(getLastName(), user.getLastName()) &&
+				Objects.equals(getAddress(), user.getAddress()) &&
+				Objects.equals(getEmail(), user.getEmail()) &&
+				getRoles().equals(user.getRoles());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (roles == null) {
-			if (other.roles != null)
-				return false;
-		} else if (!roles.equals(other.roles))
-			return false;
-		if (userId != other.userId)
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
+	public int hashCode() {
+		return Objects.hash(getUserId(), getUsername(), getPassword(), getFirstName(), getLastName(), getAddress(), getEmail(), getRoles());
 	}
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", roles=" + roles + "]";
+		return "User{" +
+				"userId=" + userId +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", address='" + address + '\'' +
+				", email='" + email + '\'' +
+				", roles=" + roles +
+				'}';
 	}
-
-
 }
