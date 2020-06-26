@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.fdmgroup.hotelbookingsystem.model.*;
+import com.fdmgroup.hotelbookingsystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -12,15 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
-
-import com.fdmgroup.hotelbookingsystem.model.AuthenticationRequest;
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
-import com.fdmgroup.hotelbookingsystem.model.Role;
-import com.fdmgroup.hotelbookingsystem.model.User;
-import com.fdmgroup.hotelbookingsystem.services.HotelService;
-import com.fdmgroup.hotelbookingsystem.services.RoleService;
-import com.fdmgroup.hotelbookingsystem.services.UserSecurityService;
-import com.fdmgroup.hotelbookingsystem.services.UserService;
 
 @RestController
 @RequestMapping("/admin")

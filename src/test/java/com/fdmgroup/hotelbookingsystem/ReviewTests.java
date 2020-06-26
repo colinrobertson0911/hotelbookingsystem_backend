@@ -100,7 +100,7 @@ public class ReviewTests {
         User customerId = userService.findByUsername("customer1").get();
 
         Review review = new Review(hotel, customerId, "The hotel was great", 5);
-        this.mockMvc.perform(post(REVIEW_ROOT_URI + "/createReview")
+        this.mockMvc.perform(post(REVIEW_ROOT_URI + "/createReview?hotelId=1")
                 .session(session)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(review)))

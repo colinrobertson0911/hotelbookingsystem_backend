@@ -1,6 +1,8 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
+import com.fdmgroup.hotelbookingsystem.model.Hotel;
 import com.fdmgroup.hotelbookingsystem.model.Review;
+import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import com.fdmgroup.hotelbookingsystem.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.AbstractMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/reviews")
@@ -19,11 +22,18 @@ public class ReviewController {
 
     @Autowired
     ReviewService reviewService;
+    @Autowired
+    HotelService hotelService;
 
     @PostMapping("/createReview")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
+    public ResponseEntity<Review> createReview(@RequestBody Review review, @RequestParam("hotelId") long hotelId) {
+        Optional<Hotel> hotel = hotelService.findById(hotelId);
+        if (hotel.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         try {
+            review.setHotel(hotel.get());
             reviewService.save(review);
         }catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
