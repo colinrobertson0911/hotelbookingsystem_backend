@@ -146,10 +146,10 @@ class AdminControllerTest {
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(user)))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"userId\":2,\"username\":\"user99\",\"firstName\":\"Tom\",\"lastName\":\"Smith\",\"address\":\"1, nowhere, London\",\"email\":\"owner1@email.com\",\"roles\":[{\"roleId\":2,\"roleName\":\"ROLE_HOTELOWNER\",\"authority\":\"ROLE_HOTELOWNER\"}],\"hotels\":[{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"amenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"}],\"starRating\":3,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"},{\"roomId\":4,\"roomType\":\"SUITE\",\"price\":120.00,\"roomTypeAndPrice\":\"SUITE 120.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true},{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]}";
+		String expectedResult = "{\"userId\":2,\"username\":\"user99\",\"firstName\":\"Tom\",\"lastName\":\"Smith\",\"address\":\"1, nowhere, London\",\"email\":\"owner1@email.com\",\"roles\":[{\"roleId\":2,\"roleName\":\"ROLE_HOTELOWNER\",\"authority\":\"ROLE_HOTELOWNER\"}],";
 
-		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
-				.getResponse().getContentAsString());
+		Assertions.assertTrue(mvcResult.andReturn()
+				.getResponse().getContentAsString().contains(expectedResult));
 	}
 
 	@Test

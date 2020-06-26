@@ -47,9 +47,9 @@ class HotelTest {
 				.param("page", "0").param("size", "2")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
-		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
-				.getResponse().getContentAsString());
+		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true";
+		Assertions.assertTrue(mvcResult.andReturn()
+				.getResponse().getContentAsString().contains(expectedResult));
 	}
 	
 	@Test
@@ -66,9 +66,9 @@ class HotelTest {
 				.param("page", "0").param("size", "2")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}]";
-		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
-				.getResponse().getContentAsString());
+		String expectedResult = "[{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true";
+		Assertions.assertTrue(mvcResult.andReturn()
+				.getResponse().getContentAsString().contains(expectedResult));
 	}
 
 	@Test
@@ -85,11 +85,9 @@ class HotelTest {
 				.param("page", "0").param("size", "2")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"amenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"}],\"starRating\":3,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"},{\"roomId\":4,\"roomType\":\"SUITE\",\"price\":120.00,\"roomTypeAndPrice\":\"SUITE 120.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true},{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true},{\"hotelId\":3,\"hotelName\":\"Radisson Blue\",\"numOfRooms\":2,\"address\":\"123 argyle street\",\"postcode\":\"G3 6OP\",\"city\":\"Glasgow\",\"amenities\":\"Conference Rooms, Bars, Near Central Station\",\"bookings\":[{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"}],\"starRating\":4,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"}],\"airportTransfers\":false,\"transferPrice\":20,\"verified\":true}";
-//				Assertions.assertEquals(expectedResult, mvcResult.andReturn()
-//				.getResponse().getContentAsString());
-				Assertions.assertTrue(mvcResult.andReturn()
-						.getResponse().getContentAsString().contains(expectedResult));
+		String expectedResult = "[{\"hotelId\":1,\"hotelName\":\"Travelodge Glasgow\",\"numOfRooms\":2,\"address\":\"1 main street\",\"postcode\":\"g43 6pq\",\"city\":\"Glasgow\",\"amenities\":\"none\",\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"}],\"starRating\":3,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"},{\"roomId\":4,\"roomType\":\"SUITE\",\"price\":120.00,\"roomTypeAndPrice\":\"SUITE 120.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true,\"reviews\":[{\"reviewId\":1,\"customer\":{\"userId\":4,\"username\":\"customer1\",\"firstName\":\"Harry\",\"lastName\":\"Wilson\",\"address\":\"1, somewhere, Glasgow, g24 0nt\",\"email\":\"harry@email.com\",\"roles\":[{\"roleId\":3,\"roleName\":\"ROLE_CUSTOMER\",\"authority\":\"ROLE_CUSTOMER\"}],\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"}]},\"message\":\"The hotel was great\",\"score\":5},{\"reviewId\":2,\"customer\":{\"userId\":5,\"username\":\"customer2\",\"firstName\":\"Sally\",\"lastName\":\"Wilson\",\"address\":\"1, somewhere, Glasgow, g24 0nt\",\"email\":\"sally@email.com\",\"roles\":[{\"roleId\":3,\"roleName\":\"ROLE_CUSTOMER\",\"authority\":\"ROLE_CUSTOMER\"}],\"bookings\":[]},\"message\":\"The hotel was ok\",\"score\":4}],\"averageHotelScore\":4.5},{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true,\"reviews\":[{\"reviewId\":3,\"customer\":{\"userId\":4,\"username\":\"customer1\",\"firstName\":\"Harry\",\"lastName\":\"Wilson\",\"address\":\"1, somewhere, Glasgow, g24 0nt\",\"email\":\"harry@email.com\",\"roles\":[{\"roleId\":3,\"roleName\":\"ROLE_CUSTOMER\",\"authority\":\"ROLE_CUSTOMER\"}],\"bookings\":[{\"bookingId\":1,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-23\",\"checkOutDate\":\"2020-07-27\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":2,\"roomType\":\"STANDARD\",\"hotel\":\"Travelodge Glasgow\",\"checkInDate\":\"2020-07-15\",\"checkOutDate\":\"2020-07-25\",\"roomPrice\":60.00,\"extrasPrice\":20.00,\"totalPrice\":440.00,\"extras\":\"AIRPORTTRANSFER\"},{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"}]},\"message\":\"The hotel was brilliant\",\"score\":5}],\"averageHotelScore\":5.0},{\"hotelId\":3,\"hotelName\":\"Radisson Blue\",\"numOfRooms\":2,\"address\":\"123 argyle street\",\"postcode\":\"G3 6OP\",\"city\":\"Glasgow\",\"amenities\":\"Conference Rooms, Bars, Near Central Station\",\"bookings\":[{\"bookingId\":3,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"},{\"bookingId\":4,\"roomType\":\"STANDARD\",\"hotel\":\"Radisson Blue\",\"checkInDate\":\"2020-07-20\",\"checkOutDate\":\"2020-07-30\",\"roomPrice\":60.00,\"extrasPrice\":0.00,\"totalPrice\":540.00,\"extras\":\"NO_EXTRAS\"}],\"starRating\":4,\"room\":[{\"roomId\":1,\"roomType\":\"STANDARD\",\"price\":60.00,\"roomTypeAndPrice\":\"STANDARD 60.00\"}],\"airportTransfers\":false,\"transferPrice\":20,\"verified\":true,\"reviews\":[{\"reviewId\":4,\"customer\":{\"userId\":5,\"username\":\"customer2\",\"firstName\":\"Sally\",\"lastName\":\"Wilson\",\"address\":\"1, somewhere, Glasgow, g24 0nt\",\"email\":\"sally@email.com\",\"roles\":[{\"roleId\":3,\"roleName\":\"ROLE_CUSTOMER\",\"authority\":\"ROLE_CUSTOMER\"}],\"bookings\":[]},\"message\":\"The hotel was dirty\",\"score\":2}],\"averageHotelScore\":2.0},{\"hotelId\":7,\"hotelName\":\"Monahan-Kshlerin\",\"numOfRooms\":1,\"address\":\"8 High Crossing Junction\",\"postcode\":\"G1 567\",\"city\":\"Bayan Ewenke Minzu\",\"amenities\":\"Bread - Frozen Basket Variety\",\"bookings\":[],\"starRating\":6,\"room\":[],\"airportTransfers\":false,\"transferPrice\":20,\"verified\":true,\"reviews\":[],\"averageHotelScore\":\"NaN\"}]";
+				Assertions.assertEquals(expectedResult, mvcResult.andReturn()
+						.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -104,9 +102,9 @@ class HotelTest {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotel/Yotel")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
-		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
-				.getResponse().getContentAsString());
+		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true";
+		Assertions.assertTrue(mvcResult.andReturn()
+				.getResponse().getContentAsString().contains(expectedResult));
 	}
 
 	@Test
@@ -122,9 +120,9 @@ class HotelTest {
 		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotelById/2")
 				.session(session))
 				.andExpect(status().isOk());
-		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true}";
-		Assertions.assertEquals(expectedResult, mvcResult.andReturn()
-				.getResponse().getContentAsString());
+		String expectedResult = "{\"hotelId\":2,\"hotelName\":\"Yotel\",\"numOfRooms\":1,\"address\":\"some street\",\"postcode\":\"EH71 7FA\",\"city\":\"Edinburgh\",\"amenities\":\"bowling alley\",\"bookings\":[],\"starRating\":4,\"room\":[{\"roomId\":2,\"roomType\":\"LUXURY\",\"price\":80.00,\"roomTypeAndPrice\":\"LUXURY 80.00\"},{\"roomId\":3,\"roomType\":\"DELUXE\",\"price\":100.00,\"roomTypeAndPrice\":\"DELUXE 100.00\"}],\"airportTransfers\":true,\"transferPrice\":20,\"verified\":true";
+		Assertions.assertTrue(mvcResult.andReturn()
+				.getResponse().getContentAsString().contains(expectedResult));
 	}
 	
 	@Test
@@ -132,6 +130,15 @@ class HotelTest {
 	public void seeAllRooms() throws Exception {
 		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/AllRooms"))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void test_ThatAverageReviewRatingIsReturned() throws Exception{
+		ResultActions mvcResult = this.mockMvc.perform(get(HOTEL_ROOT_URI + "/SeeHotelById/1")
+				.session(session))
+				.andExpect(status().isOk());
+		Assertions.assertTrue(mvcResult.andReturn()
+				.getResponse().getContentAsString().contains("\"averageHotelScore\":4.5"));
 	}
 
 }

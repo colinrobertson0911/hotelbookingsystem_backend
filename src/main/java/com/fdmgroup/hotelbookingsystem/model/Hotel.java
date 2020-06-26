@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import com.fdmgroup.hotelbookingsystem.utility.AverageHotelRating;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -62,6 +63,10 @@ public class Hotel {
 	@Column
 	private boolean verified;
 
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "hotelId")
+	List<Review> reviews;
+
 	public Hotel() {
 		super();
 	}
@@ -93,12 +98,24 @@ public class Hotel {
 		this.verified = verified;
 	}
 
+	public double getAverageHotelScore(){
+		return AverageHotelRating.getAverageFromListOfReviews(this.reviews);
+	}
+
 	public long getHotelId() {
 		return hotelId;
 	}
 
 	public void setHotelId(long hotelId) {
 		this.hotelId = hotelId;
+	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 	public String getHotelName() {
