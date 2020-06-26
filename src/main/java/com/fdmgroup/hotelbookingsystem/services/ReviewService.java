@@ -31,4 +31,7 @@ public class ReviewService {
         OptionalDouble average = reviews.stream().mapToInt((review) -> review.getScore()).average();
         return average.isPresent() ? average.getAsDouble():null;
     }
+
+    public List<Review> findAllCustomerReviews(long userId) { return reviewDao.findAllByUserId(userId);
+    }
 }

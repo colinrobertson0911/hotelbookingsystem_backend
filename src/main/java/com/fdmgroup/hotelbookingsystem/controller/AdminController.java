@@ -57,16 +57,16 @@ public class AdminController {
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
-	@PatchMapping("/EditUser") 
+	@PatchMapping("/EditUser")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> updatedUser(@RequestBody User user) {
 		return ResponseEntity.ok(userService.updateUser(user.getUserId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getRoles()));
 	}
 
-	@PutMapping("/EditRole")
+	@PatchMapping("/EditRole")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> updatedRole(@RequestBody User user) {
-		return ResponseEntity.ok(userService.updateRole(user.getUserId(), user.getRoles()));
+			return ResponseEntity.ok(userService.updateRole(user, user.getRoles()));
 	}
 
 	@GetMapping("/AllHotels")

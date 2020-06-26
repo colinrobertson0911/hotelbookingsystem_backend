@@ -11,4 +11,7 @@ public interface ReviewDao extends JpaRepository<Review, Long> {
     @Query(value = "SELECT * FROM REVIEW WHERE REVIEW.HOTELID = ?", nativeQuery = true)
     List<Review> findAllByHotelId(long hotelId);
 
+    @Query(value = "SELECT * FROM REVIEW WHERE REVIEW.USERID = ?", nativeQuery = true)
+    List<Review> findAllByUserId(long userId);
+
 }

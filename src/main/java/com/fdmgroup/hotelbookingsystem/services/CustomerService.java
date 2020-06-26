@@ -25,4 +25,7 @@ public class CustomerService {
     public Customer save(Customer customer){
         return customerDao.save(customer);
     }
+
+    public Optional<Customer> findById(long userId) { return customerDao.findById(userId);
+    }
 }

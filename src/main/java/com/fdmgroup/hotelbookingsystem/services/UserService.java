@@ -1,21 +1,20 @@
 package com.fdmgroup.hotelbookingsystem.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import com.fdmgroup.hotelbookingsystem.model.Customer;
-import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
+import com.fdmgroup.hotelbookingsystem.model.*;
+import com.fdmgroup.hotelbookingsystem.repository.CustomerDao;
+import com.fdmgroup.hotelbookingsystem.repository.HotelOwnerDao;
+import com.fdmgroup.hotelbookingsystem.repository.ReviewDao;
+import com.fdmgroup.hotelbookingsystem.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fdmgroup.hotelbookingsystem.model.Role;
-import com.fdmgroup.hotelbookingsystem.model.User;
-import com.fdmgroup.hotelbookingsystem.repository.UserDao;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,10 +23,22 @@ public class UserService {
 	UserDao userDao;
 
 	@Autowired
+	ReviewDao reviewDao;
+
+	@Autowired
+	CustomerDao customerDao;
+
+	@Autowired
+	HotelOwnerDao hotelOwnerDao;
+
+	@Autowired
 	CustomerService customerService;
 
 	@Autowired
 	HotelOwnerService hotelOwnerService;
+
+	@Autowired
+	ReviewService reviewService;
 
 	public Page<User> findAll(int page, int size) {
 		Pageable pageRequest = PageRequest.of(page, size);
@@ -71,18 +82,54 @@ public class UserService {
 		return userDao.save(user);
 	}
 
-	public User updateRole(long userId, List<Role> role) throws NoSuchElementException {
-		User user = userDao.findById(userId).get();
-		user.setRoles(role);
-		if (role.equals("ROLE_CUSTOMER")){
-			Customer customer = new Customer();
+
+	public User updateRole(User user, List<Role> role) throws NoSuchElementException {
+		Customer customer = new Customer();
+		HotelOwner hotelOwner = new HotelOwner();
+
+		if (role.get(0).getRoleName().equals("ROLE_CUSTOMER")){
+
+			customer.setUsername(user.getUsername());
+			customer.setFirstName(user.getFirstName());
+			customer.setLastName(user.getLastName());
+			customer.setAddress(user.getAddress());
+			customer.setEmail(user.getEmail());
+			customer.setRoles(user.getRoles());
+			userDao.save(customer);
+
+			HotelOwner hotelOwner2 = hotelOwnerService.findByUsername(user.getUsername()).get();
+
+			hotelOwnerDao.delete(hotelOwner);
+
+			customer.setUserId(customer.getUserId());
 			customerService.save(customer);
+
+			return userDao.save(customer);
 		}
-		if (role.equals("ROLE_HOTELOWNER")){
-			HotelOwner hotelOwner = new HotelOwner();
+		else if(role.get(0).getRoleName().equals("ROLE_HOTELOWNER")){
+			List<Review> reviews= reviewService.findAllCustomerReviews(user.getUserId());
+			for (Review review:reviews) {
+				reviewDao.delete(review);
+			}
+
+			Customer customer2 = customerService.findByUsername(user.getUsername()).get();
+			customerDao.delete(customer2);
+
+			hotelOwner.setUsername(user.getUsername());
+			hotelOwner.setFirstName(user.getFirstName());
+			hotelOwner.setLastName(user.getLastName());
+			hotelOwner.setAddress(user.getAddress());
+			hotelOwner.setEmail(user.getEmail());
+			hotelOwner.setRoles(user.getRoles());
+			userDao.save(hotelOwner);
+
+			hotelOwner.setUserId(hotelOwner.getUserId());
 			hotelOwnerService.save(hotelOwner);
+			return userDao.save(hotelOwner);
 		}
-		return userDao.save(user);
+
+		return null;
+
 	}
 
 }
