@@ -1,8 +1,5 @@
 package com.fdmgroup.hotelbookingsystem;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdmgroup.hotelbookingsystem.services.BookingService;
-import com.fdmgroup.hotelbookingsystem.services.HotelService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -126,7 +122,6 @@ class HotelTest {
 	}
 	
 	@Test
-	@WithUserDetails("hotelOwner1")
 	public void seeAllRooms() throws Exception {
 		this.mockMvc.perform(get(HOTEL_ROOT_URI + "/AllRooms"))
 				.andExpect(status().isOk());

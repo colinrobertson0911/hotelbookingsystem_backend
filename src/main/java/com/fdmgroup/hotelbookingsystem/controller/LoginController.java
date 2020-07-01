@@ -8,7 +8,6 @@ import com.fdmgroup.hotelbookingsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -21,34 +20,34 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class LoginController {
 
-	@Autowired
-	UserSecurityService userSecurityService;
-
-	@Autowired
-	UserService userService;
-
-
-	@PostMapping("/LoginUser")
-	@ResponseStatus(HttpStatus.OK)
-	public String loginUser(@RequestBody @Valid AuthenticationRequest authRequest) {
-		return userSecurityService.signin(authRequest.getUsername(), authRequest.getPassword()).orElseThrow(()->
-				new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
-	}
-
-	@PostMapping("/RegisterUser")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Customer registerUser(@RequestBody @Valid AuthenticationRequest authRequest) {
-		return userSecurityService.signup(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName(), authRequest.getAddress(), authRequest.getEmail()).orElseThrow(() ->
-				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
-	}
-
-	@GetMapping("/Details/{username}")
-	public ResponseEntity<User> userDetails(@PathVariable("username") String username) {
-		Optional<User> user = userService.findByUsername(username);
-		if (user.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(user.get(), HttpStatus.OK);
-	}
+//	@Autowired
+//	UserSecurityService userSecurityService;
+//
+//	@Autowired
+//	UserService userService;
+//
+//
+//	@PostMapping("/LoginUser")
+//	@ResponseStatus(HttpStatus.OK)
+//	public String loginUser(@RequestBody @Valid AuthenticationRequest authRequest) {
+//		return userSecurityService.signin(authRequest.getUsername(), authRequest.getPassword()).orElseThrow(()->
+//				new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
+//	}
+//
+//	@PostMapping("/RegisterUser")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public Customer registerUser(@RequestBody @Valid AuthenticationRequest authRequest) {
+//		return userSecurityService.signup(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName(), authRequest.getAddress(), authRequest.getEmail()).orElseThrow(() ->
+//				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
+//	}
+//
+//	@GetMapping("/Details/{username}")
+//	public ResponseEntity<User> userDetails(@PathVariable("username") String username) {
+//		Optional<User> user = userService.findByUsername(username);
+//		if (user.isEmpty()) {
+//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<>(user.get(), HttpStatus.OK);
+//	}
 
 }

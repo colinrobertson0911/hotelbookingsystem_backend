@@ -32,61 +32,61 @@ import static org.springframework.http.HttpMethod.POST;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserTest {
 
-	private static ValidatorFactory validatorFactory;
-	private static Validator validator;
-
-	@BeforeEach
-	public void createValidator() {
-		validatorFactory = Validation.buildDefaultValidatorFactory();
-		validator = validatorFactory.getValidator();
-	}
-
-	@AfterEach
-	public void close() {
-		validatorFactory.close();
-	}
-
-	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "12345678", "Harry", "Wilson", "1 somewhere", "harry@email.com", new Role());
-	private Customer customer = new Customer(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail(), new Role());
-
-	@Autowired
-	private TestRestTemplate restTemplate;
-
-	@MockBean
-	private UserSecurityService service;
-
-
-	@Test
-	public void signin(){
-		restTemplate.postForEntity("/login/LoginUser", new AuthenticationRequest("admin", "myPass123"), Void.class);
-		verify(this.service).signin("admin", "myPass123");
-	}
-
-	@Test
-	public void registerUser(){
-		when(service.signup(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail())).thenReturn(Optional.of(customer));
-
-		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
-				new HttpEntity<>(signupDto),
-				Customer.class);
-
-		assertThat(responseEntity.getStatusCode().value(), is(201));
-		assertThat(responseEntity.getBody().getUsername(), is(customer.getUsername()));
-		assertThat(responseEntity.getBody().getFirstName(), is(customer.getFirstName()));
-		assertThat(responseEntity.getBody().getLastName(), is(customer.getLastName()));
-		assertThat(responseEntity.getBody().getRoles().size(), is(customer.getRoles().size()));
-	}
-
-	@Test
-	public void registerInvalidUser() {
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-		when(service.signup(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getFirstName(), authenticationRequest.getLastName(), authenticationRequest.getAddress(), authenticationRequest.getEmail())).thenReturn(Optional.of(customer));
-		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
-				new HttpEntity<>(authenticationRequest),
-				Customer.class);
-
-		assertThat(responseEntity.getStatusCode().value(), is(400));
-
-	}
+//	private static ValidatorFactory validatorFactory;
+//	private static Validator validator;
+//
+//	@BeforeEach
+//	public void createValidator() {
+//		validatorFactory = Validation.buildDefaultValidatorFactory();
+//		validator = validatorFactory.getValidator();
+//	}
+//
+//	@AfterEach
+//	public void close() {
+//		validatorFactory.close();
+//	}
+//
+//	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "12345678", "Harry", "Wilson", "1 somewhere", "harry@email.com", new Role());
+//	private Customer customer = new Customer(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail(), new Role());
+//
+//	@Autowired
+//	private TestRestTemplate restTemplate;
+//
+//	@MockBean
+//	private UserSecurityService service;
+//
+//
+//	@Test
+//	public void signin(){
+//		restTemplate.postForEntity("/login/LoginUser", new AuthenticationRequest("admin", "myPass123"), Void.class);
+//		verify(this.service).signin("admin", "myPass123");
+//	}
+//
+//	@Test
+//	public void registerUser(){
+//		when(service.signup(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail())).thenReturn(Optional.of(customer));
+//
+//		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
+//				new HttpEntity<>(signupDto),
+//				Customer.class);
+//
+//		assertThat(responseEntity.getStatusCode().value(), is(201));
+//		assertThat(responseEntity.getBody().getUsername(), is(customer.getUsername()));
+//		assertThat(responseEntity.getBody().getFirstName(), is(customer.getFirstName()));
+//		assertThat(responseEntity.getBody().getLastName(), is(customer.getLastName()));
+//		assertThat(responseEntity.getBody().getRoles().size(), is(customer.getRoles().size()));
+//	}
+//
+//	@Test
+//	public void registerInvalidUser() {
+//		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+//		when(service.signup(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getFirstName(), authenticationRequest.getLastName(), authenticationRequest.getAddress(), authenticationRequest.getEmail())).thenReturn(Optional.of(customer));
+//		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
+//				new HttpEntity<>(authenticationRequest),
+//				Customer.class);
+//
+//		assertThat(responseEntity.getStatusCode().value(), is(400));
+//
+//	}
 
 }

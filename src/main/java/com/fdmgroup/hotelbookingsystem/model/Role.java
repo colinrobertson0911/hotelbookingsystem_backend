@@ -1,12 +1,10 @@
 package com.fdmgroup.hotelbookingsystem.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Role implements GrantedAuthority {
+public class Role{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_gen")
@@ -16,10 +14,6 @@ public class Role implements GrantedAuthority {
 	@Column
 	private String roleName;
 
-	@Override
-	public String getAuthority() {
-		return roleName;
-	}
 
 	public long getRoleId() {
 		return roleId;

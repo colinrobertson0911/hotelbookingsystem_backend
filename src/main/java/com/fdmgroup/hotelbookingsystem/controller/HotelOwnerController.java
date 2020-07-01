@@ -1,32 +1,23 @@
 package com.fdmgroup.hotelbookingsystem.controller;
 
-import java.security.Principal;
-import java.util.Optional;
-
+import com.fdmgroup.hotelbookingsystem.model.Hotel;
+import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
+import com.fdmgroup.hotelbookingsystem.model.Room;
+import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
+import com.fdmgroup.hotelbookingsystem.services.HotelService;
+import com.fdmgroup.hotelbookingsystem.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.fdmgroup.hotelbookingsystem.model.Hotel;
-import com.fdmgroup.hotelbookingsystem.model.HotelOwner;
-import com.fdmgroup.hotelbookingsystem.model.Room;
-import com.fdmgroup.hotelbookingsystem.services.BookingService;
-import com.fdmgroup.hotelbookingsystem.services.HotelOwnerService;
-import com.fdmgroup.hotelbookingsystem.services.HotelService;
-import com.fdmgroup.hotelbookingsystem.services.RoomService;
+import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/hotelOwner")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-@PreAuthorize("hasRole('ROLE_HOTELOWNER')")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class HotelOwnerController {
 
 	@Autowired

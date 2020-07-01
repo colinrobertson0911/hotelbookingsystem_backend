@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.hotelbookingsystem.model.Role;
 import com.fdmgroup.hotelbookingsystem.model.User;
 import com.fdmgroup.hotelbookingsystem.repository.RoleDao;
-import com.fdmgroup.hotelbookingsystem.services.RoleService;
 import com.fdmgroup.hotelbookingsystem.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -23,7 +21,6 @@ import org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@WithUserDetails("admin1")
 class AdminControllerTest {
 
 	@Autowired
@@ -67,7 +63,6 @@ class AdminControllerTest {
 	}
 	
 	@Test
-	@WithUserDetails("admin1")
 	public void getAllHotelOwners() throws Exception {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/AllOwners")
 				.param("page", "0").param("size", "2"))
@@ -75,7 +70,6 @@ class AdminControllerTest {
 	}
 
 	@Test
-	@WithUserDetails("hotelOwner1")
 	public void singleHotelOwnerOneExists() throws Exception {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/SeeHotelOwner/hotelOwner2")
 				.session(session))
@@ -84,7 +78,6 @@ class AdminControllerTest {
 	}
 
 	@Test
-	@WithUserDetails("hotelOwner1")
 	public void singleHotelOwnerDoesNotExists() throws Exception {
 		this.mockMvc.perform(get(ADMIN_ROOT_URI + "/SeeHotelOwner/hotelOwner3")
 				.session(session))
