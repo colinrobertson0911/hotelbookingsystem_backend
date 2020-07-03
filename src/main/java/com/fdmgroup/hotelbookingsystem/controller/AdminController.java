@@ -57,15 +57,21 @@ public class AdminController {
 		return ResponseEntity.ok(userService.updateRole(user.getUserId(), user.getRoles()));
 	}
 
+//	@GetMapping("/AllHotels")
+//	public ResponseEntity<Page<Hotel>> allHotels(@RequestParam("page")int page, @RequestParam("size")int size) {
+//		return ResponseEntity.ok(hotelService.findAll(page,size));
+//	}
+
 	@GetMapping("/AllHotels")
-	public ResponseEntity<Page<Hotel>> allHotels(@RequestParam("page")int page, @RequestParam("size")int size) {
-		return ResponseEntity.ok(hotelService.findAll(page,size));
+	public ResponseEntity<List<Hotel>> allHotels() {
+		return ResponseEntity.ok(hotelService.findAll());
 	}
 
 	@GetMapping("/AllUsers")
 	public ResponseEntity<Page<User>> allUsers(@RequestParam("page")int page, @RequestParam("size")int size) {
 		return ResponseEntity.ok(userService.findAll(page, size));
 	}
+
 
 	@GetMapping("/AllRoles")
 	public ResponseEntity<List<Role>> allRoles(){

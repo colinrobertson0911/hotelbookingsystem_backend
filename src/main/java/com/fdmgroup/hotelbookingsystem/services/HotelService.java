@@ -21,9 +21,12 @@ public class HotelService {
 	@Autowired
 	HotelDao hotelDao;
 
-	public Page<Hotel> findAll(int page, int size) {
-		Pageable pageRequest = PageRequest.of(page, size);
-		return hotelDao.findAll(pageRequest);
+//	public Page<Hotel> findAll(int page, int size) {
+//		Pageable pageRequest = PageRequest.of(page, size);
+//		return hotelDao.findAll(pageRequest);
+//	}
+	public List<Hotel> findAll() {
+		return hotelDao.findAll();
 	}
 
 	public Optional<Hotel> findByAddress(String address) {
