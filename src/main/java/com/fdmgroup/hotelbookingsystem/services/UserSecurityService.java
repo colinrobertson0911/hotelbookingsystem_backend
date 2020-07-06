@@ -16,47 +16,48 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 @Service
 public class UserSecurityService {
 //
-//	private static final Logger LOGGER = LoggerFactory.getLogger(UserSecurityService.class);
-//
-//	private UserDao userDao;
-//
-//	private CustomerDao customerDao;
-//
-//	private HotelOwnerDao hotelOwnerDao;
-//
-//    private RoleDao roleDao;
-//
-//    @Autowired
-//    public UserSecurityService(UserDao userDao, CustomerDao customerDao, HotelOwnerDao hotelOwnerDao, RoleDao roleDao) {
-//    	this.userDao = userDao;
-//    	this.customerDao = customerDao;
-//    	this.hotelOwnerDao = hotelOwnerDao;
-//    	this.roleDao = roleDao;
-//    }
-//
-//	/**
-//     * Sign in a user into the application, with JWT-enabled authentication
-//     *
-//     * @param username  username
-//     * @param password  password
-//     * @return Optional of the Java Web Token, empty otherwise
-//     */
-//	public Optional<String> signin(String username, String password){
-//		LOGGER.info("New user attempting to sign in");
-//		Optional<String> token= Optional.empty();
-//		Optional<User> user = userDao.findByUsername(username);
-//		if(user.isPresent()) {
-//			try {
-//				//???
-//			} catch(UserNotFoundException e) {
-//				LOGGER.info("Log in failed for user {}", username);
-//			}
-//		}
-//		return token;
-//	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserSecurityService.class);
+
+	private UserDao userDao;
+
+	private CustomerDao customerDao;
+
+	private HotelOwnerDao hotelOwnerDao;
+
+    private RoleDao roleDao;
+
+    @Autowired
+    public UserSecurityService(UserDao userDao, CustomerDao customerDao, HotelOwnerDao hotelOwnerDao, RoleDao roleDao) {
+    	this.userDao = userDao;
+    	this.customerDao = customerDao;
+    	this.hotelOwnerDao = hotelOwnerDao;
+    	this.roleDao = roleDao;
+    }
+
+	/**
+     * Sign in a user into the application, with JWT-enabled authentication
+     *
+     * @param username  username
+     * @param password  password
+     * @return Optional of the Java Web Token, empty otherwise
+     */
+	public Optional<User> signin(String username, String password){
+		LOGGER.info("New user attempting to sign in");
+		Optional<User> user = userDao.findByUsername(username);
+		if(user.isPresent()) {
+			try {
+				//???
+			} catch(UserNotFoundException e) {
+				LOGGER.info("Log in failed for user {}", username);
+			}
+		}
+		return user;
+	}
 //
 //	/**
 //     * Create a new user in the database.

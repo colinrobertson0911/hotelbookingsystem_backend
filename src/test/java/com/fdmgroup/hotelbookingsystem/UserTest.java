@@ -32,36 +32,36 @@ import static org.springframework.http.HttpMethod.POST;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserTest {
 
-//	private static ValidatorFactory validatorFactory;
-//	private static Validator validator;
-//
-//	@BeforeEach
-//	public void createValidator() {
-//		validatorFactory = Validation.buildDefaultValidatorFactory();
-//		validator = validatorFactory.getValidator();
-//	}
-//
-//	@AfterEach
-//	public void close() {
-//		validatorFactory.close();
-//	}
-//
-//	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "12345678", "Harry", "Wilson", "1 somewhere", "harry@email.com", new Role());
-//	private Customer customer = new Customer(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail(), new Role());
-//
-//	@Autowired
-//	private TestRestTemplate restTemplate;
-//
-//	@MockBean
-//	private UserSecurityService service;
-//
-//
-//	@Test
-//	public void signin(){
-//		restTemplate.postForEntity("/login/LoginUser", new AuthenticationRequest("admin", "myPass123"), Void.class);
-//		verify(this.service).signin("admin", "myPass123");
-//	}
-//
+	private static ValidatorFactory validatorFactory;
+	private static Validator validator;
+
+	@BeforeEach
+	public void createValidator() {
+		validatorFactory = Validation.buildDefaultValidatorFactory();
+		validator = validatorFactory.getValidator();
+	}
+
+	@AfterEach
+	public void close() {
+		validatorFactory.close();
+	}
+
+	private AuthenticationRequest signupDto = new AuthenticationRequest("harry", "12345678", "Harry", "Wilson", "1 somewhere", "harry@email.com", new Role());
+	private Customer customer = new Customer(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail(), new Role());
+
+	@Autowired
+	private TestRestTemplate restTemplate;
+
+	@MockBean
+	private UserSecurityService service;
+
+
+	@Test
+	public void signin(){
+		restTemplate.postForEntity("/login/LoginUser", new AuthenticationRequest("admin", "myPass123"), Void.class);
+		verify(this.service).signin("admin", "myPass123");
+	}
+
 //	@Test
 //	public void registerUser(){
 //		when(service.signup(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail())).thenReturn(Optional.of(customer));
