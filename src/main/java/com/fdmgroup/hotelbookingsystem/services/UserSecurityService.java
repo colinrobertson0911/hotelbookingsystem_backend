@@ -50,6 +50,7 @@ public class UserSecurityService {
 		LOGGER.info("New user attempting to sign in");
 		Optional<User> user = userDao.findByUsername(username);
 		if (user.isPresent()) {
+			LOGGER.info("User {} has logged in", username);
 			return user;
 		} else {
 			LOGGER.info("Log in failed for user {}", username);

@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class LoginController {
 
 	@Autowired
@@ -29,8 +29,8 @@ public class LoginController {
 
 	@PostMapping("/LoginUser")
 	@ResponseStatus(HttpStatus.OK)
-	public User loginUser(@RequestBody @Valid AuthenticationRequest authRequest) {
-		return userSecurityService.signin(authRequest.getUsername(), authRequest.getPassword()).orElseThrow(()->
+	public User loginUser(@RequestBody User user) {
+		return userSecurityService.signin(user.getUsername(), user.getPassword()).orElseThrow(()->
 				new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
 	}
 
