@@ -27,10 +27,11 @@ public class LoginController {
 	UserService userService;
 
 
-	@PostMapping("/LoginUser")
+	@PostMapping("/LoginUser/{username}/{password}")
 	@ResponseStatus(HttpStatus.OK)
-	public User loginUser(@RequestBody User user) {
-		return userSecurityService.signin(user.getUsername(), user.getPassword()).orElseThrow(()->
+	public User loginUser(@PathVariable("username") String username, @PathVariable("password") String password) {
+		//User userFromDB = userService.findByUsername(user.getUsername()).get();
+		return userSecurityService.signin(username, password).orElseThrow(()->
 				new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
 	}
 
