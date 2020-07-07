@@ -34,20 +34,20 @@ public class LoginController {
 				new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
 	}
 
-//	@PostMapping("/RegisterUser")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Customer registerUser(@RequestBody @Valid AuthenticationRequest authRequest) {
-//		return userSecurityService.signup(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName(), authRequest.getAddress(), authRequest.getEmail()).orElseThrow(() ->
-//				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
-//	}
-//
-//	@GetMapping("/Details/{username}")
-//	public ResponseEntity<User> userDetails(@PathVariable("username") String username) {
-//		Optional<User> user = userService.findByUsername(username);
-//		if (user.isEmpty()) {
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		}
-//		return new ResponseEntity<>(user.get(), HttpStatus.OK);
-//	}
+	@PostMapping("/RegisterUser")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Customer registerUser(@RequestBody @Valid AuthenticationRequest authRequest) {
+		return userSecurityService.signup(authRequest.getUsername(), authRequest.getPassword(), authRequest.getFirstName(), authRequest.getLastName(), authRequest.getAddress(), authRequest.getEmail()).orElseThrow(() ->
+				new HttpServerErrorException(HttpStatus.BAD_REQUEST, "User already exists"));
+	}
+
+	@GetMapping("/Details/{username}")
+	public ResponseEntity<User> userDetails(@PathVariable("username") String username) {
+		Optional<User> user = userService.findByUsername(username);
+		if (user.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(user.get(), HttpStatus.OK);
+	}
 
 }

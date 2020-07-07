@@ -46,58 +46,40 @@ public class UserSecurityService {
      * @param password  password
      * @return Optional of the Java Web Token, empty otherwise
      */
-	public Optional<User> signin(String username, String password){
+	public Optional<User> signin(String username, String password) {
 		LOGGER.info("New user attempting to sign in");
 		Optional<User> user = userDao.findByUsername(username);
-		if(user.isPresent()) {
-			try {
-				//???
-			} catch(UserNotFoundException e) {
-				LOGGER.info("Log in failed for user {}", username);
-			}
+		if (user.isPresent()) {
+			return user;
+		} else {
+			LOGGER.info("Log in failed for user {}", username);
 		}
-		return user;
+		return null;
 	}
-//
-//	/**
-//     * Create a new user in the database.
-//     *
-//     * @param username username
-//     * @param password password
-//     * @param firstName first name
-//     * @param lastName last name
-//     * @return Optional of user, empty if the user already exists.
-//     */
-//	public Optional<Customer> signup(String username, String password, String firstName, String lastName, String address, String email){
-//		LOGGER.info("New user attempting to sign in");
-//		Optional<Customer> customer = Optional.empty();
-//		if (!userDao.findByUsername(username).isPresent()) {
-//			Optional<Role> role = roleDao.findByRoleName("ROLE_CUSTOMER");
-//			customer = Optional.of(customerDao.save(new Customer(username,
-//					password,
-//					firstName,
-//					lastName,
-//					address,
-//					email,
-//					role.get())));
-//		}
-//		return customer;
-//	}
-//
-//	public Optional<HotelOwner> addHotelOwner(String username, String password, String firstName, String lastName, String address, String email){
-//		LOGGER.info("New user attempting to sign in");
-//		Optional<HotelOwner> hotelOwner = Optional.empty();
-//		if (!userDao.findByUsername(username).isPresent()) {
-//			Optional<Role> role = roleDao.findByRoleName("ROLE_HOTELOWNER");
-//			hotelOwner = Optional.of(hotelOwnerDao.save(new HotelOwner(username,
-//					password,
-//					firstName,
-//					lastName,
-//					address,
-//					email,
-//					role.get())));
-//		}
-//		return hotelOwner;
-//	}
+
+	/**
+     * Create a new user in the database.
+     *
+     * @param username username
+     * @param password password
+     * @param firstName first name
+     * @param lastName last name
+     * @return Optional of user, empty if the user already exists.
+     */
+	public Optional<Customer> signup(String username, String password, String firstName, String lastName, String address, String email){
+		LOGGER.info("New user attempting to sign in");
+		Optional<Customer> customer = Optional.empty();
+		if (!userDao.findByUsername(username).isPresent()) {
+			Optional<Role> role = roleDao.findByRoleName("ROLE_CUSTOMER");
+			customer = Optional.of(customerDao.save(new Customer(username,
+					password,
+					firstName,
+					lastName,
+					address,
+					email,
+					role.get())));
+		}
+		return customer;
+	}
 
 }

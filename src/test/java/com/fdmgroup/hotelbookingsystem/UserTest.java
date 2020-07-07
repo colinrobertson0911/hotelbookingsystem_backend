@@ -62,31 +62,31 @@ public class UserTest {
 		verify(this.service).signin("admin", "myPass123");
 	}
 
-//	@Test
-//	public void registerUser(){
-//		when(service.signup(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail())).thenReturn(Optional.of(customer));
-//
-//		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
-//				new HttpEntity<>(signupDto),
-//				Customer.class);
-//
-//		assertThat(responseEntity.getStatusCode().value(), is(201));
-//		assertThat(responseEntity.getBody().getUsername(), is(customer.getUsername()));
-//		assertThat(responseEntity.getBody().getFirstName(), is(customer.getFirstName()));
-//		assertThat(responseEntity.getBody().getLastName(), is(customer.getLastName()));
-//		assertThat(responseEntity.getBody().getRoles().size(), is(customer.getRoles().size()));
-//	}
-//
-//	@Test
-//	public void registerInvalidUser() {
-//		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-//		when(service.signup(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getFirstName(), authenticationRequest.getLastName(), authenticationRequest.getAddress(), authenticationRequest.getEmail())).thenReturn(Optional.of(customer));
-//		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
-//				new HttpEntity<>(authenticationRequest),
-//				Customer.class);
-//
-//		assertThat(responseEntity.getStatusCode().value(), is(400));
-//
-//	}
+	@Test
+	public void registerUser(){
+		when(service.signup(signupDto.getUsername(), signupDto.getPassword(), signupDto.getFirstName(), signupDto.getLastName(), signupDto.getAddress(), signupDto.getEmail())).thenReturn(Optional.of(customer));
+
+		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
+				new HttpEntity<>(signupDto),
+				Customer.class);
+
+		assertThat(responseEntity.getStatusCode().value(), is(201));
+		assertThat(responseEntity.getBody().getUsername(), is(customer.getUsername()));
+		assertThat(responseEntity.getBody().getFirstName(), is(customer.getFirstName()));
+		assertThat(responseEntity.getBody().getLastName(), is(customer.getLastName()));
+		assertThat(responseEntity.getBody().getRoles().size(), is(customer.getRoles().size()));
+	}
+
+	@Test
+	public void registerInvalidUser() {
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+		when(service.signup(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getFirstName(), authenticationRequest.getLastName(), authenticationRequest.getAddress(), authenticationRequest.getEmail())).thenReturn(Optional.of(customer));
+		ResponseEntity<Customer> responseEntity = restTemplate.exchange("/login/RegisterUser", POST,
+				new HttpEntity<>(authenticationRequest),
+				Customer.class);
+
+		assertThat(responseEntity.getStatusCode().value(), is(400));
+
+	}
 
 }
